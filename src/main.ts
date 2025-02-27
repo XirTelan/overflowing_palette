@@ -1,8 +1,7 @@
 import { Game as MainGame } from "./scenes/Game";
-import { AUTO, Game, Scale, Types } from "phaser";
+import { AUTO, Scale, Types } from "phaser";
+import { LevelData } from "./types";
 
-//  Find out more information about the Game Config at:
-//  https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
 const config: Types.Core.GameConfig = {
   type: AUTO,
   width: 1024,
@@ -16,13 +15,19 @@ const config: Types.Core.GameConfig = {
   scene: [MainGame],
 };
 
-const levelData = [
-  [0, 0, 0, 0, 2],
-  [1, 0, 0, 2, 0],
-  [1, 0, 2, 2, 0],
-  [1, 1, 0, 2, 0],
-  [1, 0, 1, 2, 0],
-  [1, 0, 0, 2, 0],
-];
+const levelData: LevelData = {
+  board: [
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 2, 0, 0, 2, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 2, 0, 0, 2, 0, 0, 1],
+    [1, 3, 0, 0, 0, 0, 0, 0, 1, 1],
+    [1, 3, 1, 0, 0, 0, 0, 3, 1, 1],
+    [2, 3, 1, 1, 3, 1, 1, 3, 1, 2],
+    [2, 2, 1, 1, 3, 1, 1, 3, 2, 2],
+  ],
+  targetColor: 1,
+  turns: 2,
+};
 const game = new Phaser.Game(config);
 game.scene.start("Game", { levelData });

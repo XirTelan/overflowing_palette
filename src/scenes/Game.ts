@@ -1,10 +1,12 @@
 import { Scene } from "phaser";
-import { ColorType, LevelData } from "../types";
+import { ColorType, GameStatus, LevelData, Vector3 } from "../types";
 import Grid from "../Grid";
 import { colors } from "../utils";
+import ColorBtn from "../ColorBtn";
 
 type GameStates = {
   turns: number;
+  state: GameStatus;
   targetColor: ColorType;
   selectedColor: ColorType;
   remains: number;
@@ -12,6 +14,7 @@ type GameStates = {
 
 export class Game extends Scene {
   grid: Grid;
+  btnContainer: Phaser.GameObjects.Container;
   gameStates: GameStates;
 
   constructor() {
@@ -21,20 +24,25 @@ export class Game extends Scene {
   preload() {
     this.load.setPath("assets");
     this.load.glsl("base", "shaders/base.glsl");
+    this.load.glsl("distortion", "shaders/distortion.glsl");
 
-    this.load.image("background", "bg_test.webp");
-    this.load.image("logo", "logo.png");
+    this.load.image("background", "bg.png");
+    this.load.image("celltexture", "celltexture.png");
+    this.load.image("cellnoise", "cellnoise.png");
+    // this.load.image("logo", "logo.png");
   }
 
   create({ levelData }: { levelData: LevelData }) {
-    this.add.image(512, 384, "background");
+    const background = this.add.shader("distortion", 512, 384, 1024, 768, [
+      "background",
+    ]);
     this.initShaderConfig();
-
 
     const gameStates: GameStates = {
       turns: levelData.turns,
       targetColor: levelData.targetColor,
       selectedColor: ColorType.red,
+      state: GameStatus.Active,
       remains: 0,
     };
 
@@ -42,28 +50,41 @@ export class Game extends Scene {
 
     this.grid = new Grid(this, levelData.board);
 
-    const btns: Phaser.GameObjects.GameObject[] = [];
-
+    this.btnContainer = this.add.container(950, 100, []);
     Object.entries(colors).forEach((color, indx) => {
-      const btn = this.add.shader("base", 0, indx * 100, 80, 80);
-
-      btn.setUniform("color.value", color[1]);
-      btn.setUniform("radius.value", 0.5);
-      btns.push(btn);
+      new ColorBtn(this, 0, indx * 100, 80, color, this.btnContainer);
     });
-
-    const container = this.add.container(950, 100, btns);
   }
 
-  initShaderConfig() {
+  changeGameState(state: GameStatus) {
+    if (state === GameStatus.Waiting) {
+      this.gameStates.state = GameStatus.Waiting;
+    }
+
+    if (state === GameStatus.Active) {
+      this.gameStates.state = GameStatus.Active;
+
+      if (this.gameStates.remains === 0) {
+        this.scene.restart();
+      }
+    }
+  }
+
+  private initShaderConfig() {
     const shader = this.cache.shader.get("base");
     shader.uniforms = {
       color: {
         type: "3f",
         value: { x: 1, y: 1, z: 1 },
       },
+      colorToTransform: {
+        type: "3f",
+        value: { x: 1, y: 1, z: 1 },
+      },
       radius: { type: "1f", value: 0.2 },
+      transition: { type: "1f", value: 0.0 },
+      active: { type: "1f", value: 0.0 },
+      transparent: { type: "1f", value: 0.0 },
     };
-    console.log("shader", shader);
   }
 }

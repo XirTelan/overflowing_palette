@@ -16,3 +16,8 @@ export type LevelData = {
   targetColor: number;
   turns: number;
 };
+
+export enum GameStatus {
+  "Waiting",
+  "Active",
+}

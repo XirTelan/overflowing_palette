@@ -68,9 +68,8 @@ void main(void) {
     vec2 rb_c = vec2(1.0 - radius, radius);
 
     float d = distance(vec2(0.5, 0.5), uv);
-    // smoothstep()
+
     float alpha = 1.0;
-    // float alpha = 1.0;
 
     if(uv.x <= lt_c.x && uv.y >= lt_c.y) {
         alpha = getColor(uv, lt_c);
@@ -89,6 +88,7 @@ void main(void) {
 
     if(alpha != 0.0 && active)
         overAlpha = mix(vec3(0.0), vec3(1.0), smoothstep(0.4, 0.8, d)).x;
+        
     //window space
     vec2 uv2 = gl_FragCoord.xy / vec2(1024, 768);
 

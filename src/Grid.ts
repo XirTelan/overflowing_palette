@@ -1,11 +1,13 @@
 import Cell from "./Cell";
 import { Game } from "./scenes/Game";
-import { ColorType } from "./types";
+import { ColorType, GameStatus } from "./types";
 import { colors, dirs } from "./utils";
 
 export default class Grid {
   scene: Game;
-
+  transitionSpeed = 800;
+  pendingCalls = 0;
+  cellSize = 72;
   board: Cell[][] = [];
 
   constructor(scene: Game, levelData: number[][]) {
@@ -15,9 +17,8 @@ export default class Grid {
     const columns = levelData[0].length;
     const tiles = [];
     for (let i = 0; i < rows; i++) {
-      console.log("row", levelData[i]);
       for (let j = 0; j < columns; j++) {
-        const newCell = new Cell(this, i, j, levelData[i][j], 5, 70);
+        const newCell = new Cell(this, i, j, levelData[i][j], 5, this.cellSize);
         tiles.push(newCell.tile);
 
         this.board[i] ??= [];
@@ -28,10 +29,10 @@ export default class Grid {
         }
       }
     }
-    this.scene.add.container(115, 100, tiles);
+    this.scene.add.container(105, 105, tiles);
   }
 
-  bfs(
+  private bfs(
     x: number,
     y: number,
     colorToChange: ColorType,
@@ -39,7 +40,6 @@ export default class Grid {
     seen: Set<Cell>,
     level: number
   ) {
-    console.log("bfs pre", colorToChange, newColor);
     if (
       !this.board[x] ||
       !this.board[x][y] ||
@@ -49,37 +49,118 @@ export default class Grid {
     )
       return;
 
-    console.log("bfs", colorToChange, this.board[x][y].color);
-
-    this.board[x][y].tile.setUniform("color.value", colors[newColor]);
-    this.board[x][y].color = newColor;
-
-    if (this.board[x][y].color === this.scene.gameStates.targetColor) {
-      this.scene.gameStates.remains -= 1;
-      console.log(this.scene.gameStates.remains);
-    }
-
+    this.pendingCalls++;
+    const currentTile = this.board[x][y].tile;
+    const test = this.board[x][y].tile.getCenter(undefined, true);
     seen.add(this.board[x][y]);
+    const animate = this.scene.add.shader(
+      "base",
+      test.x,
+      test.y,
+      this.cellSize,
+      this.cellSize
+    );
+    animate.setUniform("color.value", { x: 0.949, y: 0.953, z: 0.827 });
+    animate.setUniform("active.value", 1.0);
+    animate.setUniform("transparent.value", 1.0);
+
+    const speedUpFactor = level * 5;
+
+    this.scene.tweens.chain({
+      targets: null,
+      tweens: [
+        {
+          targets: currentTile,
+          x: {
+            value: () => currentTile.x + Phaser.Math.Between(-5, 5),
+            duration: Math.max(0, 25 - speedUpFactor),
+            repeat: 1,
+          },
+          y: {
+            value: () => currentTile.y + Phaser.Math.Between(-5, 5),
+            duration: Math.max(0, 25 - speedUpFactor),
+            repeat: 1,
+          },
+          repeat: 0,
+          yoyo: true,
+          ease: "Sine.easeInOut",
+        },
+        {
+          targets: animate,
+          alpha: 0.8,
+          duration: Math.max(0, this.transitionSpeed / 2 - speedUpFactor * 2),
+          repeat: 0,
+          scale: 1.2,
+          ease: "Linear",
+        },
+        {
+          targets: animate,
+          alpha: 0,
+          scale: 1.4,
+          duration: this.transitionSpeed / 2 - 50 - speedUpFactor * 2,
+          repeat: 0,
+
+          ease: "Linear",
+        },
+      ],
+      delay: 0,
+      loop: 0,
+    });
+
+    const animationDelay =
+      this.transitionSpeed - speedUpFactor * this.transitionSpeed * 0.05;
+
+    this.scene.tweens.addCounter({
+      from: 0,
+      to: 1,
+      delay: 50 - speedUpFactor,
+      duration: animationDelay,
+      ease: "Cubic.InOut",
+      repeat: 0,
+      onStart: () => {
+        this.board[x][y].tile.setUniform(
+          "colorToTransform.value",
+          colors[newColor]
+        );
+      },
+      onUpdate: (tween) => {
+        this.board[x][y].tile.setUniform("transition.value", tween.getValue());
+      },
+      onComplete: () => {
+        this.board[x][y].tile.scale = 1;
+        this.board[x][y].tile.depth = 1;
+        this.board[x][y].tile.setUniform("transition.value", 0.0);
+        this.board[x][y].tile.setUniform("color.value", colors[newColor]);
+
+        if (this.board[x][y].color === this.scene.gameStates.targetColor) {
+          this.scene.gameStates.remains++;
+        }
+
+        this.board[x][y].color = Number(newColor);
+
+        if (this.board[x][y].color === this.scene.gameStates.targetColor) {
+          this.scene.gameStates.remains -= 1;
+        }
+        this.pendingCalls--;
+        if (this.pendingCalls === 0) {
+          console.log("yep");
+          this.scene.changeGameState(GameStatus.Active);
+        }
+        animate.destroy();
+      },
+    });
 
     for (const [dx, dy] of dirs) {
-      this.scene.time.delayedCall(
-        200,
-        this.bfs,
-        [x + dx, y + dy, colorToChange, newColor, seen, level + 1],
-        this
-      );
+      this.scene.time.delayedCall(animationDelay, () => {
+        this.bfs(x + dx, y + dy, colorToChange, newColor, seen, level + 1);
+      });
     }
   }
-  flip(x, y, colorToChange) {
+  flip(x: number, y: number, colorToChange: ColorType) {
     if (colorToChange == this.scene.gameStates.selectedColor) return;
 
-    console.log(
-      "flip",
-      x,
-      y,
-      colorToChange,
-      this.scene.gameStates.selectedColor
-    );
+    this.scene.changeGameState(GameStatus.Waiting);
+
     this.bfs(
       x,
       y,

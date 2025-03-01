@@ -1,9 +1,10 @@
 import Grid from "./Grid";
-import { ColorType, GameStatus } from "./types";
-import { colors } from "./utils";
+import { ColorType, GameStatus } from "../types";
+import { colors } from "../utils";
 
 export default class Cell {
   tile;
+  transitionTile;
   color: ColorType;
   grid;
 
@@ -25,7 +26,7 @@ export default class Cell {
       x * (cellSize + gap),
       cellSize,
       cellSize,
-      ["celltexture", "cellnoise"]
+      ["celltexture", "cellnoise", "cellnoise_d", "cellnoise_center"]
     );
     this.tile.setUniform("color.value", colors[color]);
     this.tile.setInteractive();
@@ -33,6 +34,22 @@ export default class Cell {
     this.tile.on("pointerover", this.onEnter, this);
     this.tile.on("pointerout", this.onLeave, this);
     this.pos = { x, y };
+
+    const transitionTile = grid.scene.add.shader(
+      "base",
+      this.tile.x,
+      this.tile.y,
+      cellSize,
+      cellSize
+    );
+
+    transitionTile.setUniform("color.value", { x: 0.949, y: 0.953, z: 0.827 });
+    transitionTile.setUniform("active.value", 1.0);
+    transitionTile.setUniform("transparent.value", 1.0);
+
+    transitionTile.setVisible(false);
+
+    this.transitionTile = transitionTile;
   }
   onEnter() {
     this.tile.setUniform("active.value", 1.0);

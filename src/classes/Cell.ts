@@ -22,17 +22,19 @@ export default class Cell {
 
     this.tile = grid.scene.add.shader(
       "base",
-      y * (cellSize + gap),
-      x * (cellSize + gap),
+      y * (cellSize + gap / 2),
+      x * (cellSize + gap / 2),
       cellSize,
       cellSize,
       ["celltexture", "cellnoise", "cellnoise_d", "cellnoise_center"]
     );
     this.tile.setUniform("color.value", colors[color]);
+
     this.tile.setInteractive();
     this.tile.on("pointerdown", this.onClick, this);
     this.tile.on("pointerover", this.onEnter, this);
     this.tile.on("pointerout", this.onLeave, this);
+
     this.pos = { x, y };
 
     const transitionTile = grid.scene.add.shader(

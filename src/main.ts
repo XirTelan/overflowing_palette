@@ -7,7 +7,7 @@ const config: Types.Core.GameConfig = {
   width: 1024,
   height: 768,
   parent: "game-container",
-  backgroundColor: "#028af8",
+  backgroundColor: "#121212",
   scale: {
     mode: Scale.FIT,
     autoCenter: Scale.CENTER_BOTH,
@@ -27,7 +27,7 @@ const levelData: LevelData = {
     [2, 2, 1, 1, 3, 1, 1, 3, 2, 2],
   ],
   targetColor: 1,
-  turns: 2,
+  turns: 40,
 };
 const game = new Phaser.Game(config);
 game.scene.start("Game", { levelData });

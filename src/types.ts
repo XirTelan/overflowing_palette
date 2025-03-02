@@ -3,6 +3,8 @@ export enum ColorType {
   "green",
   "blue",
   "yellow",
+  "purple",
+  "cyan",
 }
 
 export type Vector2 = {

@@ -7,18 +7,50 @@ export default class Grid {
   scene: Game;
   transitionSpeed = 800;
   pendingCalls = 0;
-  cellSize = 72;
   board: Cell[][] = [];
 
   constructor(scene: Game, levelData: number[][]) {
     this.scene = scene;
+    const gridOptions = {
+      width: 780,
+      height: 630,
+      borderPadding: 15,
+      gap: 5,
+    };
 
     const rows = levelData.length;
     const columns = levelData[0].length;
     const tiles = [];
+
+    const border = scene.add
+      .nineslice(
+        -75,
+        -50,
+        "grid_border",
+        undefined,
+        gridOptions.width + gridOptions.borderPadding * 2,
+        gridOptions.height + gridOptions.borderPadding * 2,
+        270,
+        128,
+        gridOptions.height / 2.56,
+        gridOptions.height / 3
+      )
+      .setOrigin(0, 0);
+    const cellSize = Math.min(
+      (gridOptions.height - (gridOptions.gap * rows - 1)) / rows,
+      (gridOptions.width - (gridOptions.gap * columns - 1)) / columns
+    );
+    console.log("cellsize", cellSize);
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < columns; j++) {
-        const newCell = new Cell(this, i, j, levelData[i][j], 5, this.cellSize);
+        const newCell = new Cell(
+          this,
+          i,
+          j,
+          levelData[i][j],
+          gridOptions.gap,
+          cellSize
+        );
         tiles.push(newCell.tile);
         tiles.push(newCell.transitionTile);
 
@@ -30,7 +62,7 @@ export default class Grid {
         }
       }
     }
-    this.scene.add.container(105, 105, tiles);
+    this.scene.add.container(105, 105, [border, ...tiles]);
   }
 
   private bfs(

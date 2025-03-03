@@ -60,7 +60,6 @@ export default class Cell {
     this.tile.setUniform("active.value", 0.0);
   }
   onClick() {
-    if (this.grid.scene.gameStates.state === GameStatus.Waiting) return;
-    this.grid.flip(this.pos.x, this.pos.y, this.color);
+    this.grid.cellAction(this.pos.x, this.pos.y, this.color);
   }
 }

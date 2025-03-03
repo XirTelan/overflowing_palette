@@ -19,6 +19,7 @@ export type Vector3 = {
 };
 
 export type LevelData = {
+  category: string;
   board: number[][];
   targetColor: number;
   turns: number;
@@ -28,3 +29,43 @@ export enum GameStatus {
   "Waiting",
   "Active",
 }
+
+export type GameConfig = {
+  mainMenu: {
+    buttonsBlock: {
+      x: number;
+      y: number;
+      keys: string[];
+      gap: number;
+    };
+  };
+  game: {
+    gridOptions: GridOptions;
+  };
+};
+
+export type GridOptions = {
+  width: number;
+  height: number;
+  borderPadding: number;
+  gap: number;
+  borderOffset: {
+    x: number;
+    y: number;
+  };
+};
+
+export type GameStates = {
+  turns: number;
+  state: GameStatus;
+  targetColor: ColorType;
+  selectedColor: ColorType;
+  remains: number;
+  mode: "Play" | "Editor";
+};
+
+export type LoadingConfig = {
+  width: number;
+  boxPadding: number;
+  height: number;
+};

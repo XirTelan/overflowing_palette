@@ -8,11 +8,25 @@
     }
   },
   "game": {
+    "levelsCategories": ["WutheringWaves", "Custom", "XL"],
     "gridOptions": {
-      "width": 780,
-      "height": 630,
-      "borderPadding": 15,
-      "gap": 5
+      "width": 1000,
+      "height": 800,
+      "borderPadding": 5,
+      "gap": 15,
+      "borderOffset": {
+        "x": -100,
+        "y": -70
+      }
+    },
+    "ui": {
+      "targetUI": {
+        "x": 450,
+        "y": 950
+      },
+      "colorButtons": {
+        "gap": 20
+      }
     }
   }
 }

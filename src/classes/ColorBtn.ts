@@ -114,13 +114,6 @@ export default class ColorBtn {
       this.active.setVisible(false);
   }
   update() {
-    console.log(
-      "update",
-      this.scene.gameStates.selectedColor,
-      this.color[0],
-      this.active,
-      this.scene.gameStates.selectedColor == this.color[0]
-    );
     if (Number(this.scene.gameStates.selectedColor) === Number(this.color[0])) {
       this.active.setVisible(true);
       this.pointer.setVisible(true);

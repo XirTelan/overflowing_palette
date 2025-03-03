@@ -1,33 +1,21 @@
-import { Game as MainGame } from "./scenes/Game";
+import { Game } from "./scenes/Game";
 import { AUTO, Scale, Types } from "phaser";
-import { LevelData } from "./types";
+import { Boot } from "./scenes/Boot";
+import { MainMenu } from "./scenes/MainMenu";
 
 const config: Types.Core.GameConfig = {
   type: AUTO,
-  width: 1024,
-  height: 768,
+  width: 1920,
+  height: 1080,
   parent: "game-container",
   backgroundColor: "#121212",
   scale: {
     mode: Scale.FIT,
     autoCenter: Scale.CENTER_BOTH,
   },
-  scene: [MainGame],
+  scene: [Boot, MainMenu, Game],
 };
 
-const levelData: LevelData = {
-  board: [
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 0, 2, 0, 0, 2, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 0, 2, 0, 0, 2, 0, 0, 1],
-    [1, 3, 0, 0, 0, 0, 0, 0, 1, 1],
-    [1, 3, 1, 0, 0, 0, 0, 3, 1, 1],
-    [2, 3, 1, 1, 3, 1, 1, 3, 1, 2],
-    [2, 2, 1, 1, 3, 1, 1, 3, 2, 2],
-  ],
-  targetColor: 1,
-  turns: 40,
-};
 const game = new Phaser.Game(config);
-game.scene.start("Game", { levelData });
+
+game.scene.start("Boot");

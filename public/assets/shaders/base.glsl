@@ -1,6 +1,7 @@
 precision mediump float;
 
 uniform vec2 resolution;
+uniform vec2 screenResolution;
 uniform vec3 color;
 
 uniform vec2 startPoint;
@@ -190,7 +191,7 @@ void main(void) {
         overAlpha = mix(vec3(0.0), vec3(1.0), smoothstep(0.4, 0.8, d)).x;
 
     //window space
-    vec2 uv2 = gl_FragCoord.xy / vec2(1024, 768);
+    vec2 uv2 = gl_FragCoord.xy / vec2(screenResolution);
 
     float timeFactor = time * speed;
 

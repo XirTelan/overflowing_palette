@@ -4,6 +4,7 @@ uniform vec2 resolution;
 uniform float time;
 uniform sampler2D iChannel0;
 
+float radius = 0.3;
 float speed = 0.05;
 float darkOverlay = 0.7;
 varying vec2 fragCoord;
@@ -46,8 +47,8 @@ void main(void) {
 
     float d = distance(vec2(0.5, 0.5), uv);
 
-    float edgeWidth = 0.1;
-    float blendFactor = smoothstep(0.5 - edgeWidth, 0.5 + edgeWidth, d);
+    float edgeWidth = 0.05;
+    float blendFactor = smoothstep(radius - edgeWidth, radius + edgeWidth, d);
     vec2 blendedUV = mix(distortedUV, uv, blendFactor);
 
     vec4 textureColor = texture2D(iChannel0, blendedUV);

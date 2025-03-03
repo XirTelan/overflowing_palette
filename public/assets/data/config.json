@@ -1,0 +1,18 @@
+{
+  "mainMenu": {
+    "buttonsBlock": {
+      "x": 100,
+      "y": 150,
+      "gap": 25,
+      "keys": ["Select Level", "Create Level", "Options"]
+    }
+  },
+  "game": {
+    "gridOptions": {
+      "width": 780,
+      "height": 630,
+      "borderPadding": 15,
+      "gap": 5
+    }
+  }
+}

@@ -26,6 +26,23 @@
       },
       "colorButtons": {
         "gap": 20
+      },
+      "closeBtn": {
+        "offset": {
+          "x": 100,
+          "y": 50
+        },
+        "scale": 0.5
+      },
+      "targetValueSelector": {
+        "x": 150,
+        "y": 250,
+        "width": 150
+      },
+      "turnsValueSelector": {
+        "x": 150,
+        "y": 160,
+        "width": 150
       }
     }
   }

@@ -1,5 +1,5 @@
-import { Game } from "../scenes/Game";
-import { ColorType, Vector3 } from "../types";
+import { Game } from "../../scenes/Game";
+import { ColorType, Vector3 } from "../../types";
 
 const keysMap = {
   1: "NUMPAD_ONE,ONE",

@@ -86,6 +86,21 @@
         "type": "image",
         "key": "resetBtn",
         "url": "resetBtn.png"
+      },
+      {
+        "type": "image",
+        "key": "closeBtn",
+        "url": "closeBtn.png"
+      },
+      {
+        "type": "image",
+        "key": "mainBtn",
+        "url": "mainBtn.png"
+      },
+      {
+        "type": "image",
+        "key": "arrow",
+        "url": "arrow.png"
       }
     ]
   },

@@ -9,6 +9,9 @@ const config: Types.Core.GameConfig = {
   height: 1080,
   parent: "game-container",
   backgroundColor: "#121212",
+  dom: {
+    createContainer: true,
+  },
   scale: {
     mode: Scale.FIT,
     autoCenter: Scale.CENTER_BOTH,
@@ -18,4 +21,6 @@ const config: Types.Core.GameConfig = {
 
 const game = new Phaser.Game(config);
 
-game.scene.start("Boot");
+document.addEventListener("DOMContentLoaded", () => {
+  game.scene.start("Boot");
+});

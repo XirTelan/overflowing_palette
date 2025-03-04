@@ -22,7 +22,6 @@ export class LevelEditor extends MenuTab {
     const arr: number[][] = [];
     for (let i = 0; i < 8; i++) {
       arr[i] ??= [];
-      console.log(arr);
       for (let j = 0; j < 10; j++) {
         arr[i][j] = 0;
       }

@@ -19,7 +19,6 @@ export type Vector3 = {
 };
 
 export type LevelData = {
-  category: string;
   board: number[][];
   targetColor: number;
   turns: number;
@@ -61,6 +60,7 @@ export type GameStates = {
   targetColor: ColorType;
   selectedColor: ColorType;
   remains: number;
+  availableColors: Set<ColorType>;
   mode: "Play" | "Editor";
 };
 
@@ -69,3 +69,12 @@ export type LoadingConfig = {
   boxPadding: number;
   height: number;
 };
+
+export interface MenuTabProps {
+  x: number;
+  y: number;
+  scene: Phaser.Scene;
+  key: string;
+  width: number;
+  height: number;
+}

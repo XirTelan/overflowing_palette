@@ -8,10 +8,12 @@ export default class Grid {
   transitionSpeed = 800;
   pendingCalls = 0;
   board: Cell[][] = [];
+  defaultValues: number[][];
+  border: Phaser.GameObjects.NineSlice;
 
   constructor(scene: Game, levelData: number[][]) {
     this.scene = scene;
-
+    this.defaultValues = levelData;
     const rows = levelData.length;
     const columns = levelData[0].length;
     const tiles = [];
@@ -19,7 +21,7 @@ export default class Grid {
     const { gridOptions }: { gridOptions: GridOptions } =
       scene.cache.json.get("config")["game"];
 
-    const border = scene.add
+    this.border = scene.add
       .nineslice(
         gridOptions.borderOffset.x,
         gridOptions.borderOffset.y,
@@ -32,7 +34,9 @@ export default class Grid {
         gridOptions.height / 2.56,
         gridOptions.height / 3
       )
-      .setOrigin(0, 0);
+      .setOrigin(0, 0)
+      .setTint(this.getColor());
+
     const cellSize = Math.floor(
       Math.min(
         (gridOptions.height - (gridOptions.gap * rows - 1)) / rows,
@@ -41,6 +45,7 @@ export default class Grid {
     );
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < columns; j++) {
+        this.scene.gameStates.availableColors.add(levelData[i][j]);
         const newCell = new Cell(
           this,
           i,
@@ -63,7 +68,7 @@ export default class Grid {
     this.scene.add.container(
       this.scene.cameras.main.width / 2 - gridOptions.width / 2,
       200,
-      [border, ...tiles]
+      [this.border, ...tiles]
     );
   }
 
@@ -230,5 +235,23 @@ export default class Grid {
       colors[this.scene.gameStates.selectedColor]
     );
     this.board[x][y].color = Number(this.scene.gameStates.selectedColor);
+  }
+  private getColor() {
+    const { x, y, z } = colors[this.scene.gameStates.targetColor];
+    return Phaser.Display.Color.GetColor(x * 255, y * 255, z * 255);
+  }
+  updateBorderTint() {
+    this.border.clearTint();
+    this.border.setTint(this.getColor());
+  }
+  resetBoard() {
+    const data = this.defaultValues;
+    const rows = data.length;
+    const columns = data[0].length;
+    for (let i = 0; i < rows; i++) {
+      for (let j = 0; j < columns; j++) {
+        this.board[i][j].setColor(data[i][j]);
+      }
+    }
   }
 }

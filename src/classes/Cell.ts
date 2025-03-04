@@ -1,5 +1,5 @@
 import Grid from "./Grid";
-import { ColorType, GameStatus } from "../types";
+import { ColorType } from "../types";
 import { colors } from "../utils";
 
 export default class Cell {
@@ -61,5 +61,9 @@ export default class Cell {
   }
   onClick() {
     this.grid.cellAction(this.pos.x, this.pos.y, this.color);
+  }
+  setColor(color: ColorType) {
+    this.color = color;
+    this.tile.setUniform("color.value", colors[color]);
   }
 }

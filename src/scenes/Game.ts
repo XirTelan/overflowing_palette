@@ -10,6 +10,7 @@ import Grid from "../classes/Grid";
 import { colors } from "../utils";
 import ColorBtn from "../classes/ui/ColorBtn";
 import { ValueSelector } from "../classes/ui/ValueSelector";
+import { Export } from "../classes/Game/Export";
 
 export class Game extends Scene {
   grid: Grid;
@@ -100,44 +101,55 @@ export class Game extends Scene {
 }
 
 function createResetButton(scene: Game) {
+  const { resetBtn } = scene.cache.json.get("config")["game"]["ui"];
+
   const resetImage = scene.add
-    .image(scene.btnContainer.x, scene.cameras.main.height - 140, "resetBtn")
+    .image(
+      scene.btnContainer.x,
+      scene.cameras.main.height - 140,
+      "uiatlas",
+      "resetBtn"
+    )
     .setScale(0.8);
 
+  const overlay = scene.add
+    .image(
+      scene.btnContainer.x,
+      scene.cameras.main.height - 140,
+      "uiatlas",
+      "resetBtn_over"
+    )
+    .setScale(0.8);
+
+  overlay.setVisible(false);
+
   const hotkeyBtn = scene.make.image({
+    ...resetBtn.hotkeyBtn,
     x: resetImage.x - 30,
     y: resetImage.y + 80,
-    key: "hotkey_btn",
-    scale: 0.15,
   });
 
-  scene.make
-    .text({
-      x: hotkeyBtn.x,
-      y: hotkeyBtn.y,
-      text: `R`,
-      style: {
-        color: "#3e3e3e",
-        font: "24px OpenSans_Bold",
-      },
-    })
-    .setOrigin(0.5, 0.5);
+  scene.make.text({
+    ...resetBtn.hotkeyText,
+    x: hotkeyBtn.x,
+    y: hotkeyBtn.y,
+  });
 
-  scene.make
-    .text({
-      x: hotkeyBtn.x + 60,
-      y: hotkeyBtn.y,
-      text: `Reset`,
-      style: {
-        color: "#ffffff",
-        font: "24px OpenSans_Bold",
-      },
-    })
-    .setOrigin(0.5, 0.5);
+  scene.make.text({
+    ...resetBtn.text,
+    x: hotkeyBtn.x + 60,
+    y: hotkeyBtn.y,
+  });
 
   resetImage.setInteractive();
   resetImage.on("pointerdown", () => {
     scene.grid.resetBoard();
+  });
+  resetImage.on("pointerover", () => {
+    overlay.setVisible(true);
+  });
+  resetImage.on("pointerout", () => {
+    overlay.setVisible(false);
   });
 }
 
@@ -150,6 +162,7 @@ function createCloseButton(scene: Game) {
     .image(
       scene.cameras.main.width - ui.closeBtn.offset.x,
       0 + ui.closeBtn.offset.y,
+      "uiatlas",
       "closeBtn"
     )
     .setScale(ui.closeBtn.scale);
@@ -172,21 +185,9 @@ function initShaderConfig(
   resolution: Vector2
 ) {
   const shader = cache.shader.get("base");
+  const { shaders } = cache.json.get("config");
   shader.uniforms = {
-    color: {
-      type: "3f",
-      value: { x: 1, y: 1, z: 1 },
-    },
-    colorToTransform: {
-      type: "3f",
-      value: { x: 1, y: 1, z: 1 },
-    },
-    radius: { type: "1f", value: 0.2 },
-    transition: { type: "1f", value: 0.0 },
-    active: { type: "1f", value: 0.0 },
-    transparent: { type: "1f", value: 0.0 },
-    curPoint: { type: "2f", value: { x: 0, y: 0 } },
-    startPoint: { type: "2f", value: { x: 0, y: 0 } },
+    ...shaders.base,
     screenResolution: { type: "2f", value: resolution },
   };
 }
@@ -202,102 +203,6 @@ function initTextUI(scene: Game) {
   if (scene.gameStates.mode == "Play") {
     loadPlayUI(scene, ui);
   }
-
-  const mainBtn = scene.add
-    .image(160, 320, "mainBtn")
-    .setOrigin(0.5, 0.5)
-    .setScale(0.6);
-  mainBtn.setInteractive();
-  mainBtn.on("pointerdown", () => {
-    const arr = scene.grid.board.map((cell) => {
-      return cell.map((cell) => cell.color);
-    });
-    const jsonData: LevelData = {
-      targetColor: scene.gameStates.targetColor,
-      turns: scene.gameStates.turns,
-      board: arr,
-    };
-    const formattedJson = JSON.stringify(jsonData, null, "\t");
-    const jsonElement = scene.add.dom(
-      scene.cameras.main.width / 2,
-      scene.cameras.main.height / 2 - 100,
-      "pre",
-      {
-        width: "1024px",
-        height: "768px",
-        background: "#121212",
-        fontSize: "24px",
-        padding: "10px",
-        overflow: "auto",
-      }
-    );
-
-    const copy = scene.add
-      .image(scene.cameras.main.width / 2, 900, "mainBtn")
-      .setOrigin(0.5, 0.5)
-      .setScale(0.8);
-    copy.setInteractive();
-    copy.on("pointerdown", () => {
-      navigator.clipboard.writeText(formattedJson);
-      jsonElement.destroy();
-      copy.destroy();
-    });
-    scene.make
-      .text({
-        x: copy.x,
-        y: copy.y,
-        text: "Copy to clipboard",
-        style: {
-          color: "#000",
-          font: "24px OpenSans_Regular",
-        },
-      })
-      .setOrigin(0.5, 0.5);
-
-    jsonElement.setText(formattedJson);
-    // jsonElement.innerText = formattedJson;
-    // jsonElement.style.position = "absolute";
-    // jsonElement.style.left = "50px";
-    // jsonElement.style.top = "50px";
-    // jsonElement.style.color = "white";
-    // jsonElement.style.backgroundColor = "#222";
-    // jsonElement.style.padding = "10px";
-    // jsonElement.style.fontFamily = "monospace";
-    // jsonElement.style.whiteSpace = "pre-wrap"; // Wrap text properly
-    // jsonElement.style.width = "1024px"; // Limit width
-    // jsonElement.style.maxHeight = "1080px"; // Limit width
-  });
-
-  scene.make
-    .text({
-      x: mainBtn.x,
-      y: mainBtn.y,
-      text: "Export",
-      style: {
-        color: "#000000",
-        font: "24px OpenSans_Regular",
-      },
-    })
-    .setOrigin(0.5, 0.5);
-
-  const turnRemainsText = scene.make.text({
-    x: 60,
-    y: 110,
-    text: `Moves count:`,
-    style: {
-      color: "#fff",
-      font: "22px OpenSans_Regular",
-    },
-  });
-  const target = scene.make.text({
-    x: 60,
-    y: 200,
-    text: `Target color:`,
-    style: {
-      color: "#fff",
-      font: "22px OpenSans_Regular",
-    },
-  });
 
   scene.make.text({
     x: 60,
@@ -376,6 +281,25 @@ function loadPlayUI(scene: Game, ui) {
   });
 }
 function loadEditorUI(scene: Game, ui) {
+  scene.make.text({
+    x: 60,
+    y: 110,
+    text: `Moves count:`,
+    style: {
+      color: "#fff",
+      font: "22px OpenSans_Regular",
+    },
+  });
+  scene.make.text({
+    x: 60,
+    y: 200,
+    text: `Target color:`,
+    style: {
+      color: "#fff",
+      font: "22px OpenSans_Regular",
+    },
+  });
+
   new ValueSelector<number>(
     scene,
     ui.turnsValueSelector.x,
@@ -390,6 +314,8 @@ function loadEditorUI(scene: Game, ui) {
     }
   );
 
+  new Export(scene);
+
   new ValueSelector<string>(
     scene,
     ui.targetValueSelector.x,
@@ -397,22 +323,20 @@ function loadEditorUI(scene: Game, ui) {
     ui.targetValueSelector.width,
     ColorType[scene.gameStates.targetColor],
     () => {
-      let value = scene.gameStates.targetColor;
-      const maxValue = Object.keys(ColorType).length / 2 - 1;
-      value = value - 1 < 0 ? maxValue : value - 1;
-      scene.gameStates.targetColor = value;
-      const str = ColorType[value];
-      scene.grid.updateBorderTint();
-      return `${str[0].toUpperCase()}${str.slice(1)}`;
+      return changeTargetColor(-1, scene);
     },
     () => {
-      let value = scene.gameStates.targetColor;
-      const maxValue = Object.keys(ColorType).length / 2 - 1;
-      value = value + 1 > maxValue ? 0 : value + 1;
-      scene.gameStates.targetColor = value;
-      const str = ColorType[value];
-      scene.grid.updateBorderTint();
-      return `${str[0].toUpperCase()}${str.slice(1)}`;
+      return changeTargetColor(1, scene);
     }
   );
+}
+
+function changeTargetColor(value: number, scene: Game) {
+  const curTarget = scene.gameStates.targetColor;
+  const maxValue = Object.keys(ColorType).length / 2;
+  let newTarget = (((curTarget + value) % maxValue) + maxValue) % maxValue;
+  scene.gameStates.targetColor = newTarget;
+  const str = ColorType[newTarget];
+  scene.grid.updateBorderTint();
+  return `${str[0].toUpperCase()}${str.slice(1)}`;
 }

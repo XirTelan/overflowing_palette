@@ -11,7 +11,7 @@ export class Boot extends Scene {
   }
   create() {
     // this.scene.start("MainMenu");
-//[TO_REMOVE_CHECK]  For tests   
+    //[TO_REMOVE_CHECK]  For tests
     this.scene.start("Game", {
       mode: "Editor",
       levelData:

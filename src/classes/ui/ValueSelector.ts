@@ -54,23 +54,33 @@ export class ValueSelector<T> {
     ]);
   }
   private createButton(action: () => T, props: BtnProps) {
+    const container = this.scene.add.container(props.x, 0);
+
     const btn = this.scene.add
-      .image(props.x, 0, "arrow")
+      .image(0, 0, "uiatlas", "arrow")
       .setRotation(Phaser.Math.DegToRad(props.angle))
       .setScale(props.scale);
+    const overlay = this.scene.add
+      .image(0, 0, "uiatlas", "arrowBtn_over")
+      .setRotation(Phaser.Math.DegToRad(props.angle))
+      .setScale(props.scale);
+
+    overlay.setVisible(false);
+
     btn.setInteractive();
     btn.on("pointerdown", () => {
       this.text.setText(String(action()));
     });
     btn.on("pointerover", () => {
-      btn.setTint(0xc0b063);
-      btn.setScale(0.35);
+      overlay.setScale(0.35);
+      overlay.setVisible(true);
     });
     btn.on("pointerout", () => {
-      btn.clearTint();
-      btn.setScale(0.3);
+      overlay.setScale(0.3);
+      overlay.setVisible(false);
     });
-    return btn;
+    container.add([btn, overlay]);
+    return container;
   }
 }
 

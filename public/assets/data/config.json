@@ -26,15 +26,22 @@
       "keys": ["Select Level", "Create Level", "Options"]
     },
     "menuBtn": {
+      "btn": {
+        "offset": -105
+      },
       "text": {
-        "x": 0,
+        "x": 50,
         "y": 0,
         "style": {
           "color": "#a4a4a4",
           "font": "32px OpenSans_Bold"
-        },
-        "padding": { "x": 20 }
+        }
       }
+    }
+  },
+  "common": {
+    "ui": {
+      "primaryBtn": {}
     }
   },
   "game": {
@@ -50,6 +57,36 @@
       }
     },
     "ui": {
+      "resetBtn": {
+        "btn": {},
+        "hotkeyBtn": {
+          "key": "uiatlas",
+          "frame": "hotkey_btn",
+          "scale": 0.15
+        },
+        "hotkeyText": {
+          "text": "R",
+          "style": {
+            "color": "#3e3e3e",
+            "font": "24px OpenSans_Bold"
+          },
+          "origin": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        },
+        "text": {
+          "text": "Reset",
+          "style": {
+            "color": "#ffffff",
+            "font": "24px OpenSans_Bold"
+          },
+          "origin": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        }
+      },
       "targetUI": {
         "x": 450,
         "y": 950

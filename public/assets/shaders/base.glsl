@@ -1,7 +1,9 @@
 precision mediump float;
 
+uniform float time;
 uniform vec2 resolution;
 uniform vec2 screenResolution;
+
 uniform vec3 color;
 
 uniform vec2 startPoint;
@@ -9,11 +11,13 @@ uniform vec2 curPoint;
 
 uniform vec3 colorToTransform;
 
-uniform float time;
 uniform bool active;
+uniform vec2 activeOffset;
+
 uniform bool transparent;
 uniform float radius;
 uniform float transition;
+
 uniform sampler2D iChannel0; // main texture
 uniform sampler2D iChannel1; //cell noise
 uniform sampler2D iChannel2; // cell noise diagonal
@@ -188,7 +192,7 @@ void main(void) {
     float overAlpha = 0.0;
 
     if(alpha != 0.0 && active)
-        overAlpha = mix(vec3(0.0), vec3(1.0), smoothstep(0.4, 0.8, d)).x;
+        overAlpha = mix(vec3(0.0), vec3(1.0), smoothstep(activeOffset.x, activeOffset.y, d)).x;
 
     //window space
     vec2 uv2 = gl_FragCoord.xy / vec2(screenResolution);

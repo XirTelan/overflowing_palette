@@ -1,10 +1,40 @@
 {
+  "shaders": {
+    "base": {
+      "color": {
+        "type": "3f",
+        "value": { "x": 1, "y": 1, "z": 1 }
+      },
+      "colorToTransform": {
+        "type": "3f",
+        "value": { "x": 1, "y": 1, "z": 1 }
+      },
+      "radius": { "type": "1f", "value": 0.2 },
+      "transition": { "type": "1f", "value": 0.0 },
+      "active": { "type": "1f", "value": 0.0 },
+      "activeOffset": { "type": "2f", "value": { "x": 0.4, "y": 0.7 } },
+      "transparent": { "type": "1f", "value": 0.0 },
+      "curPoint": { "type": "2f", "value": { "x": 0, "y": 0 } },
+      "startPoint": { "type": "2f", "value": { "x": 0, "y": 0 } }
+    }
+  },
   "mainMenu": {
     "buttonsBlock": {
       "x": 100,
       "y": 150,
       "gap": 25,
       "keys": ["Select Level", "Create Level", "Options"]
+    },
+    "menuBtn": {
+      "text": {
+        "x": 0,
+        "y": 0,
+        "style": {
+          "color": "#a4a4a4",
+          "font": "32px OpenSans_Bold"
+        },
+        "padding": { "x": 20 }
+      }
     }
   },
   "game": {

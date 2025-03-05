@@ -54,7 +54,8 @@
       "borderOffset": {
         "x": -100,
         "y": -70
-      }
+      },
+      "shine": true
     },
     "ui": {
       "resetBtn": {

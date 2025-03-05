@@ -1,5 +1,6 @@
 import { Scene } from "phaser";
 import { MenuTabProps, Vector2 } from "../../types";
+import { PrimaryBtn } from "../ui/PrimaryBtn";
 
 export class MenuTab {
   key: string;
@@ -8,7 +9,7 @@ export class MenuTab {
   height: number;
   scene: Scene;
   defaultPos: Vector2;
-  actionBtn: Phaser.GameObjects.Image;
+  actionBtn: PrimaryBtn;
 
   constructor({ key, x, y, scene, width, height }: MenuTabProps) {
     this.scene = scene;
@@ -22,26 +23,16 @@ export class MenuTab {
     this.container.add(
       scene.add.rectangle(0, 0, width, height, 0x000000, 0.6).setOrigin(0, 0)
     );
-    const mainBtn = scene.add
-      .image(width - 250, height, "mainBtn")
-      .setOrigin(0.5, 0.5);
+    this.actionBtn = new PrimaryBtn(
+      width - 150,
+      height,
+      "Launch",
+      300,
+      50,
+      scene
+    );
 
-    this.actionBtn = mainBtn;
-
-    this.container.add([
-      mainBtn,
-      scene.make
-        .text({
-          x: mainBtn.x,
-          y: mainBtn.y,
-          text: "Launch",
-          style: {
-            color: "#161616",
-            font: "24px OpenSans_Bold",
-          },
-        })
-        .setOrigin(0.5, 0.5),
-    ]);
+    this.container.add(this.actionBtn.container);
   }
   show() {
     if (this.container.visible) return;

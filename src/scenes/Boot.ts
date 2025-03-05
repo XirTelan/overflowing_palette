@@ -10,13 +10,13 @@ export class Boot extends Scene {
     this.load.pack("assets_pack", "assets/data/assets.json");
   }
   create() {
-    // this.scene.start("MainMenu");
+    this.scene.start("MainMenu");
     //[TO_REMOVE_CHECK]  For tests
-    this.scene.start("Game", {
-      mode: "Editor",
-      levelData:
-        this.cache.json.get("levels")["default"]["Riccioli_Islands"][4],
-    });
+    // this.scene.start("Game", {
+    //   mode: "Play",
+    //   levelData:
+    //     this.cache.json.get("levels")["default"]["Riccioli_Islands"][4],
+    // });
   }
   showLoading(loadingConfig: LoadingConfig = defaultLoadingConfig) {
     const scene = this;

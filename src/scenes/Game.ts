@@ -57,6 +57,9 @@ export class Game extends Scene {
       this.turnCounter.text = String(this.gameStates.turns);
 
       if (this.gameStates.remains === 0) {
+        this.scene.restart(); //[CHECK] Need to "gameover screen"
+      }
+      if (this.gameStates.turns == 0) {
         this.scene.restart();
       }
     }
@@ -321,7 +324,7 @@ function loadEditorUI(scene: Game, ui) {
     ui.targetValueSelector.x,
     ui.targetValueSelector.y,
     ui.targetValueSelector.width,
-    ColorType[scene.gameStates.targetColor],
+    getColorName(scene.gameStates.targetColor),
     () => {
       return changeTargetColor(-1, scene);
     },
@@ -336,7 +339,11 @@ function changeTargetColor(value: number, scene: Game) {
   const maxValue = Object.keys(ColorType).length / 2;
   let newTarget = (((curTarget + value) % maxValue) + maxValue) % maxValue;
   scene.gameStates.targetColor = newTarget;
-  const str = ColorType[newTarget];
   scene.grid.updateBorderTint();
+  return getColorName(newTarget);
+}
+
+function getColorName(indx: number) {
+  const str = ColorType[indx];
   return `${str[0].toUpperCase()}${str.slice(1)}`;
 }

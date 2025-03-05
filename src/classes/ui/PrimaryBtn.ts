@@ -13,7 +13,7 @@ export class PrimaryBtn {
     width: number,
     height: number,
     scene: Scene,
-    onClick: () => void
+    onClick?: () => void
   ) {
     const container = scene.add.container(x, y);
     this.container = container;
@@ -30,7 +30,9 @@ export class PrimaryBtn {
     this.overlay.setVisible(false);
     console.log(this.overlay);
     this.btn.setInteractive();
-    this.btn.on("pointerdown", onClick);
+
+    if (onClick) this.btn.on("pointerdown", onClick);
+
     this.btn.on("pointerover", this.onEnter, this);
     this.btn.on("pointerout", this.onLeave, this);
 

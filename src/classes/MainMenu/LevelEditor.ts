@@ -6,8 +6,8 @@ export class LevelEditor extends MenuTab {
     super(props);
     const { scene, width, height } = props;
 
-    this.actionBtn.setInteractive();
-    this.actionBtn.on("pointerdown", () => {
+    this.actionBtn.btn.setInteractive();
+    this.actionBtn.btn.on("pointerdown", () => {
       this.scene.scene.start("Game", {
         mode: "Editor",
         levelData: {

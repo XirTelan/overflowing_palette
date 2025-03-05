@@ -48,17 +48,17 @@ export class MenuTab {
     this.container.setVisible(true);
 
     this.scene.tweens.add({
-      duration: 500,
+      duration: 300,
       targets: this.container,
       x: { from: this.defaultPos.x - 100, to: this.defaultPos.x },
       alpha: { from: 0, to: 1 },
       yoyo: false,
     });
   }
-  hide() {
+  hide(isForce?: boolean) {
     const before = this.container.x;
     this.scene.tweens.add({
-      duration: 300,
+      duration: isForce ? 0 : 300,
       targets: this.container,
       x: { from: this.defaultPos.x, to: this.defaultPos.x - 100 },
       alpha: { from: 1, to: 0 },

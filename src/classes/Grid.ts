@@ -37,6 +37,8 @@ export default class Grid {
       .setOrigin(0, 0)
       .setTint(this.getColor());
 
+    this.border.postFX?.addShine(0.2, 1, 4);
+
     const cellSize = Math.floor(
       Math.min(
         (gridOptions.height - (gridOptions.gap * rows - 1)) / rows,

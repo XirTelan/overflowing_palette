@@ -29,7 +29,6 @@ export default class Cell {
       ["celltexture", "cellnoise", "cellnoise_d", "cellnoise_center"]
     );
     this.tile.setUniform("color.value", colors[color]);
-
     this.tile.setInteractive();
     this.tile.on("pointerdown", this.onClick, this);
     this.tile.on("pointerover", this.onEnter, this);

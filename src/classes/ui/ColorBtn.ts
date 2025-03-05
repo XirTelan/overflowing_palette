@@ -49,7 +49,8 @@ export default class ColorBtn {
     const hotkeyBtn = this.scene.make.image({
       x,
       y: y + btnSize / 2,
-      key: "hotkey_btn",
+      key: "uiatlas",
+      frame: "hotkey_btn",
       scale: 0.1,
     });
 

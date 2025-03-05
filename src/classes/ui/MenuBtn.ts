@@ -16,25 +16,22 @@ export class MenuBtn {
   ) {
     const container = scene.add.container(x, y);
 
-    this.btn = scene.add.image(0, 0, "mainMenuBtnBg").setOrigin(0, 0.5);
+    const { menuBtn } = scene.cache.json.get("config")["mainMenu"];
+    console.log("asdasd", scene.textures.get("uiatlas"));
+    this.btn = scene.add
+      .image(menuBtn.btn.offset, 0, "uiatlas", "menuBtn")
+      .setOrigin(0, 0.5);
 
     this.text = scene.make
       .text({
-        x: 20,
-        y: 0,
+        ...menuBtn.text,
         text,
-        style: {
-          color: "#a4a4a4",
-          font: "46px OpenSans_Bold",
-        },
       })
       .setOrigin(0, 0.5);
-
     this.overlay = scene.add
-      .image(0, 0, "mainMenuBtnOverlay")
-      .setOrigin(0, 0.5)
-      .setAlpha(0, 1, 0, 1);
-
+      .image(this.btn.x, this.btn.y, "uiatlas", "menuBtn_overlay")
+      .setOrigin(0, 0.5);
+    this.overlay.preFX?.addBloom(0xffffff, 1, 1, 1.5);
     this.overlay.setVisible(false);
 
     this.btn.setInteractive();
@@ -43,8 +40,8 @@ export class MenuBtn {
     this.btn.on("pointerout", this.onLeave, this);
 
     container.add(this.btn);
-    container.add(this.text);
     container.add(this.overlay);
+    container.add(this.text);
 
     this.container = container;
   }

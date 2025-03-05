@@ -65,7 +65,7 @@
       {
         "type": "image",
         "key": "cellnoise_d",
-        "url": "cellnoise_d.webp"
+        "url": "cellnoise_d.png"
       },
       {
         "type": "image",
@@ -75,38 +75,20 @@
     ]
   },
   {
-    "path": "assets/textures/ui",
+    "path": "assets/textures/",
+
     "files": [
       {
-        "type": "image",
-        "key": "hotkey_btn",
-        "url": "hotkey_btn.webp"
+        "type": "atlas",
+        "key": "uiatlas",
+        "textureURL": "uiatlas.webp",
+        "atlasURL": "uiatlas.json"
       },
       {
         "type": "image",
-        "key": "resetBtn",
-        "url": "resetBtn.png"
+        "key": "background",
+        "url": "bg.png"
       },
-      {
-        "type": "image",
-        "key": "closeBtn",
-        "url": "closeBtn.png"
-      },
-      {
-        "type": "image",
-        "key": "mainBtn",
-        "url": "mainBtn.png"
-      },
-      {
-        "type": "image",
-        "key": "arrow",
-        "url": "arrow.png"
-      }
-    ]
-  },
-  {
-    "path": "assets/textures",
-    "files": [
       {
         "type": "image",
         "key": "background",

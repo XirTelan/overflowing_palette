@@ -1,0 +1,230 @@
+{
+	"textures": [
+		{
+			"image": "uiatlas.webp",
+			"format": "RGBA8888",
+			"size": {
+				"w": 512,
+				"h": 796
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "arrow",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 128,
+						"h": 128
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 128,
+						"h": 128
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 128,
+						"h": 128
+					}
+				},
+				{
+					"filename": "arrowBtn_over",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 128,
+						"h": 128
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 128,
+						"h": 128
+					},
+					"frame": {
+						"x": 128,
+						"y": 0,
+						"w": 128,
+						"h": 128
+					}
+				},
+				{
+					"filename": "closeBtn",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 128,
+						"h": 128
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 128,
+						"h": 128
+					},
+					"frame": {
+						"x": 256,
+						"y": 0,
+						"w": 128,
+						"h": 128
+					}
+				},
+				{
+					"filename": "resetBtn",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 128,
+						"h": 128
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 128,
+						"h": 128
+					},
+					"frame": {
+						"x": 384,
+						"y": 0,
+						"w": 128,
+						"h": 128
+					}
+				},
+				{
+					"filename": "resetBtn_over",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 128,
+						"h": 128
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 128,
+						"h": 128
+					},
+					"frame": {
+						"x": 0,
+						"y": 128,
+						"w": 128,
+						"h": 128
+					}
+				},
+				{
+					"filename": "hotkey_btn",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 256,
+						"h": 256
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 256,
+						"h": 256
+					},
+					"frame": {
+						"x": 128,
+						"y": 128,
+						"w": 256,
+						"h": 256
+					}
+				},
+				{
+					"filename": "primaryBtn",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 409,
+						"h": 75
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 409,
+						"h": 75
+					},
+					"frame": {
+						"x": 0,
+						"y": 384,
+						"w": 409,
+						"h": 75
+					}
+				},
+				{
+					"filename": "primaryBtn__overlay",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 409,
+						"h": 75
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 409,
+						"h": 75
+					},
+					"frame": {
+						"x": 0,
+						"y": 459,
+						"w": 409,
+						"h": 75
+					}
+				},
+				{
+					"filename": "menuBtn",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 482,
+						"h": 131
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 482,
+						"h": 131
+					},
+					"frame": {
+						"x": 0,
+						"y": 534,
+						"w": 482,
+						"h": 131
+					}
+				},
+				{
+					"filename": "menuBtn_overlay",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 482,
+						"h": 131
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 482,
+						"h": 131
+					},
+					"frame": {
+						"x": 0,
+						"y": 665,
+						"w": 482,
+						"h": 131
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:269c95f7e82d6348a9450b8917eaff81:ea17f3d7a27595cba5fed039a5e69934:d2728171ff795d4e7fcf6391742e3165$"
+	}
+}

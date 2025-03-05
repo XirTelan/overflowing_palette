@@ -16,7 +16,6 @@ export class MainMenu extends Scene {
   }
   preload() {}
   create() {
-    this.createTexture();
     this.createBackground();
     this.makeMenuBtns();
 
@@ -110,50 +109,9 @@ export class MainMenu extends Scene {
       TABS_KEYS.forEach((key) => {
         const tab = this.tabs.get(key);
         if (!tab) return;
-        if (tabKey == key) tab.show();
+        if (tabKey == key && !tab.container.visible) tab.show();
         else tab.hide();
       });
     }).container;
-  }
-  private createTexture() {
-    const scene = this;
-    if (
-      scene.textures.exists("mainMenuBtnBg") ||
-      scene.textures.exists("mainMenuBtnOverlay")
-    )
-      return;
-
-    let graphics = scene.add.graphics();
-
-    graphics.fillStyle(0x161616, 1);
-    graphics.lineStyle(2, 0x706d6d, 1);
-
-    graphics.fillRect(0, 0, 300, 100);
-    graphics.beginPath();
-    graphics.arc(0 + 300, 0 + 50, 50, -1.5708, 1.5708, false);
-    graphics.fillPath();
-
-    graphics.lineBetween(1, 0, 1, 100);
-
-    graphics.generateTexture("mainMenuBtnBg", 350, 100);
-    graphics.clear();
-
-    const lineWidth = 4;
-
-    graphics.fillStyle(0xffffff, 1);
-
-    graphics.lineStyle(lineWidth, 0xffffff, 1);
-
-    graphics.lineBetween(0, 2 + lineWidth / 2, 300, 2 + lineWidth / 2);
-
-    graphics.lineBetween(0, 98 - lineWidth / 2, 300, 98 - lineWidth / 2);
-
-    graphics.beginPath();
-    graphics.arc(298, 50, 48 - lineWidth / 2, -Math.PI / 2, Math.PI / 2, false);
-    graphics.strokePath();
-
-    graphics.generateTexture("mainMenuBtnOverlay", 350, 100);
-
-    graphics.destroy();
   }
 }

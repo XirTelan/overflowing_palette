@@ -111,7 +111,7 @@
           },
           {
             "targetColor": 0,
-            "turns": 3,
+            "turns": 4,
             "board": [
               [3, 0, 2, 2, 3, 3, 3, 3, 3, 3],
               [3, 0, 0, 3, 3, 3, 3, 3, 3, 3],
@@ -511,7 +511,7 @@
     "folderName": "Custom",
     "categories": [
       {
-        "categoryName": "",
+        "categoryName": "Pack1",
         "levels": [
           {
             "targetColor": 3,
@@ -544,7 +544,7 @@
               [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
             ],
             "targetColor": 1,
-            "turns": 40
+            "turns": 3
           },
           {
             "board": [

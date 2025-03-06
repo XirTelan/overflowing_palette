@@ -15,3 +15,19 @@ export const dirs = [
   [0, 1],
   [0, -1],
 ];
+
+export const NormalizedRgbToHexString = (color: Vector3) => {
+  return Phaser.Display.Color.RGBToString(
+    color.x * 255,
+    color.y * 255,
+    color.z * 255
+  );
+};
+
+export const NormalizedRgbToColor = (color: Vector3) => {
+  return Phaser.Display.Color.GetColor(
+    color.x * 255,
+    color.y * 255,
+    color.z * 255
+  );
+};

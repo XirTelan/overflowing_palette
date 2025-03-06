@@ -2,6 +2,7 @@ import { Game } from "./scenes/Game";
 import { AUTO, Scale, Types } from "phaser";
 import { Boot } from "./scenes/Boot";
 import { MainMenu } from "./scenes/MainMenu";
+import { LoadingGame } from "./scenes/LoadingGame";
 
 const config: Types.Core.GameConfig = {
   type: AUTO,
@@ -16,7 +17,7 @@ const config: Types.Core.GameConfig = {
     mode: Scale.FIT,
     autoCenter: Scale.CENTER_BOTH,
   },
-  scene: [Boot, MainMenu, Game],
+  scene: [Boot, MainMenu, LoadingGame, Game],
 };
 
 const game = new Phaser.Game(config);

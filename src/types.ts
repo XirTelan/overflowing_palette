@@ -24,6 +24,15 @@ export type LevelData = {
   turns: number;
 };
 
+export type LevelsJson = [LevelFolder];
+
+export type LevelFolder = {
+  folderName: string;
+  categories: [LevelCategory];
+};
+
+export type LevelCategory = { categoryName: string; levels: LevelData[] };
+
 export enum GameStatus {
   "Waiting",
   "Active",

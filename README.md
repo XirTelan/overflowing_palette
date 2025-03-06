@@ -18,13 +18,15 @@
 
 ## General
 
+![screenshot](screenshot.png)
+
 Poject - recreating the puzzle 'Overflowing Palette' from Wuthering Waves as an HTML5 web game with Phaser 3.
 
 Features:
--All levels from the game
--Level Editor (export/import )
--Levels with diffent grid size
--More available colors
+-All levels from the game \
+-Level Editor (export/import ) \
+-Levels with diffent grid size \
+-More available colors \
 -Customization
 
 Stack: Vite, Phaser 3

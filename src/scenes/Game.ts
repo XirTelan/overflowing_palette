@@ -190,7 +190,7 @@ function initShaderConfig(
   const shader = cache.shader.get("base");
   const { shaders } = cache.json.get("config");
   shader.uniforms = {
-    ...shaders.base,
+    ...shaders.base.init,
     screenResolution: { type: "2f", value: resolution },
   };
 }

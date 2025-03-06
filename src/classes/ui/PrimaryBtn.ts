@@ -1,9 +1,9 @@
 import { Scene } from "phaser";
+import { BaseBlock } from "../common/BaseBlock";
 
-export class PrimaryBtn {
+export class PrimaryBtn extends BaseBlock {
   btn: Phaser.GameObjects.NineSlice;
   text: Phaser.GameObjects.Text;
-  container: Phaser.GameObjects.Container;
   overlay: Phaser.GameObjects.NineSlice;
 
   constructor(
@@ -15,8 +15,8 @@ export class PrimaryBtn {
     scene: Scene,
     onClick?: () => void
   ) {
-    const container = scene.add.container(x, y);
-    this.container = container;
+    super(x, y, scene);
+
     this.btn = scene.add
       .nineslice(0, 0, "uiatlas", "primaryBtn", width, height, 157, 55)
       .setOrigin(0.5, 0.5)
@@ -47,13 +47,14 @@ export class PrimaryBtn {
         },
       })
       .setOrigin(0.5, 0.5);
-    container.add([this.btn, this.overlay, this.text]);
+    this.container.add([this.btn, this.overlay, this.text]);
   }
   onEnter() {
-    console.log("asdasd");
+    this.scene.input.setDefaultCursor("pointer");
     this.overlay.setVisible(true);
   }
   onLeave() {
     this.overlay.setVisible(false);
+    this.scene.input.setDefaultCursor("default");
   }
 }

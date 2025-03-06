@@ -30,9 +30,3 @@ export class LevelEditor extends MenuTab {
     return arr;
   }
 }
-
-// container: Phaser.GameObjects.Container,
-// scene: Scene,
-// key: string,
-// width: number,
-// height: number

@@ -1,7 +1,7 @@
 import { Scene } from "phaser";
 import { GameConfig, LevelData } from "../types";
 import { MenuBtn } from "../classes/ui/MenuBtn";
-import { LevelSelection } from "../classes/MainMenu/LevelSelection";
+import { LevelSelection } from "../classes/MainMenu/LevelSelection/LevelSelection";
 import { MenuTab } from "../classes/MainMenu/MenuTab";
 import { LevelEditor } from "../classes/MainMenu/LevelEditor";
 
@@ -23,7 +23,7 @@ export class MainMenu extends Scene {
       x: 500,
       y: 100,
       scene: this,
-      width: 1400,
+      width: 1000,
       height: 800,
       key: "LevelSelector",
     });

@@ -30,3 +30,58 @@ body {
   justify-content: center;
   align-items: center;
 }
+.folder {
+  padding: 0 1rem;
+}
+.folder-text {
+  margin: 0;
+  background-color: #ffff;
+  padding: 1rem;
+  color: #000000;
+  font-family: "OpenSans_Regular";
+}
+.level-card {
+  position: relative;
+  height: 100px;
+  min-width: 100px;
+  border-radius: 1rem;
+  font: 40px OpenSans_Bold;
+  text-align: center;
+  outline: 2px solid #353535;
+  outline-offset: -10px;
+  cursor: pointer;
+}
+.level-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: #000;
+  border-radius: 1rem;
+  opacity: 0.6;
+  z-index: -1;
+}
+.level-card .text {
+  color: white;
+  place-self: center;
+  position: absolute;
+  inset: 0;
+}
+.level-card:hover::before {
+  background-color: #fff;
+  opacity: 1;
+}
+.level-card:hover .text {
+  color: #000;
+}
+.level-card.active .text {
+  color: red;
+}
+.container {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 0;
+  flex-wrap: wrap;
+  font-size: 24px;
+  overflow: auto;
+  color: #121212;
+}

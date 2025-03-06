@@ -1,7 +1,7 @@
 import { Scene } from "phaser";
+import { BaseBlock } from "../common/BaseBlock";
 
-export class MenuBtn {
-  container: Phaser.GameObjects.Container;
+export class MenuBtn extends BaseBlock {
   btn: Phaser.GameObjects.Image;
   overlay: Phaser.GameObjects.Image;
   text: Phaser.GameObjects.Text;
@@ -14,7 +14,8 @@ export class MenuBtn {
     text: string,
     onClick: () => void
   ) {
-    const container = scene.add.container(x, y);
+    super(x, y, scene);
+    const container = this.container;
 
     const { menuBtn } = scene.cache.json.get("config")["mainMenu"];
     console.log("asdasd", scene.textures.get("uiatlas"));
@@ -50,10 +51,12 @@ export class MenuBtn {
   }
   private onEnter() {
     this.overlay.setVisible(true);
+    this.scene.input.setDefaultCursor("pointer");
     this.text.setColor("#ffffff");
   }
   private onLeave() {
     this.overlay.setVisible(false);
+    this.scene.input.setDefaultCursor("default");
     this.text.setColor("#a4a4a4");
   }
 }

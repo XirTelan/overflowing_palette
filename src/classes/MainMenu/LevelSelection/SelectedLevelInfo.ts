@@ -59,8 +59,11 @@ export class SelectedLevelInfo extends BaseBlock {
     ]);
 
     this.actionBtn = actionBtn;
-    actionBtn.container.setPosition(width / 2, height - 50);
+    actionBtn.container.setPosition(width / 2 + 70, height - 50);
     actionBtn.container.parentContainer.remove(actionBtn.container);
+    actionBtn.container.setScale(1);
+
+
 
     this.container.add(actionBtn.container);
 

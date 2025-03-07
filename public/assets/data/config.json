@@ -11,7 +11,13 @@
           "type": "3f",
           "value": { "x": 1, "y": 1, "z": 1 }
         },
+        "textureResolution": {
+          "type": "2f",
+          "value": { "x": 1024, "y": 1024 }
+        },
         "radius": { "type": "1f", "value": 0.2 },
+        "lightenFactor": { "type": "1f", "value": 0.2 },
+        "exposure": { "type": "1f", "value": 1.0 },
         "transition": { "type": "1f", "value": 0.0 },
         "active": { "type": "1f", "value": 0.0 },
         "activeOffset": { "type": "2f", "value": { "x": 0.4, "y": 0.7 } },
@@ -84,7 +90,14 @@
   },
   "game": {
     "levelsCategories": ["WutheringWaves", "Custom", "XL"],
+    "selectionBox": {
+      "fillStyle": { "color": "0x121212", "alpha": 0.5 }
+    },
     "gridOptions": {
+      "transition": {
+        "default": 500,
+        "minimum": 50
+      },
       "offset": {
         "x": 100,
         "y": 120
@@ -94,8 +107,10 @@
       "borderPadding": 50,
       "gap": 5,
       "borderOffset": {
-        "x": -50,
-        "y": -20
+        "left": -50,
+        "right": -25,
+        "top": -20,
+        "bottom": -20
       },
       "shine": true
     },
@@ -132,10 +147,11 @@
       },
       "targetUI": {
         "x": 450,
-        "y": 950
+        "y": 960
       },
       "colorButtons": {
-        "gap": 20
+        "gap": 20,
+        "size": 100
       },
       "closeBtn": {
         "offset": {

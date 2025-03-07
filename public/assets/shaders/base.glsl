@@ -3,6 +3,7 @@ precision mediump float;
 uniform float time;
 uniform vec2 resolution;
 uniform vec2 screenResolution;
+uniform vec2 textureResolution;
 
 uniform vec3 color;
 
@@ -17,6 +18,9 @@ uniform vec2 activeOffset;
 uniform bool transparent;
 uniform float radius;
 uniform float transition;
+
+uniform float lightenFactor;
+uniform float exposure;
 
 uniform sampler2D iChannel0; // main texture
 uniform sampler2D iChannel1; //cell noise
@@ -59,8 +63,8 @@ float perlinNoise(vec2 p) {
     return mix(x1, x2, u.y);
 }
 
-vec3 lighten(vec3 color, float factor) {
-    return mix(color, vec3(1.0), factor);
+vec3 lighten(vec3 color) {
+    return mix(color, vec3(1.0), lightenFactor) * exposure;
 }
 
 vec2 fluidDistortion(vec2 uv, float time) {
@@ -194,8 +198,8 @@ void main(void) {
     if(alpha != 0.0 && active)
         overAlpha = mix(vec3(0.0), vec3(1.0), smoothstep(activeOffset.x, activeOffset.y, d)).x;
 
-    //window space
     vec2 uv2 = gl_FragCoord.xy / vec2(screenResolution);
+    uv2 = uv2 * textureResolution / screenResolution;
 
     float timeFactor = time * speed;
 
@@ -213,6 +217,6 @@ void main(void) {
         return;
     }
     vec4 textureColor = texture2D(iChannel0, vec2(distortedUV.x + timeFactor, distortedUV.y));
-    gl_FragColor = vec4(finalColor * alpha * lighten(textureColor.xyz, 0.2) + overAlpha, alpha);
+    gl_FragColor = vec4(finalColor * alpha * lighten(textureColor.xyz) + overAlpha, alpha);
 
 }

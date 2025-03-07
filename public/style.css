@@ -48,17 +48,13 @@ body {
   font: 40px OpenSans_Bold;
   text-align: center;
   outline: 2px solid #353535;
+  background-color: #00000040;
   outline-offset: -10px;
   cursor: pointer;
 }
-.level-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-color: #000;
-  border-radius: 1rem;
-  opacity: 0.6;
-  z-index: -1;
+
+.level-card.cleared:not(:hover) {
+  background-color: #1fc01f99;
 }
 .level-card .text {
   color: white;
@@ -66,7 +62,7 @@ body {
   position: absolute;
   inset: 0;
 }
-.level-card:hover::before {
+.level-card:hover {
   background-color: #fff;
   opacity: 1;
 }

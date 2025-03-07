@@ -7,9 +7,12 @@ export default class Grid {
   scene: Game;
   container: Phaser.GameObjects.Container;
   transitionSpeed = 800;
+  transitionSpeedMinimum = 50;
   pendingCalls = 0;
   board: Cell[][] = [];
+  cellSize: number;
   defaultValues: number[][];
+  history: [];
   border: Phaser.GameObjects.NineSlice;
 
   constructor(scene: Game, levelData: number[][]) {
@@ -22,10 +25,16 @@ export default class Grid {
     const { gridOptions }: { gridOptions: GridOptions } =
       scene.cache.json.get("config")["game"];
 
+    this.transitionSpeed = gridOptions.transition.default;
+    this.transitionSpeedMinimum = gridOptions.transition.minimum;
+
     const cellSize = Math.min(
       (gridOptions.height - gridOptions.gap * (rows - 1)) / rows,
       (gridOptions.width - gridOptions.gap * (columns - 1)) / columns
     );
+
+    this.cellSize = cellSize;
+
     const correctionX =
       gridOptions.width -
       gridOptions.borderPadding -
@@ -38,12 +47,12 @@ export default class Grid {
 
     this.border = scene.add
       .nineslice(
-        gridOptions.borderOffset.x,
-        gridOptions.borderOffset.y,
+        gridOptions.borderOffset.left,
+        gridOptions.borderOffset.top,
         "grid_border",
         undefined,
-        gridOptions.width - gridOptions.borderOffset.x / 2 - correctionX,
-        gridOptions.height - gridOptions.borderOffset.y - correctionY,
+        gridOptions.width - gridOptions.borderOffset.right - correctionX,
+        gridOptions.height - gridOptions.borderOffset.bottom - correctionY,
         270,
         128,
         gridOptions.height / 2.56,
@@ -56,14 +65,7 @@ export default class Grid {
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < columns; j++) {
         this.scene.gameStates.availableColors.add(levelData[i][j]);
-        const newCell = new Cell(
-          this,
-          i,
-          j,
-          levelData[i][j],
-          gridOptions.gap,
-          cellSize
-        );
+        const newCell = new Cell(this, i, j, levelData[i][j], gridOptions.gap);
         tiles.push(newCell.tile);
         tiles.push(newCell.transitionTile);
 
@@ -72,6 +74,7 @@ export default class Grid {
 
         if (levelData[i][j] !== this.scene.gameStates.targetColor) {
           this.scene.gameStates.remains++;
+          this.scene.gameStates.initialState.remains++;
         }
       }
     }
@@ -110,7 +113,7 @@ export default class Grid {
 
     const animate = cell.transitionTile;
 
-    const minDelay = 50; // Prevents animation from getting too fast
+    const minDelay = this.transitionSpeedMinimum;
     const animationDelay = Math.max(
       this.transitionSpeed * Math.pow(0.8, level),
       minDelay

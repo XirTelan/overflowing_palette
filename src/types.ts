@@ -53,6 +53,10 @@ export type GameConfig = {
 };
 
 export type GridOptions = {
+  transition: {
+    default: number;
+    minimum: number;
+  };
   offset: {
     x: number;
     y: number;
@@ -62,18 +66,82 @@ export type GridOptions = {
   borderPadding: number;
   gap: number;
   borderOffset: {
+    left: number;
+    right: number;
+    top: number;
+    bottom: number;
+  };
+};
+
+export type UiOptions = {
+  resetBtn: {
+    btn: {};
+    hotkeyBtn: {
+      key: string;
+      frame: string;
+      scale: number;
+    };
+    hotkeyText: {
+      text: string;
+      style: {
+        color: string;
+        font: string;
+      };
+      origin: {
+        x: number;
+        y: number;
+      };
+    };
+    text: {
+      text: string;
+      style: {
+        color: string;
+        font: string;
+      };
+      origin: {
+        x: number;
+        y: number;
+      };
+    };
+  };
+  targetUI: {
     x: number;
     y: number;
+  };
+  colorButtons: {
+    gap: number;
+  };
+  closeBtn: {
+    offset: {
+      x: number;
+      y: number;
+    };
+    scale: number;
+  };
+  targetValueSelector: {
+    x: number;
+    y: number;
+    width: number;
+  };
+  turnsValueSelector: {
+    x: number;
+    y: number;
+    width: number;
   };
 };
 
 export type GameStates = {
+  levelKey: string;
   turns: number;
   state: GameStatus;
   targetColor: ColorType;
   selectedColor: ColorType;
   remains: number;
   availableColors: Set<ColorType>;
+  initialState: {
+    turns: number;
+    remains: number;
+  };
   mode: "Play" | "Editor";
 };
 

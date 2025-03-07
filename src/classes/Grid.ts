@@ -5,6 +5,7 @@ import { colors, dirs } from "../utils";
 
 export default class Grid {
   scene: Game;
+  container: Phaser.GameObjects.Container;
   transitionSpeed = 800;
   pendingCalls = 0;
   board: Cell[][] = [];
@@ -21,14 +22,28 @@ export default class Grid {
     const { gridOptions }: { gridOptions: GridOptions } =
       scene.cache.json.get("config")["game"];
 
+    const cellSize = Math.min(
+      (gridOptions.height - gridOptions.gap * (rows - 1)) / rows,
+      (gridOptions.width - gridOptions.gap * (columns - 1)) / columns
+    );
+    const correctionX =
+      gridOptions.width -
+      gridOptions.borderPadding -
+      columns * (cellSize + gridOptions.gap);
+
+    const correctionY =
+      gridOptions.height -
+      gridOptions.borderPadding -
+      rows * (cellSize + gridOptions.gap);
+
     this.border = scene.add
       .nineslice(
         gridOptions.borderOffset.x,
         gridOptions.borderOffset.y,
         "grid_border",
         undefined,
-        gridOptions.width + gridOptions.borderPadding * 2,
-        gridOptions.height + gridOptions.borderPadding * 2,
+        gridOptions.width - gridOptions.borderOffset.x / 2 - correctionX,
+        gridOptions.height - gridOptions.borderOffset.y - correctionY,
         270,
         128,
         gridOptions.height / 2.56,
@@ -38,13 +53,6 @@ export default class Grid {
       .setTint(this.getColor());
 
     this.border.postFX?.addShine(0.2, 1, 4);
-
-    const cellSize = Math.floor(
-      Math.min(
-        (gridOptions.height - (gridOptions.gap * rows - 1)) / rows,
-        (gridOptions.width - (gridOptions.gap * columns - 1)) / columns
-      )
-    );
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < columns; j++) {
         this.scene.gameStates.availableColors.add(levelData[i][j]);
@@ -67,9 +75,11 @@ export default class Grid {
         }
       }
     }
-    this.scene.add.container(
-      this.scene.cameras.main.width / 2 - gridOptions.width / 2,
-      200,
+    this.container = this.scene.add.container(
+      this.scene.cameras.main.width / 2 -
+        gridOptions.width / 2 -
+        gridOptions.offset.x,
+      gridOptions.offset.y,
       [this.border, ...tiles]
     );
   }

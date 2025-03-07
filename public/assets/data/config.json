@@ -85,13 +85,17 @@
   "game": {
     "levelsCategories": ["WutheringWaves", "Custom", "XL"],
     "gridOptions": {
+      "offset": {
+        "x": 100,
+        "y": 120
+      },
       "width": 1000,
       "height": 800,
-      "borderPadding": 5,
-      "gap": 15,
+      "borderPadding": 50,
+      "gap": 5,
       "borderOffset": {
-        "x": -100,
-        "y": -70
+        "x": -50,
+        "y": -20
       },
       "shine": true
     },

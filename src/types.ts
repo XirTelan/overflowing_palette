@@ -53,6 +53,10 @@ export type GameConfig = {
 };
 
 export type GridOptions = {
+  offset: {
+    x: number;
+    y: number;
+  };
   width: number;
   height: number;
   borderPadding: number;

@@ -14,8 +14,7 @@ export class Boot extends Scene {
     //[TO_REMOVE_CHECK]  For tests
     // this.scene.start("Game", {
     //   mode: "Play",
-    //   levelData:
-    //     this.cache.json.get("levels")["default"]["Riccioli_Islands"][4],
+    //   levelData: this.cache.json.get("levels")[1].categories[0].levels[0],
     // });
   }
   showLoading(loadingConfig: LoadingConfig = defaultLoadingConfig) {

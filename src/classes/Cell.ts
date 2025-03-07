@@ -20,14 +20,16 @@ export default class Cell {
     this.color = color;
     this.grid = grid;
 
-    this.tile = grid.scene.add.shader(
-      "base",
-      y * (cellSize + gap / 2),
-      x * (cellSize + gap / 2),
-      cellSize,
-      cellSize,
-      ["celltexture", "cellnoise", "cellnoise_d", "cellnoise_center"]
-    );
+    this.tile = grid.scene.add
+      .shader(
+        "base",
+        y * (cellSize + gap),
+        x * (cellSize + gap),
+        cellSize,
+        cellSize,
+        ["celltexture", "cellnoise", "cellnoise_d", "cellnoise_center"]
+      )
+      .setOrigin(0, 0);
     this.tile.setUniform("color.value", colors[color]);
     this.tile.setInteractive();
     this.tile.on("pointerdown", this.onClick, this);

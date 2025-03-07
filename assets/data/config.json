@@ -1,0 +1,188 @@
+{
+  "colors": {
+    "0": { "x": 1, "y": 0.302, "z": 0.275 },
+    "1": { "x": 0.357, "y": 0.8, "z": 0.498 },
+    "2": { "x": 0.451, "y": 0.682, "z": 1 },
+    "3": { "x": 0.969, "y": 0.961, "z": 0.549 },
+    "4": { "x": 0.69, "y": 0.082, "z": 0.761 },
+    "5": { "x": 0.0, "y": 1, "z": 1 }
+  },
+  "shaders": {
+    "base": {
+      "init": {
+        "color": {
+          "type": "3f",
+          "value": { "x": 1, "y": 1, "z": 1 }
+        },
+        "colorToTransform": {
+          "type": "3f",
+          "value": { "x": 1, "y": 1, "z": 1 }
+        },
+        "textureResolution": {
+          "type": "2f",
+          "value": { "x": 1024, "y": 1024 }
+        },
+        "radius": { "type": "1f", "value": 0.2 },
+        "lightenFactor": { "type": "1f", "value": 0.2 },
+        "exposure": { "type": "1f", "value": 1.0 },
+        "transition": { "type": "1f", "value": 0.0 },
+        "active": { "type": "1f", "value": 0.0 },
+        "activeOffset": { "type": "2f", "value": { "x": 0.4, "y": 0.7 } },
+        "transparent": { "type": "1f", "value": 0.0 },
+        "curPoint": { "type": "2f", "value": { "x": 0, "y": 0 } },
+        "startPoint": { "type": "2f", "value": { "x": 0, "y": 0 } }
+      }
+    }
+  },
+  "mainMenu": {
+    "levelSelection": {
+      "selectedLevelInfo": {
+        "previewBlock": {
+          "width": 400,
+          "height": 300,
+          "cellSize": 50
+        },
+        "infoBlock": {
+          "x": 0,
+          "y": 350,
+          "width": 400,
+          "height": 100
+        },
+        "turnsTextOffset": {
+          "x": 10,
+          "y": 0
+        },
+        "targetColorTextOffset": {
+          "x": 10,
+          "y": 50
+        },
+        "defaultStyle": {
+          "color": "#ffffff",
+          "font": "32px OpenSans_Regular"
+        },
+        "emptyText": {
+          "y": 50,
+          "text": "No level selected",
+          "style": {
+            "color": "#ffffff",
+            "font": "32px OpenSans_Bold"
+          }
+        }
+      }
+    },
+    "levelEditor": {
+      "defaultStyle": {
+        "color": "#ffffff",
+        "font": "32px OpenSans_Regular"
+      }
+    },
+    "buttonsBlock": {
+      "x": 100,
+      "y": 150,
+      "gap": 25,
+      "keys": ["Select Level", "Create Level", "Options"]
+    },
+    "menuBtn": {
+      "btn": {
+        "offset": -105
+      },
+      "text": {
+        "x": 50,
+        "y": 0,
+        "style": {
+          "color": "#a4a4a4",
+          "font": "32px OpenSans_Bold"
+        }
+      }
+    }
+  },
+  "common": {
+    "ui": {
+      "primaryBtn": {}
+    }
+  },
+  "game": {
+    "levelsCategories": ["WutheringWaves", "Custom", "XL"],
+    "selectionBox": {
+      "fillStyle": { "color": "0x121212", "alpha": 0.5 }
+    },
+    "gridOptions": {
+      "transition": {
+        "default": 500,
+        "minimum": 50
+      },
+      "offset": {
+        "x": 100,
+        "y": 120
+      },
+      "width": 1000,
+      "height": 800,
+      "borderPadding": 50,
+      "gap": 5,
+      "borderOffset": {
+        "left": -50,
+        "right": -25,
+        "top": -20,
+        "bottom": -20
+      },
+      "shine": true
+    },
+    "ui": {
+      "resetBtn": {
+        "btn": {},
+        "hotkeyBtn": {
+          "key": "uiatlas",
+          "frame": "hotkey_btn",
+          "scale": 0.15
+        },
+        "hotkeyText": {
+          "text": "R",
+          "style": {
+            "color": "#3e3e3e",
+            "font": "24px OpenSans_Bold"
+          },
+          "origin": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        },
+        "text": {
+          "text": "Reset",
+          "style": {
+            "color": "#ffffff",
+            "font": "24px OpenSans_Bold"
+          },
+          "origin": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        }
+      },
+      "targetUI": {
+        "x": 450,
+        "y": 960
+      },
+      "colorButtons": {
+        "gap": 20,
+        "size": 100
+      },
+      "closeBtn": {
+        "offset": {
+          "x": 100,
+          "y": 50
+        },
+        "scale": 0.5
+      },
+      "targetValueSelector": {
+        "x": 150,
+        "y": 250,
+        "width": 150
+      },
+      "turnsValueSelector": {
+        "x": 150,
+        "y": 160,
+        "width": 150
+      }
+    }
+  }
+}

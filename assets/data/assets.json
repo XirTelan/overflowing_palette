@@ -1,0 +1,109 @@
+[
+  {
+    "path": "assets/data",
+    "files": [
+      {
+        "type": "json",
+        "key": "config",
+        "url": "config.json"
+      },
+      {
+        "type": "json",
+        "key": "levels",
+        "url": "levels.json"
+      }
+    ]
+  },
+  {
+    "path": "assets/sound",
+    "files": [
+      {
+        "type": "audio",
+        "key": "mouseOver",
+        "url": "mouseOver.mp3"
+      },
+      {
+        "type": "audio",
+        "key": "colorSelect",
+        "url": "colorSelect.mp3"
+      },
+      {
+        "type": "audio",
+        "key": "tileFlip",
+        "url": "tileFlip.mp3"
+      }
+    ]
+  },
+  {
+    "path": "assets/shaders",
+    "files": [
+      {
+        "type": "glsl",
+        "key": "base",
+        "url": "base.glsl"
+      },
+      {
+        "type": "glsl",
+        "key": "distortion",
+        "url": "distortion.glsl"
+      }
+    ]
+  },
+  {
+    "path": "assets/textures/shaders",
+    "files": [
+      {
+        "type": "image",
+        "key": "celltexture",
+        "url": "celltexture.png"
+      },
+      {
+        "type": "image",
+        "key": "cellnoise",
+        "url": "cellnoise.png"
+      },
+      {
+        "type": "image",
+        "key": "cellnoise_d",
+        "url": "cellnoise_d.png"
+      },
+      {
+        "type": "image",
+        "key": "cellnoise_center",
+        "url": "cellnoise_center.png"
+      }
+    ]
+  },
+  {
+    "path": "assets/textures/",
+
+    "files": [
+      {
+        "type": "atlas",
+        "key": "uiatlas",
+        "textureURL": "uiatlas.webp",
+        "atlasURL": "uiatlas.json"
+      },
+      {
+        "type": "image",
+        "key": "background",
+        "url": "bg.png"
+      },
+      {
+        "type": "image",
+        "key": "icon",
+        "url": "icon.png"
+      },
+      {
+        "type": "image",
+        "key": "background",
+        "url": "bg.png"
+      },
+      {
+        "type": "image",
+        "key": "grid_border",
+        "url": "grid_border.png"
+      }
+    ]
+  }
+]

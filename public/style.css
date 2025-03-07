@@ -1,15 +1,15 @@
 @font-face {
-  font-family: OpenSans-Regula;
+  font-family: "OpenSans_Regular";
   src: url("./assets/fonts/OpenSans-Regular.ttf");
   font-weight: normal;
 }
 @font-face {
-  font-family: OpenSans_Bold;
+  font-family: "OpenSans_Bold";
   src: url("./assets/fonts/OpenSans-Bold.ttf");
   font-weight: bold;
 }
 @font-face {
-  font-family: OpenSans_ExtraBold;
+  font-family: "OpenSans_ExtraBold";
   src: url("./assets/fonts/OpenSans-ExtraBold.ttf");
   font-weight: bolder;
 }
@@ -20,6 +20,10 @@ body {
   padding: 0;
   color: rgba(255, 255, 255, 0.87);
   background-color: #000000;
+  font-family: "OpenSans_Regular";
+}
+p {
+  margin: 0;
 }
 
 #app {
@@ -80,4 +84,54 @@ body {
   font-size: 24px;
   overflow: auto;
   color: #121212;
+}
+
+.menu-options {
+  display: flex;
+  flex-direction: column;
+
+  .category {
+    margin: 0;
+    background-color: #fff;
+    color: #121212;
+    padding: 1rem;
+    font-family: "OpenSans_Bold";
+  }
+
+  .options-text {
+    margin: 1rem 0;
+  }
+  .colors-container {
+    margin-top: 1rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+
+  input[type="checkbox"] {
+    height: 30px;
+    width: 30px;
+  }
+
+  input[type="color"] {
+    -webkit-appearance: none;
+    appearance: none;
+    border: none;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+  }
+  input[type="color"]::-webkit-color-swatch {
+    border: none;
+  }
+}
+footer {
+  display: flex;
+  justify-content: center;
 }

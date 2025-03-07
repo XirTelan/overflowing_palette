@@ -4,7 +4,8 @@ import { PrimaryBtn } from "../ui/PrimaryBtn";
 
 export class Export {
   viewBox: Phaser.GameObjects.DOMElement;
-  copyBtn: Phaser.GameObjects.Image;
+  copyBtnString: PrimaryBtn;
+  copyBtnJson: PrimaryBtn;
   openButton: PrimaryBtn;
   isOpen: boolean;
   scene: Game;
@@ -18,7 +19,8 @@ export class Export {
   private copyToClipboard(formattedJson: string) {
     navigator.clipboard.writeText(formattedJson);
     this.viewBox.destroy();
-    this.copyBtn.destroy();
+    this.copyBtnString.container.destroy();
+    this.copyBtnJson.container.destroy();
   }
 
   open() {
@@ -41,15 +43,15 @@ export class Export {
       board: arr,
     };
     const formattedJson = JSON.stringify(jsonData, null, "\t");
-    const base64 = btoa(formattedJson)
-    
+    const base64 = btoa(JSON.stringify(jsonData, null));
+
     this.viewBox = scene.add.dom(
-      scene.cameras.main.width / 2,
+      scene.cameras.main.width / 2 - 8,
       scene.cameras.main.height / 2 - 100,
       "pre",
       {
-        width: "1024px",
-        height: "768px",
+        width: "800px",
+        height: "800px",
         background: "#121212",
         fontSize: "24px",
         padding: "10px",
@@ -57,27 +59,34 @@ export class Export {
       }
     );
 
-    const copyBtn = scene.add
-      .image(scene.cameras.main.width / 2, 900, "uiatlas", "primaryBtn")
-      .setOrigin(0.5, 0.5)
-      .setScale(0.8);
-    copyBtn.setInteractive();
-    copyBtn.on("pointerdown", () => {
-      this.copyToClipboard(formattedJson);
-      this.isOpen = false;
-    });
-    scene.make
-      .text({
-        x: copyBtn.x,
-        y: copyBtn.y,
-        text: "Copy to clipboard",
-        style: {
-          color: "#000",
-          font: "24px OpenSans_Regular",
-        },
-      })
-      .setOrigin(0.5, 0.5);
-    this.copyBtn = copyBtn;
+    this.copyBtnJson = new PrimaryBtn(
+      scene.cameras.main.width / 2 + 200,
+      910,
+      "Copy JSON",
+      400,
+      50,
+      scene,
+      () => {
+        this.copyToClipboard(formattedJson);
+        this.isOpen = false;
+      }
+    );
+
+    this.copyBtnString = new PrimaryBtn(
+      scene.cameras.main.width / 2 - 200,
+      910,
+      "Copy STRING",
+      400,
+      50,
+      scene,
+      () => {
+        this.copyToClipboard(base64);
+        this.isOpen = false;
+      }
+    );
+    this.copyBtnJson.container.setScale(1.5);
+    this.copyBtnString.container.setScale(1.5);
+
     this.viewBox.setText(formattedJson);
   }
 }

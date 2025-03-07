@@ -91,6 +91,11 @@
       },
       {
         "type": "image",
+        "key": "icon",
+        "url": "icon.png"
+      },
+      {
+        "type": "image",
         "key": "background",
         "url": "bg.png"
       },

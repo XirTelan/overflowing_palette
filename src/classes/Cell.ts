@@ -14,13 +14,13 @@ export default class Cell {
     x: number,
     y: number,
     color: ColorType,
-    gap: number = 0,
-    cellSize: number = 100
+    gap: number = 0
   ) {
     this.color = color;
     this.grid = grid;
+    const { cellSize, scene } = grid;
 
-    this.tile = grid.scene.add
+    this.tile = scene.add
       .shader(
         "base",
         y * (cellSize + gap),
@@ -38,10 +38,10 @@ export default class Cell {
 
     this.pos = { x, y };
 
-    const transitionTile = grid.scene.add.shader(
+    const transitionTile = scene.add.shader(
       "base",
-      this.tile.x,
-      this.tile.y,
+      this.tile.x + cellSize / 2,
+      this.tile.y + cellSize / 2,
       cellSize,
       cellSize
     );

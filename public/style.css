@@ -100,9 +100,10 @@ p {
 
   .options-text {
     margin: 1rem 0;
+    text-align: center;
   }
   .colors-container {
-    margin-top: 1rem;
+    margin: 1rem 0;
     display: flex;
     gap: 1rem;
     justify-content: center;

@@ -4,6 +4,7 @@ import {
   GameStates,
   GameStatus,
   LevelData,
+  UiOptions,
   Vector2,
 } from "../types";
 import Grid from "../classes/Grid";
@@ -11,6 +12,7 @@ import { colors } from "../utils";
 import ColorBtn from "../classes/ui/ColorBtn";
 import { ValueSelector } from "../classes/ui/ValueSelector";
 import { Export } from "../classes/Game/Export";
+import { SelectionBox } from "../classes/Game/SelectionBox";
 
 export class Game extends Scene {
   grid: Grid;
@@ -18,7 +20,8 @@ export class Game extends Scene {
   btnContainer: Phaser.GameObjects.Container;
   gameStates: GameStates;
   turnCounter: Phaser.GameObjects.Text;
-
+  selectionBox: SelectionBox;
+  startTime: number;
   constructor() {
     super("Game");
   }
@@ -27,9 +30,11 @@ export class Game extends Scene {
 
   create({
     mode,
+    levelKey,
     levelData,
   }: {
     mode: GameStates["mode"];
+    levelKey: string;
     levelData: LevelData;
   }) {
     const width = this.cameras.main.width;
@@ -40,9 +45,13 @@ export class Game extends Scene {
     ]);
 
     initShaderConfig(this.cache, { x: width, y: height });
-    initGame(this, mode, levelData);
+    initGame(this, mode, levelData, levelKey);
+    if (mode === "Editor") {
+      this.selectionBox = new SelectionBox(this.grid.board, this);
+    }
     initTextUI(this);
     this.initButtons();
+    this.startTime = this.time.now;
   }
 
   changeGameState(state: GameStatus) {
@@ -57,10 +66,30 @@ export class Game extends Scene {
       this.turnCounter.text = String(this.gameStates.turns);
 
       if (this.gameStates.remains === 0) {
-        this.scene.restart(); //[CHECK] Need to "gameover screen"
-      }
-      if (this.gameStates.turns == 0) {
-        this.scene.restart();
+        //[CHECK] Need to "gameover screen"
+        const key = this.gameStates.levelKey;
+        const timeElapsed = new Date(this.time.now - this.startTime)
+          .toISOString()
+          .slice(11, 19);
+
+        this.gameStates.state = GameStatus.Waiting;
+        if (!key) return;
+        const localData = localStorage.getItem("clearedLevels");
+        let cache;
+        if (localData) {
+          const parsed = JSON.parse(localData);
+          cache = new Set(parsed);
+        } else {
+          cache = new Set();
+        }
+        cache.add(key);
+
+        localStorage.setItem(
+          "clearedLevels",
+          JSON.stringify(Array.from(cache))
+        );
+      } else if (this.gameStates.turns == 0) {
+        this.resetGame();
       }
     }
   }
@@ -75,31 +104,41 @@ export class Game extends Scene {
       game: { ui },
     } = scene.cache.json.get("config");
 
-    const cellSize = 100; // temp
+    const cellSize = ui.colorButtons.size; // temp
 
-    Object.entries(colors).forEach(([colorType, colorValue], indx) => {
-      if (
-        scene.gameStates.mode === "Play" &&
-        !scene.gameStates.availableColors.has(Number(colorType))
+    Object.entries(colors)
+      .filter(
+        ([colorType]) =>
+          !(
+            scene.gameStates.mode === "Play" &&
+            !scene.gameStates.availableColors.has(Number(colorType))
+          )
       )
-        return;
-
-      const newBtn = new ColorBtn(
-        scene,
-        0,
-        indx * (cellSize + ui.colorButtons.gap),
-        cellSize,
-        [Number(colorType), colorValue],
-        indx + 1,
-        scene.btnContainer
-      );
-      scene.colorSelectionButtons.push(newBtn);
-    });
+      .forEach(([colorType, colorValue], indx) => {
+        const newBtn = new ColorBtn(
+          scene,
+          0,
+          indx * (cellSize + ui.colorButtons.gap),
+          cellSize,
+          [Number(colorType), colorValue],
+          indx + 1,
+          scene.btnContainer
+        );
+        scene.colorSelectionButtons.push(newBtn);
+      });
 
     scene.btnContainer.y -= (scene.colorSelectionButtons.length * 80) / 2;
 
     createResetButton(this);
     createCloseButton(this);
+  }
+
+  resetGame() {
+    this.grid.resetBoard();
+    const { initialState } = this.gameStates;
+    this.gameStates.turns = initialState.turns;
+    this.gameStates.remains = initialState.remains;
+    this.turnCounter.text = String(this.gameStates.turns);
   }
 }
 
@@ -146,7 +185,7 @@ function createResetButton(scene: Game) {
 
   resetImage.setInteractive();
   resetImage.on("pointerdown", () => {
-    scene.grid.resetBoard();
+    scene.resetGame();
   });
   resetImage.on("pointerover", () => {
     overlay.setVisible(true);
@@ -206,10 +245,10 @@ function initTextUI(scene: Game) {
   if (scene.gameStates.mode == "Play") {
     loadPlayUI(scene, ui);
   }
-
+  const icon = scene.add.image(60, 50, "icon").setScale(0.5).setOrigin(0);
   scene.make.text({
-    x: 60,
-    y: 50,
+    x: icon.x + 50,
+    y: icon.y,
     text: `Overflowing Palette ${
       scene.gameStates.mode === "Editor" ? "| Mode:Editor" : ""
     }`,
@@ -220,8 +259,14 @@ function initTextUI(scene: Game) {
   });
 }
 
-function initGame(scene: Game, mode: GameStates["mode"], levelData: LevelData) {
+function initGame(
+  scene: Game,
+  mode: GameStates["mode"],
+  levelData: LevelData,
+  levelKey: string
+) {
   const gameStates: GameStates = {
+    levelKey,
     turns: levelData.turns,
     targetColor: levelData.targetColor,
     selectedColor: ColorType.red,
@@ -229,6 +274,10 @@ function initGame(scene: Game, mode: GameStates["mode"], levelData: LevelData) {
     state: GameStatus.Active,
     remains: 0,
     mode: mode,
+    initialState: {
+      turns: levelData.turns,
+      remains: 0,
+    },
   };
 
   scene.gameStates = gameStates;
@@ -239,7 +288,7 @@ function initGame(scene: Game, mode: GameStates["mode"], levelData: LevelData) {
 
   scene.btnContainer = scene.add.container(1500, 400, []);
 }
-function loadPlayUI(scene: Game, ui) {
+function loadPlayUI(scene: Game, ui: UiOptions) {
   const turnRemainsText = scene.make.text({
     x: 60,
     y: 110,
@@ -283,7 +332,7 @@ function loadPlayUI(scene: Game, ui) {
     },
   });
 }
-function loadEditorUI(scene: Game, ui) {
+function loadEditorUI(scene: Game, ui: UiOptions) {
   scene.make.text({
     x: 60,
     y: 110,

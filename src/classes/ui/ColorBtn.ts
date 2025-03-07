@@ -30,8 +30,14 @@ export default class ColorBtn {
     container?: Phaser.GameObjects.Container
   ) {
     this.scene = scene;
+
+    const active = this.scene.add
+      .circle(x, y, btnSize / 2 + 5, 0xf4f4f4)
+      .setVisible(false);
+    this.active = active;
+
     const pointer = this.scene.add.triangle(
-      60,
+      active.x + btnSize / 2 + 20,
       10,
       x - 5,
       y,
@@ -41,10 +47,7 @@ export default class ColorBtn {
       y - 10,
       0xffffff
     );
-    const active = this.scene.add
-      .circle(x, y, btnSize / 2 + 5, 0xf4f4f4)
-      .setVisible(false);
-    this.active = active;
+
     const btn = this.scene.add.shader("base", x, y, btnSize, btnSize);
     const hotkeyBtn = this.scene.make.image({
       x,
@@ -89,7 +92,7 @@ export default class ColorBtn {
 
     if (keyObj) {
       for (const key of Object.keys(keyObj)) {
-        keyObj[key].on("down", () => this.onClick());
+        keyObj[key].on("down", this.onClick, this);
       }
     }
 

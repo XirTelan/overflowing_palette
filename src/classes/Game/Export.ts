@@ -61,7 +61,7 @@ export class Export {
 
     this.copyBtnJson = new PrimaryBtn(
       scene.cameras.main.width / 2 + 200,
-      910,
+      920,
       "Copy JSON",
       400,
       50,
@@ -74,7 +74,7 @@ export class Export {
 
     this.copyBtnString = new PrimaryBtn(
       scene.cameras.main.width / 2 - 200,
-      910,
+      920,
       "Copy STRING",
       400,
       50,
@@ -84,9 +84,9 @@ export class Export {
         this.isOpen = false;
       }
     );
-    this.copyBtnJson.container.setScale(1.5);
-    this.copyBtnString.container.setScale(1.5);
+    this.copyBtnJson.container.setScale(1.4);
+    this.copyBtnString.container.setScale(1.4);
 
-    this.viewBox.setText(formattedJson);
+    this.viewBox.setText(`${base64} \n\n ${formattedJson}`);
   }
 }

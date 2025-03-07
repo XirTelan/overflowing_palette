@@ -4,6 +4,7 @@ import { MenuBtn } from "../classes/ui/MenuBtn";
 import { LevelSelection } from "../classes/MainMenu/LevelSelection/LevelSelection";
 import { MenuTab } from "../classes/MainMenu/MenuTab";
 import { LevelEditor } from "../classes/MainMenu/LevelEditor";
+import { Options } from "../classes/MainMenu/Options";
 
 const TABS_KEYS = ["LevelEditor", "LevelSelector", "Options"];
 
@@ -32,13 +33,23 @@ export class MainMenu extends Scene {
       x: 500,
       y: 100,
       scene: this,
-      width: 1400,
-      height: 800,
+      width: 600,
+      height: 600,
       key: "LevelEditor",
+    });
+
+    const options = new Options({
+      x: 500,
+      y: 100,
+      scene: this,
+      width: 600,
+      height: 600,
+      key: "Options",
     });
 
     this.tabs.set("LevelSelector", levelSeletor);
     this.tabs.set("LevelEditor", levelEditor);
+    this.tabs.set("Options", options);
   }
   private createBackground() {
     const width = this.cameras.main.width;
@@ -86,23 +97,35 @@ export class MainMenu extends Scene {
       0,
       "Select Level",
       "LevelSelector"
-    );
+    ).container;
     const levelEditor = this.createButton(
       0,
       defaultOffset,
       "Create Level",
       "LevelEditor"
-    );
+    ).container;
     const options = this.createButton(
       0,
       defaultOffset * 2,
       "Options",
       "Options"
-    );
+    ).container;
 
-    container.add(levelSelector);
-    container.add(levelEditor);
-    container.add(options);
+    const git = this.createButton(
+      0,
+      this.cameras.main.height - 300,
+      "Open Docs (GitHub)",
+      "Git"
+    );
+    git.btn.on("pointerdown", () => {
+      window.open(
+        "https://github.com/XirTelan/overflowing_palette",
+        "GitHubProject"
+      );
+    });
+    git.text.setFontSize(24);
+
+    container.add([levelSelector, levelEditor, options, git.container]);
   }
   private createButton(x: number, y: number, text: string, tabKey: string) {
     return new MenuBtn(this, x, y, text, () => {
@@ -112,6 +135,6 @@ export class MainMenu extends Scene {
         if (tabKey == key && !tab.container.visible) tab.show();
         else tab.hide();
       });
-    }).container;
+    });
   }
 }

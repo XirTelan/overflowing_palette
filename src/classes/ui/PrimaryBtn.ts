@@ -13,25 +13,25 @@ export class PrimaryBtn extends BaseBlock {
     width: number,
     height: number,
     scene: Scene,
-    onClick?: () => void
+    onClick?: () => void,
+    context?: object
   ) {
     super(x, y, scene);
 
     this.btn = scene.add
-      .nineslice(0, 0, "uiatlas", "primaryBtn", width, height, 157, 55)
+      .nineslice(0, 0, "uiatlas", "primary", width, height, 157, 55)
       .setOrigin(0.5, 0.5)
       .setScale(0.7);
 
     this.overlay = scene.add
-      .nineslice(0, 0, "uiatlas", "primaryBtn__overlay", width, height, 157, 55)
+      .nineslice(0, 0, "uiatlas", "primary_over", width, height, 157, 55)
       .setOrigin(0.5, 0.5)
       .setScale(0.7);
 
     this.overlay.setVisible(false);
-    console.log(this.overlay);
     this.btn.setInteractive();
 
-    if (onClick) this.btn.on("pointerdown", onClick);
+    if (onClick) this.btn.on("pointerdown", onClick, context);
 
     this.btn.on("pointerover", this.onEnter, this);
     this.btn.on("pointerout", this.onLeave, this);

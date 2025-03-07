@@ -18,7 +18,6 @@ export class MenuBtn extends BaseBlock {
     const container = this.container;
 
     const { menuBtn } = scene.cache.json.get("config")["mainMenu"];
-    console.log("asdasd", scene.textures.get("uiatlas"));
     this.btn = scene.add
       .image(menuBtn.btn.offset, 0, "uiatlas", "menuBtn")
       .setOrigin(0, 0.5);

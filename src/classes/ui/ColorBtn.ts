@@ -54,7 +54,7 @@ export default class ColorBtn {
       y: y + btnSize / 2,
       key: "uiatlas",
       frame: "hotkey_btn",
-      scale: 0.1,
+      scale: 0.25,
     });
 
     const hotkeyText = this.scene.make

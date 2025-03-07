@@ -10,13 +10,39 @@ export class Boot extends Scene {
     this.load.pack("assets_pack", "assets/data/assets.json");
   }
   create() {
+    this.loadUserConfig();
     this.scene.start("MainMenu");
-    //[TO_REMOVE_CHECK]  For tests
-    // this.scene.start("Game", {
-    //   mode: "Play",
-    //   levelData: this.cache.json.get("levels")[1].categories[0].levels[0],
-    // });
+
+
   }
+
+  loadUserConfig() {
+    const config = this.cache.json.get("config");
+
+    this.loadShaderUserConfig(["activeOffset", "lightenFactor"]);
+
+    const colors = localStorage.getItem("colors");
+    if (colors) {
+      config.colors = {
+        ...config.colors,
+        ...JSON.parse(colors),
+      };
+    }
+  }
+
+  loadShaderUserConfig(keys: string[]) {
+    const config = this.cache.json.get("config");
+    keys.forEach((key) => {
+      const data = localStorage.getItem(`shader.${key}`);
+      if (data) {
+        config.shaders.base.init = {
+          ...config.shaders.base.init,
+          [key]: JSON.parse(data),
+        };
+      }
+    });
+  }
+
   showLoading(loadingConfig: LoadingConfig = defaultLoadingConfig) {
     const scene = this;
     const load = this.load;

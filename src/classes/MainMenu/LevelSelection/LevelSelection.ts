@@ -19,7 +19,6 @@ export class LevelSelection extends MenuTab {
   constructor(props: MenuTabProps) {
     super(props);
     const { x, y, scene, width, height } = props;
-    console.log("thiscont", this.container.x);
     this.levelsList = scene.add
       .dom(0, 0, "div", {
         width: `${width}px`,
@@ -161,9 +160,7 @@ export class LevelSelection extends MenuTab {
 
     return folderContainer;
   }
-  update() {
-    console.log("test");
-  }
+
   show(): void {
     super.show();
     this.showFolders();

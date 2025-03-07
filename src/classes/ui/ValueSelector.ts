@@ -61,7 +61,7 @@ export class ValueSelector<T> {
       .setRotation(Phaser.Math.DegToRad(props.angle))
       .setScale(props.scale);
     const overlay = this.scene.add
-      .image(0, 0, "uiatlas", "arrowBtn_over")
+      .image(0, 0, "uiatlas", "arrow_over")
       .setRotation(Phaser.Math.DegToRad(props.angle))
       .setScale(props.scale);
 

@@ -35,7 +35,6 @@ export class ImportLevel extends BaseBlock {
       scene,
       () => {
         const node = this.viewBox.node as HTMLTextAreaElement;
-        console.log(node.value);
         this.parseString(node.value);
       }
     );
@@ -46,7 +45,6 @@ export class ImportLevel extends BaseBlock {
   parseString(data: string) {
     try {
       const levelData = JSON.parse(atob(data));
-      console.log("levelData", levelData);
 
       if (!("turns" in levelData) || !("board" in levelData)) return;
       this.scene.scene.start("LoadingGame", { mode: "Play", levelData });

@@ -12,12 +12,13 @@
   - [Options](#Options)
 - [Customization](#customiztion)
   - [Base](#Base)
-  - [Config](#Base)
+  - [Config(Offline)](#Base)
     - [Colors](#Colors)
     - [Add levels ](#AddLevels)
     - [UI ](#Colors)
   - [Code](#Base)
     - [Shader](#Shader)
+- [Installation/Building for offline](#Install)
 
 ### Live: [WIP]
 
@@ -35,3 +36,32 @@ Features:
 -Customization
 
 Stack: Vite, Phaser 3
+
+## Install
+
+From Source code
+
+```
+pnpm install
+```
+
+```
+pnpm run dev
+```
+
+Build:
+
+```
+pnpm run build
+```
+
+After building or already downloaded ready-made you will need local server
+
+Here are some of the options
+
+Use Live Server (Extension for VS Code) \
+  Right click the index.html file in Visual Studio Code, select Open with Live Server. 
+
+Use http-server module from node (install via npm then run http-server . from your project directory) \
+use http.server package from python
+use a wamp (or lamp) server \

@@ -1,4 +1,4 @@
-import { Scene } from "phaser";
+
 import Grid from "../Grid";
 import Cell from "../Cell";
 import { Game } from "../../scenes/Game";
@@ -36,7 +36,6 @@ export class SelectionBox {
   }
   onPointerMove(pointer: Phaser.Input.Pointer) {
     if (this.isSelecting) {
-      console.log("test");
       this.selectionBox.width = pointer.x - this.startX;
       this.selectionBox.height = pointer.y - this.startY;
       this.redrawSelectionBox();
@@ -49,6 +48,7 @@ export class SelectionBox {
     this.selectedObjects = [];
 
     const selectionBox = this.selectionBox;
+    if (!selectionBox) return;
 
     selectionBox.x = Math.min(
       selectionBox.x,

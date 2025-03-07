@@ -1,7 +1,7 @@
 import Cell from "./Cell";
 import { Game } from "../scenes/Game";
-import { ColorType, GameStatus, GridOptions, Vector2, Vector3 } from "../types";
-import { colors, dirs } from "../utils";
+import { ColorType, GameStatus, GridOptions, Vector2 } from "../types";
+import { dirs } from "../utils";
 
 export default class Grid {
   scene: Game;
@@ -104,6 +104,8 @@ export default class Grid {
       seen.has(this.board[x][y])
     )
       return;
+
+    const { colors } = this.scene.cache.json.get("config");
 
     this.pendingCalls++;
     const cell = this.board[x][y];
@@ -245,6 +247,8 @@ export default class Grid {
     } else this.changeColor(x, y);
   }
   private changeColor(x: number, y: number) {
+    const { colors } = this.scene.cache.json.get("config");
+
     this.board[x][y].tile.setUniform(
       "color.value",
       colors[this.scene.gameStates.selectedColor]
@@ -252,6 +256,7 @@ export default class Grid {
     this.board[x][y].color = Number(this.scene.gameStates.selectedColor);
   }
   private getColor() {
+    const { colors } = this.scene.cache.json.get("config");
     const { x, y, z } = colors[this.scene.gameStates.targetColor];
     return Phaser.Display.Color.GetColor(x * 255, y * 255, z * 255);
   }

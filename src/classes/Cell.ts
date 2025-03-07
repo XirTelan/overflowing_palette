@@ -1,11 +1,11 @@
 import Grid from "./Grid";
 import { ColorType } from "../types";
-import { colors } from "../utils";
 
 export default class Cell {
   tile;
   transitionTile;
   color: ColorType;
+  colors;
   grid;
 
   pos: { x: number; y: number };
@@ -19,6 +19,9 @@ export default class Cell {
     this.color = color;
     this.grid = grid;
     const { cellSize, scene } = grid;
+
+    const { colors } = scene.cache.json.get("config");
+    this.colors = colors;
 
     this.tile = scene.add
       .shader(
@@ -65,6 +68,7 @@ export default class Cell {
   }
   setColor(color: ColorType) {
     this.color = color;
-    this.tile.setUniform("color.value", colors[color]);
+
+    this.tile.setUniform("color.value", this.colors[color]);
   }
 }

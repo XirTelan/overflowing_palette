@@ -6,9 +6,10 @@ import {
   LevelData,
   UiOptions,
   Vector2,
+  Vector3,
 } from "../types";
 import Grid from "../classes/Grid";
-import { colors } from "../utils";
+import { cicleThrougColors, getColorName } from "../utils";
 import ColorBtn from "../classes/ui/ColorBtn";
 import { ValueSelector } from "../classes/ui/ValueSelector";
 import { Export } from "../classes/Game/Export";
@@ -22,6 +23,8 @@ export class Game extends Scene {
   turnCounter: Phaser.GameObjects.Text;
   selectionBox: SelectionBox;
   startTime: number;
+  colors: Record<number, Vector3>;
+
   constructor() {
     super("Game");
   }
@@ -39,6 +42,9 @@ export class Game extends Scene {
   }) {
     const width = this.cameras.main.width;
     const height = this.cameras.main.height;
+
+    const { colors } = this.cache.json.get("config");
+    this.colors = colors;
 
     this.add.shader("distortion", width / 2, height / 2, width, height, [
       "background",
@@ -104,7 +110,10 @@ export class Game extends Scene {
       game: { ui },
     } = scene.cache.json.get("config");
 
-    const cellSize = ui.colorButtons.size; // temp
+    const cellSize = ui.colorButtons.size;
+    const { colors } = scene.cache.json.get("config") as {
+      colors: Record<number, Vector3>;
+    };
 
     Object.entries(colors)
       .filter(
@@ -136,9 +145,11 @@ export class Game extends Scene {
   resetGame() {
     this.grid.resetBoard();
     const { initialState } = this.gameStates;
-    this.gameStates.turns = initialState.turns;
-    this.gameStates.remains = initialState.remains;
-    this.turnCounter.text = String(this.gameStates.turns);
+    if (this.gameStates.mode === "Play") {
+      this.gameStates.turns = initialState.turns;
+      this.gameStates.remains = initialState.remains;
+      this.turnCounter.text = String(this.gameStates.turns);
+    }
   }
 }
 
@@ -150,7 +161,7 @@ function createResetButton(scene: Game) {
       scene.btnContainer.x,
       scene.cameras.main.height - 140,
       "uiatlas",
-      "resetBtn"
+      "reset"
     )
     .setScale(0.8);
 
@@ -159,7 +170,7 @@ function createResetButton(scene: Game) {
       scene.btnContainer.x,
       scene.cameras.main.height - 140,
       "uiatlas",
-      "resetBtn_over"
+      "reset_over"
     )
     .setScale(0.8);
 
@@ -205,7 +216,7 @@ function createCloseButton(scene: Game) {
       scene.cameras.main.width - ui.closeBtn.offset.x,
       0 + ui.closeBtn.offset.y,
       "uiatlas",
-      "closeBtn"
+      "close"
     )
     .setScale(ui.closeBtn.scale);
 
@@ -245,7 +256,10 @@ function initTextUI(scene: Game) {
   if (scene.gameStates.mode == "Play") {
     loadPlayUI(scene, ui);
   }
-  const icon = scene.add.image(60, 50, "icon").setScale(0.5).setOrigin(0);
+  const icon = scene.add
+    .image(60, 50, "uiatlas", "icon")
+    .setScale(0.5)
+    .setOrigin(0);
   scene.make.text({
     x: icon.x + 50,
     y: icon.y,
@@ -289,6 +303,8 @@ function initGame(
   scene.btnContainer = scene.add.container(1500, 400, []);
 }
 function loadPlayUI(scene: Game, ui: UiOptions) {
+  const colors = scene.colors;
+
   const turnRemainsText = scene.make.text({
     x: 60,
     y: 110,
@@ -320,6 +336,7 @@ function loadPlayUI(scene: Game, ui: UiOptions) {
   });
 
   const targetColor = ColorType[scene.gameStates.targetColor];
+
   scene.make.text({
     x: targetColorText.x + targetColorText.width + 5,
     y: ui.targetUI.y,
@@ -359,10 +376,12 @@ function loadEditorUI(scene: Game, ui: UiOptions) {
     ui.turnsValueSelector.width,
     scene.gameStates.turns,
     () => {
-      return --scene.gameStates.turns;
+      scene.gameStates.turns = Math.max(1, scene.gameStates.turns - 1);
+      return scene.gameStates.turns;
     },
     () => {
-      return ++scene.gameStates.turns;
+      scene.gameStates.turns = Math.min(50, scene.gameStates.turns + 1);
+      return scene.gameStates.turns;
     }
   );
 
@@ -384,15 +403,8 @@ function loadEditorUI(scene: Game, ui: UiOptions) {
 }
 
 function changeTargetColor(value: number, scene: Game) {
-  const curTarget = scene.gameStates.targetColor;
-  const maxValue = Object.keys(ColorType).length / 2;
-  let newTarget = (((curTarget + value) % maxValue) + maxValue) % maxValue;
+  let newTarget = cicleThrougColors(value, scene.gameStates.targetColor);
   scene.gameStates.targetColor = newTarget;
   scene.grid.updateBorderTint();
   return getColorName(newTarget);
-}
-
-function getColorName(indx: number) {
-  const str = ColorType[indx];
-  return `${str[0].toUpperCase()}${str.slice(1)}`;
 }

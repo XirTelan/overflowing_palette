@@ -1,5 +1,12 @@
 {
-  "colors": {},
+  "colors": {
+    "0": { "x": 1, "y": 0.302, "z": 0.275 },
+    "1": { "x": 0.357, "y": 0.8, "z": 0.498 },
+    "2": { "x": 0.451, "y": 0.682, "z": 1 },
+    "3": { "x": 0.969, "y": 0.961, "z": 0.549 },
+    "4": { "x": 0.69, "y": 0.082, "z": 0.761 },
+    "5": { "x": 0.0, "y": 1, "z": 1 }
+  },
   "shaders": {
     "base": {
       "init": {
@@ -63,6 +70,12 @@
         }
       }
     },
+    "levelEditor": {
+      "defaultStyle": {
+        "color": "#ffffff",
+        "font": "32px OpenSans_Regular"
+      }
+    },
     "buttonsBlock": {
       "x": 100,
       "y": 150,
@@ -120,7 +133,7 @@
         "hotkeyBtn": {
           "key": "uiatlas",
           "frame": "hotkey_btn",
-          "scale": 0.15
+          "scale": 0.3
         },
         "hotkeyText": {
           "text": "R",

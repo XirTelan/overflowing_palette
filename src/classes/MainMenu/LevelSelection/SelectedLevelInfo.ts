@@ -1,7 +1,7 @@
 import { Scene } from "phaser";
 import { ColorType, LevelData } from "../../../types";
 import { PrimaryBtn } from "../../ui/PrimaryBtn";
-import { colors, NormalizedRgbToColor } from "../../../utils";
+import { NormalizedRgbToColor } from "../../../utils";
 import { BaseBlock } from "../../common/BaseBlock";
 
 export class SelectedLevelInfo extends BaseBlock {
@@ -63,8 +63,6 @@ export class SelectedLevelInfo extends BaseBlock {
     actionBtn.container.parentContainer.remove(actionBtn.container);
     actionBtn.container.setScale(1);
 
-
-
     this.container.add(actionBtn.container);
 
     actionBtn.hide();
@@ -110,6 +108,8 @@ class PreviewBlock extends BaseBlock {
     const { selectedLevelInfo } =
       this.scene.cache.json.get("config")["mainMenu"]["levelSelection"];
 
+    const { colors } = this.scene.cache.json.get("config");
+
     const rows = level.length;
     const cols = level[0].length;
 
@@ -121,7 +121,6 @@ class PreviewBlock extends BaseBlock {
     const finalScale = Math.min(scaleX, scaleY);
 
     const graphics = this.graphics;
-    console.log(finalScale, originalWidth, originalWidth * finalScale);
     graphics.setScale(finalScale);
     this.container.setPosition(
       (selectedLevelInfo.previewBlock.width - originalWidth * finalScale) / 2,
@@ -208,6 +207,7 @@ class InfoBlock extends BaseBlock {
   }
   update(turns: string, color: ColorType) {
     this.tartgetColorText.setText(`${ColorType[color]}`);
+    const { colors } = this.scene.cache.json.get("config");
     const { x, y, z } = colors[color];
     this.tartgetColorText.setColor(
       Phaser.Display.Color.RGBToString(x * 255, y * 255, z * 255)

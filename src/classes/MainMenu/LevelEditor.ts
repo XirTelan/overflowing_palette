@@ -46,10 +46,12 @@ export class LevelEditor extends MenuTab {
       200,
       this.columns,
       () => {
-        return --this.columns;
+        this.columns = Phaser.Math.Clamp(this.columns - 1, 2, 100);
+        return this.columns;
       },
       () => {
-        return ++this.columns;
+        this.columns = Phaser.Math.Clamp(this.columns + 1, 2, 100);
+        return this.columns;
       }
     );
 
@@ -69,10 +71,12 @@ export class LevelEditor extends MenuTab {
       200,
       this.rows,
       () => {
-        return --this.rows;
+        this.rows = Phaser.Math.Clamp(this.rows - 1, 2, 100);
+        return this.rows;
       },
       () => {
-        return ++this.rows;
+        this.rows = Phaser.Math.Clamp(this.rows + 1, 2, 100);
+        return this.rows;
       }
     );
 

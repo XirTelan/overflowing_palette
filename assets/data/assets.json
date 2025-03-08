@@ -89,16 +89,7 @@
         "key": "background",
         "url": "bg.png"
       },
-      {
-        "type": "image",
-        "key": "icon",
-        "url": "icon.png"
-      },
-      {
-        "type": "image",
-        "key": "background",
-        "url": "bg.png"
-      },
+
       {
         "type": "image",
         "key": "grid_border",

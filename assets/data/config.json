@@ -133,7 +133,7 @@
         "hotkeyBtn": {
           "key": "uiatlas",
           "frame": "hotkey_btn",
-          "scale": 0.15
+          "scale": 0.3
         },
         "hotkeyText": {
           "text": "R",

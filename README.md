@@ -76,8 +76,8 @@ You can use **box selection** to select multiple cells at once by clicking and d
 ### Options
   ![image](https://github.com/user-attachments/assets/ce8fcb57-3ecc-46a0-b7b6-8417a506ed7d)
 
-  NOTE: After any changes refresh browser page
-  Colors - I think everything is clearю BUT keep in mind. You will change only colors. Names will be same. So if you'll  swap colors (red and blue for example) 
+  NOTE: After any changes refresh browser page \
+  Colors - I think everything is clear, BUT keep in mind. You will change only colors. Names will be same. So if you'll  swap colors (red and blue for example) 
   game still will show name  "Red" for 1st  and "Blue" for 3rd color if they will be target
 
   Simple colors - remove any animation/shades etc on cells. 

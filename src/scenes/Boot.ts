@@ -12,8 +12,6 @@ export class Boot extends Scene {
   create() {
     this.loadUserConfig();
     this.scene.start("MainMenu");
-
-
   }
 
   loadUserConfig() {

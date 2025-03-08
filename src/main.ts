@@ -23,9 +23,5 @@ const config: Types.Core.GameConfig = {
 const game = new Phaser.Game(config);
 
 document.addEventListener("DOMContentLoaded", () => {
-  Promise.all([
-    document.fonts.load("OpenSans_Regular"),
-    document.fonts.load("OpenSans_Bold"),
-    document.fonts.load("OpenSans_ExtraBold"),
-  ]).then(() => game.scene.start("Boot"));
+  game.scene.start("Boot");
 });

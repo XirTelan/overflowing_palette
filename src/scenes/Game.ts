@@ -14,6 +14,7 @@ import ColorBtn from "../classes/ui/ColorBtn";
 import { ValueSelector } from "../classes/ui/ValueSelector";
 import { Export } from "../classes/Game/Export";
 import { SelectionBox } from "../classes/Game/SelectionBox";
+import { ResultScreen } from "../classes/Game/ResultScreen";
 
 export class Game extends Scene {
   grid: Grid;
@@ -62,38 +63,17 @@ export class Game extends Scene {
 
   changeGameState(state: GameStatus) {
     if (state === GameStatus.Waiting) {
+      this.gameStates.turns = Math.max(0, this.gameStates.turns - 1);
+      this.turnCounter.text = String(this.gameStates.turns);
       this.gameStates.state = GameStatus.Waiting;
     }
 
     if (state === GameStatus.Active) {
       this.gameStates.state = GameStatus.Active;
-      this.gameStates.turns = Math.max(0, this.gameStates.turns - 1);
 
-      this.turnCounter.text = String(this.gameStates.turns);
-
+      console.log(this.gameStates.remains);
       if (this.gameStates.remains === 0) {
-        //[CHECK] Need to "gameover screen"
-        const key = this.gameStates.levelKey;
-        const timeElapsed = new Date(this.time.now - this.startTime)
-          .toISOString()
-          .slice(11, 19);
-
-        this.gameStates.state = GameStatus.Waiting;
-        if (!key) return;
-        const localData = localStorage.getItem("clearedLevels");
-        let cache;
-        if (localData) {
-          const parsed = JSON.parse(localData);
-          cache = new Set(parsed);
-        } else {
-          cache = new Set();
-        }
-        cache.add(key);
-
-        localStorage.setItem(
-          "clearedLevels",
-          JSON.stringify(Array.from(cache))
-        );
+        new ResultScreen(430, 400, this);
       } else if (this.gameStates.turns == 0) {
         this.resetGame();
       }
@@ -149,6 +129,7 @@ export class Game extends Scene {
       this.gameStates.turns = initialState.turns;
       this.gameStates.remains = initialState.remains;
       this.turnCounter.text = String(this.gameStates.turns);
+      this.gameStates.state = GameStatus.Active;
     }
   }
 }
@@ -249,7 +230,6 @@ function initTextUI(scene: Game) {
   const {
     game: { ui },
   } = scene.cache.json.get("config");
-
   if (scene.gameStates.mode == "Editor") {
     loadEditorUI(scene, ui);
   }
@@ -271,6 +251,38 @@ function initTextUI(scene: Game) {
       font: "26px OpenSans_Bold",
     },
   });
+  //[TODO] replace with eitherr config or texture
+  let commonProps = [0, 30, -20, 0, 20, 0];
+  scene.add.triangle(
+    ui.targetUI.x - 45,
+    ui.targetUI.y + 15,
+    ...commonProps,
+    0xffffff
+  );
+  scene.add.triangle(
+    ui.targetUI.x - 5,
+    ui.targetUI.y + 15,
+    ...commonProps,
+    0x94844c
+  );
+
+  commonProps = [80, 0, 25, -15, 0, 15, 0, 0x94844c];
+
+  scene.add.triangle(scene.btnContainer.x - 10, ...commonProps);
+  scene.add.triangle(scene.btnContainer.x + 20, ...commonProps);
+
+  commonProps = [0, -20, -10, 0, 10, 0, 0xffffff, 0.2];
+
+  scene.add.triangle(
+    scene.btnContainer.x + 10,
+    scene.cameras.main.height - 240,
+    ...commonProps
+  );
+  scene.add.triangle(
+    scene.btnContainer.x + 10,
+    scene.cameras.main.height - 220,
+    ...commonProps
+  );
 }
 
 function initGame(

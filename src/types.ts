@@ -24,11 +24,11 @@ export type LevelData = {
   turns: number;
 };
 
-export type LevelsJson = [LevelFolder];
+export type LevelsJson = LevelFolder[];
 
 export type LevelFolder = {
   folderName: string;
-  categories: [LevelCategory];
+  categories: LevelCategory[];
 };
 
 export type LevelCategory = { categoryName: string; levels: LevelData[] };

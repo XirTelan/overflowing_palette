@@ -1,4 +1,4 @@
-# <img style="width:28px;height:28px;" src="./public/assets/textures/icon.png"></img> Overflowing Palette
+# <img style="width:25px;height:25px;" src="./public/favicon.png"></img> Overflowing Palette
 
 ## [WIP] ETA 8-9 March 2025
 

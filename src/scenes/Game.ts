@@ -71,7 +71,6 @@ export class Game extends Scene {
     if (state === GameStatus.Active) {
       this.gameStates.state = GameStatus.Active;
 
-      console.log(this.gameStates.remains);
       if (this.gameStates.remains === 0) {
         new ResultScreen(430, 400, this);
       } else if (this.gameStates.turns == 0) {
@@ -123,6 +122,7 @@ export class Game extends Scene {
   }
 
   resetGame() {
+    if (this.gameStates.state === GameStatus.Waiting) return;
     this.grid.resetBoard();
     const { initialState } = this.gameStates;
     if (this.gameStates.mode === "Play") {
@@ -174,6 +174,9 @@ function createResetButton(scene: Game) {
     x: hotkeyBtn.x + 60,
     y: hotkeyBtn.y,
   });
+
+  const keyObj = scene.input.keyboard?.addKey("R");
+  if (keyObj) keyObj.on("down", scene.resetGame, scene);
 
   resetImage.setInteractive();
   resetImage.on("pointerdown", () => {

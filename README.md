@@ -1,7 +1,5 @@
 # <img style="width:25px;height:25px;" src="./public/favicon.png"></img> Overflowing Palette
 
-## [WIP] ETA 8-9 March 2025
-
 - [General](#introduction)
 - [Usage](#usage)
   - [Level Selection](#level-selection)
@@ -20,7 +18,10 @@
     - [Shader](#shader)
 - [Installation/Building for Offline](#installation)
 
-### Live: [WIP]
+### Live: https://xirtelan.github.io/overflowing_palette/
+### Alt live: https://xirtelan.itch.io/overflowing-palette
+showcase: https://youtu.be/9FPFLpCEiQI
+
 
 ## General
 

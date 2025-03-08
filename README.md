@@ -37,6 +37,49 @@ Features:
 
 Stack: Vite, Phaser 3
 
+## Usage 
+
+### LevelSelection
+![image](https://github.com/user-attachments/assets/f3c3c88a-779a-42f4-9124-2b3c8ee6379e)
+
+#### Default - levels from the game 
+![image](https://github.com/user-attachments/assets/a0498864-4c22-4145-859c-7a2a46719691)
+
+Separated by regions 
+Green background - cleared stages
+! Cleared levels saved in browser localStorage. 
+
+Import levels  
+
+## LevelEditor
+
+![image](https://github.com/user-attachments/assets/f2269afd-b52c-429c-aeeb-8aec8d36e25f)
+
+quite straightforward , choose how big grid do we want. \
+despite the fact that the values ​​are limited from 2 to 100 
+field more than 25x25 can be hard to use and req some time to load
+
+Fill color - which color will be used to fill the grid 
+
+![image](https://github.com/user-attachments/assets/7a0b2885-4123-4cf6-87ae-a34d93a6b4b9)
+
+
+You can use  box selection  to select multiple cells at once by clicking and dragging a  selection area over them (calc at cell center).  
+
+# ExportLevel
+
+![image](https://github.com/user-attachments/assets/9db3855f-c4ba-4e56-9a3d-b368ecacdcdd)
+
+Copy STRING - using for in-game import 
+Copy JSON - usinng for offline add levels info json file
+
+
+ 
+
+
+
+
+
 ## Install
 
 From Source code

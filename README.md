@@ -1,5 +1,9 @@
 # <img style="width:25px;height:25px;" src="./public/favicon.png"></img> Overflowing Palette
 
+### Live: https://xirtelan.github.io/overflowing_palette/
+### Alt live: https://xirtelan.itch.io/overflowing-palette
+showcase: https://youtu.be/9FPFLpCEiQI
+
 - [General](#introduction)
 - [Usage](#usage)
   - [Level Selection](#level-selection)
@@ -17,10 +21,6 @@
   - [Code](#code)
     - [Shader](#shader)
 - [Installation/Building for Offline](#installation)
-
-### Live: https://xirtelan.github.io/overflowing_palette/
-### Alt live: https://xirtelan.itch.io/overflowing-palette
-showcase: https://youtu.be/9FPFLpCEiQI
 
 
 ## General

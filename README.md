@@ -1,6 +1,8 @@
 # <img style="width:25px;height:25px;" src="./public/favicon.png"></img> Overflowing Palette
 
-## [WIP] ETA 8-9 March 2025
+### Live: https://xirtelan.github.io/overflowing_palette/
+### Alt live: https://xirtelan.itch.io/overflowing-palette
+showcase: https://youtu.be/9FPFLpCEiQI
 
 - [General](#introduction)
 - [Usage](#usage)
@@ -20,7 +22,6 @@
     - [Shader](#shader)
 - [Installation/Building for Offline](#installation)
 
-### Live: [WIP]
 
 ## General
 
@@ -71,6 +72,17 @@ You can use **box selection** to select multiple cells at once by clicking and d
 
 - **Copy STRING** - Used for in-game import.
 - **Copy JSON** - Used for offline addition to the levels info JSON file.
+
+### Options
+  ![image](https://github.com/user-attachments/assets/ce8fcb57-3ecc-46a0-b7b6-8417a506ed7d)
+
+  NOTE: After any changes refresh browser page \
+  Colors - I think everything is clear, BUT keep in mind: you will only change the colors. \
+  The names will stay the same. So, if you swap colors (red and blue, for example), the game will still show the name 'Red' for the 1st color and 'Blue' for the 3rd color if they are the targets.
+
+  Simple colors - remove any animation/shades etc on cells. 
+  Stronger higlight - cell on mouse over will be more visible. 
+
 
 ## Installation
 

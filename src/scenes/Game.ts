@@ -299,6 +299,7 @@ function initGame(
     turns: levelData.turns,
     targetColor: levelData.targetColor,
     selectedColor: ColorType.red,
+    selectedTools: "swapX",
     availableColors: new Set(),
     state: GameStatus.Active,
     remains: 0,

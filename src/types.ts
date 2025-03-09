@@ -136,6 +136,7 @@ export type GameStates = {
   state: GameStatus;
   targetColor: ColorType;
   selectedColor: ColorType;
+  selectedTools: string;
   remains: number;
   availableColors: Set<ColorType>;
   initialState: {

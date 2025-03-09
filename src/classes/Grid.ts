@@ -225,6 +225,61 @@ export default class Grid {
       });
     }
   }
+  swapSelection(x: number, y: number) {
+    const left = this.board[x][y];
+    const right = this.board[x][y + 1];
+    if (!right) return;
+    const tweens: Phaser.Tweens.Tween[] = [];
+    const originPos: [number, number][] = [
+      [left.tile.x, left.tile.y],
+      [right.tile.x, right.tile.y],
+    ];
+
+    const rect = this.scene.add
+      .rectangle(
+        left.tile.x - 5,
+        left.tile.y - 5,
+        this.cellSize * 2 + 10,
+        this.cellSize + 10,
+        0x000000,
+        0.4
+      )
+      .setOrigin(0);
+    this.container.add(rect);
+
+    [left.tile, right.tile].forEach((tile) => {
+      const tween = this.scene.tweens.add({
+        targets: tile,
+        x: {
+          value: () => tile.x + Phaser.Math.Between(-3, 3),
+          duration: 150,
+        },
+        y: {
+          value: () => tile.y + Phaser.Math.Between(-3, 3),
+          duration: 150,
+        },
+        yoyo: true,
+        repeat: -1,
+      });
+      tweens.push(tween);
+    });
+    const clear = () => {
+      tweens.forEach((tween) => tween.destroy());
+      left.tile.setPosition(originPos[0][0], originPos[0][1]);
+      right.tile.setPosition(originPos[1][0], originPos[1][1]);
+      rect.destroy();
+    };
+    const apply = () => {
+      const temp = left.color;
+      left.setColor(right.color);
+      right.setColor(temp);
+      this.scene.gameStates.selectedTools = "none";
+      clear();
+    };
+    rect.setInteractive();
+    rect.on("pointerout", clear);
+    rect.on("pointerdown", apply);
+  }
   private flip(x: number, y: number, colorToChange: ColorType) {
     if (colorToChange == this.scene.gameStates.selectedColor) return;
 

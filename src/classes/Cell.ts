@@ -58,7 +58,11 @@ export default class Cell {
     this.transitionTile = transitionTile;
   }
   onEnter() {
-    this.tile.setUniform("active.value", 1.0);
+    if (this.grid.scene.gameStates.selectedTools == "swapX") {
+      this.grid.swapSelection(this.pos.x, this.pos.y);
+    } else {
+      this.tile.setUniform("active.value", 1.0);
+    }
   }
   onLeave() {
     this.tile.setUniform("active.value", 0.0);

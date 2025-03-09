@@ -11,6 +11,19 @@ export class Boot extends Scene {
   }
   create() {
     this.loadUserConfig();
+    const isProduction = import.meta.env.PROD;
+    if (!isProduction) {
+      const debugConfig = localStorage.getItem("debug");
+      if (debugConfig) {
+        const data = JSON.parse(debugConfig);
+        if (data.mode != "none") {
+          this.scene.start("LoadingGame", {
+            ...data,
+          });
+          return;
+        }
+      }
+    }
     this.scene.start("MainMenu");
   }
 

@@ -22,19 +22,14 @@ showcase: https://youtu.be/9FPFLpCEiQI
     - [Shader](#shader)
 - [Installation/Building for Offline](#installation)
 
-Plans for next update (1.1 ETA 15-16 march) 
+## Plans for next update (1.1 ETA 15-16 march) 
 
-Redo the options menu—more settings, plus a couple of background choices.
-
-A new mode in the levels will include a mechanic called "Tools." These will have limited uses but won’t consume moves. Right now, this mainly consists of different ways to swap tiles.
-
-Zen Random—still working out the details, but the idea is a randomly generated board without a move counter.
-
-Level Preview will show also grid size, author (if it's not mine) , cleared time ( for cleared levels)
-
-Level Preview for import level
-
-New UI for export levels
+1. Redo the options menu—more settings, plus a couple of background choices.
+2. A new mode in the levels will include a mechanic called "Tools." These will have limited uses but won’t consume moves. Right now, this mainly consists of different ways to swap tiles.
+3. Zen Random—still working out the details, but the idea is a randomly generated board without a move counter.
+4. Level Preview will show also grid size, author (if it's not mine) , cleared time ( for cleared levels)
+5. Level Preview for import level
+6. New UI for export levels
 
 
 ## General

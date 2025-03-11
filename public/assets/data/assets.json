@@ -54,16 +54,6 @@
     "files": [
       {
         "type": "image",
-        "key": "celltexture",
-        "url": "celltexture.png"
-      },
-      {
-        "type": "image",
-        "key": "cellnoise",
-        "url": "cellnoise.png"
-      },
-      {
-        "type": "image",
         "key": "cellnoise_d",
         "url": "cellnoise_d.png"
       },

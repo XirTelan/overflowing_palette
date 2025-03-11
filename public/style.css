@@ -13,17 +13,31 @@
   src: url("./assets/fonts/OpenSans-ExtraBold.ttf");
   font-weight: bolder;
 }
+@font-face {
+  font-family: "Cinzel";
+  src: url("./assets/fonts/cinzel.black.ttf");
+  font-weight: bold;
+}
+
+:root {
+  --clr-bg: 121212;
+}
 
 body {
   color-scheme: dark;
   margin: 0;
   padding: 0;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #000000;
+  background-color: var(--clr-bg);
   font-family: "OpenSans_Regular";
 }
 p {
   margin: 0;
+}
+button {
+  appearance: none;
+  margin: 0;
+  padding: 0;
 }
 
 #app {
@@ -73,9 +87,7 @@ p {
 .level-card:hover .text {
   color: #000;
 }
-.level-card.active .text {
-  color: red;
-}
+
 .container {
   display: flex;
   gap: 1rem;
@@ -132,7 +144,6 @@ p {
     border: none;
   }
 }
-footer {
-  display: flex;
-  justify-content: center;
+
+.option-tab__button {
 }

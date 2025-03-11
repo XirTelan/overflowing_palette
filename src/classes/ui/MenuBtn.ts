@@ -27,6 +27,7 @@ export class MenuBtn extends BaseBlock {
         ...menuBtn.text,
         text,
       })
+      .setFixedSize(275, 60)
       .setOrigin(0, 0.5);
     this.overlay = scene.add
       .image(this.btn.x, this.btn.y, "uiatlas", "menuBtn_overlay")
@@ -42,7 +43,13 @@ export class MenuBtn extends BaseBlock {
     container.add(this.btn);
     container.add(this.overlay);
     container.add(this.text);
+    this.container.setVisible(false);
 
+    //delay to make sure fonts is ready since any other mehod doesnt worked
+    this.scene.time.delayedCall(50, () => {
+      this.text.updateText();
+      this.container.setVisible(true);
+    });
     this.container = container;
   }
   setActive(state: boolean) {

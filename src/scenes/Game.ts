@@ -5,7 +5,6 @@ import {
   GameStatus,
   LevelData,
   UiOptions,
-  Vector2,
   Vector3,
 } from "../types";
 import Grid from "../classes/Grid";
@@ -15,6 +14,8 @@ import { ValueSelector } from "../classes/ui/ValueSelector";
 import { Export } from "../classes/Game/Export";
 import { SelectionBox } from "../classes/Game/SelectionBox";
 import { ResultScreen } from "../classes/Game/ResultScreen";
+
+const FADE_DELAY = 500;
 
 export class Game extends Scene {
   grid: Grid;
@@ -51,7 +52,6 @@ export class Game extends Scene {
       "background",
     ]);
 
-    initShaderConfig(this.cache, { x: width, y: height });
     initGame(this, mode, levelData, levelKey);
     if (mode === "Editor") {
       this.selectionBox = new SelectionBox(this.grid.board, this);
@@ -59,6 +59,7 @@ export class Game extends Scene {
     initTextUI(this);
     this.initButtons();
     this.startTime = this.time.now;
+    this.cameras.main.fadeIn(FADE_DELAY, 0, 0, 0);
   }
 
   changeGameState(state: GameStatus) {
@@ -207,7 +208,10 @@ function createCloseButton(scene: Game) {
   closeBtn.setInteractive();
 
   closeBtn.on("pointerdown", () => {
-    scene.scene.start("MainMenu");
+    scene.cameras.main.fadeOut(FADE_DELAY, 0, 0, 0);
+    scene.time.delayedCall(FADE_DELAY, () => {
+      scene.scene.start("MainMenu");
+    });
   });
   closeBtn.on("pointerover", () => {
     closeBtn.setScale(ui.closeBtn.scale + 0.1);
@@ -215,18 +219,6 @@ function createCloseButton(scene: Game) {
   closeBtn.on("pointerout", () => {
     closeBtn.setScale(ui.closeBtn.scale);
   });
-}
-
-function initShaderConfig(
-  cache: Phaser.Cache.CacheManager,
-  resolution: Vector2
-) {
-  const shader = cache.shader.get("base");
-  const { shaders } = cache.json.get("config");
-  shader.uniforms = {
-    ...shaders.base.init,
-    screenResolution: { type: "2f", value: resolution },
-  };
 }
 
 function initTextUI(scene: Game) {

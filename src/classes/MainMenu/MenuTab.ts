@@ -1,28 +1,37 @@
-import { Scene } from "phaser";
 import { MenuTabProps, Vector2 } from "../../types";
 import { PrimaryBtn } from "../ui/PrimaryBtn";
 import { BaseBlock } from "../common/BaseBlock";
 
 export class MenuTab extends BaseBlock {
   key: string;
-  content: Phaser.GameObjects.Container;
   width: number;
   height: number;
   defaultPos: Vector2;
   actionBtn: PrimaryBtn;
+  private viewBox;
+  contentContainer: HTMLDivElement;
 
   constructor({ key, x, y, scene, width, height }: MenuTabProps) {
     super(x, y, scene);
 
     this.key = key;
-    this.content = scene.add.container(0, 0);
     this.defaultPos = { x, y };
     this.width = width;
     this.height = height;
 
-    this.container.setVisible(false);
+    this.viewBox = scene.add
+      .dom(0, 0, "div", {
+        width: `${width}px`,
+        height: `${height}px`,
+        fontSize: "24px",
+        overflow: "auto",
+      })
+      .setOrigin(0);
 
-    this.container.add(this.content);
+    this.contentContainer = document.createElement("div");
+    this.viewBox.node.append(this.contentContainer);
+
+    this.container.setVisible(false);
 
     this.container.add(
       scene.add.rectangle(0, 0, width, height, 0x000000, 0.6).setOrigin(0, 0)
@@ -33,7 +42,7 @@ export class MenuTab extends BaseBlock {
       .setVisible(false)
       .createGeometryMask();
 
-    this.content.setMask(mask);
+    this.container.setMask(mask);
 
     this.actionBtn = new PrimaryBtn(
       width - 180,
@@ -44,7 +53,7 @@ export class MenuTab extends BaseBlock {
       scene
     );
     this.actionBtn.container.setScale(1.5);
-    this.container.add(this.actionBtn.container);
+    this.container.add([this.viewBox, this.actionBtn.container]);
   }
   show() {
     if (this.container.visible) return;

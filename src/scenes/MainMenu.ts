@@ -7,7 +7,7 @@ import { LevelEditor } from "../classes/MainMenu/LevelEditor";
 import { Options } from "../classes/MainMenu/Options";
 
 const TABS_KEYS = ["LevelEditor", "LevelSelector", "Options"];
-
+const OFFSET_X = 500;
 export class MainMenu extends Scene {
   activeTab: string;
   tabs = new Map<string, MenuTab>();
@@ -20,36 +20,40 @@ export class MainMenu extends Scene {
     this.createBackground();
     this.makeMenuBtns();
 
+    const width = this.cameras.main.width - OFFSET_X;
+    const height = this.cameras.main.height;
+
     const levelSeletor = new LevelSelection({
-      x: 500,
-      y: 100,
+      x: OFFSET_X,
+      y: 0,
       scene: this,
-      width: 1000,
-      height: 800,
+      width: width,
+      height: height,
       key: "LevelSelector",
     });
 
     const levelEditor = new LevelEditor({
-      x: 500,
-      y: 100,
+      x: OFFSET_X,
+      y: 0,
       scene: this,
-      width: 600,
-      height: 600,
+      width: width,
+      height: height,
       key: "LevelEditor",
     });
 
     const options = new Options({
       x: 500,
-      y: 100,
+      y: 0,
       scene: this,
-      width: 600,
-      height: 600,
+      width: width,
+      height: height,
       key: "Options",
     });
 
     this.tabs.set("LevelSelector", levelSeletor);
     this.tabs.set("LevelEditor", levelEditor);
     this.tabs.set("Options", options);
+    this.cameras.main.fadeIn(1000, 0, 0, 0);
   }
   private createBackground() {
     const width = this.cameras.main.width;
@@ -114,7 +118,7 @@ export class MainMenu extends Scene {
     const git = this.createButton(
       0,
       this.cameras.main.height - 300,
-      "Open Docs (GitHub)",
+      "Open Docs\n (GitHub)",
       "Git"
     );
     git.btn.on("pointerdown", () => {

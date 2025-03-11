@@ -20,7 +20,7 @@
         },
         "textureResolution": {
           "type": "2f",
-          "value": { "x": 1024, "y": 1024 }
+          "value": { "x": 512, "y": 512 }
         },
         "radius": { "type": "1f", "value": 0.2 },
         "lightenFactor": { "type": "1f", "value": 0.2 },
@@ -87,11 +87,12 @@
         "offset": -105
       },
       "text": {
-        "x": 50,
+        "x": 0,
         "y": 0,
         "style": {
           "color": "#a4a4a4",
-          "font": "32px OpenSans_Bold"
+          "font": "32px Cinzel",
+          "align": "center"
         }
       }
     }

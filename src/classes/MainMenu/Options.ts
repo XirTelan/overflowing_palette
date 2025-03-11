@@ -1,9 +1,9 @@
-import {  MenuTabProps, Vector3 } from "../../types";
+import { MenuTabProps, Vector3 } from "../../types";
 import { PrimaryBtn } from "../ui/PrimaryBtn";
 import { MenuTab } from "./MenuTab";
+import { OptionTab } from "./OptionTab";
 
 export class Options extends MenuTab {
-  viewBox: Phaser.GameObjects.DOMElement;
   localCache: Record<number, Vector3>;
   inputs: HTMLInputElement[] = [];
   isSimpleColors: HTMLInputElement;
@@ -32,34 +32,29 @@ export class Options extends MenuTab {
       this
     );
 
-    this.viewBox = scene.add
-      .dom(0, 0, "div", {
-        width: `${props.width}px`,
-        height: `${props.height}px`,
-        fontSize: "24px",
-        overflow: "auto",
-      })
-      .setOrigin(0);
-
-    const contentContainer = document.createElement("div");
     const colorsContainer = document.createElement("div");
     colorsContainer.classList.add("colors-container");
 
-    const text = document.createElement("p");
-    text.textContent = "After any changes (save/reset) refresh game";
-    text.style = "color:#fff;";
-    text.classList.add("options-text");
+    const tabBtns = document.createElement("div");
+    const tabs = document.createElement("div");
+    this.contentContainer.appendChild(tabBtns);
+    this.contentContainer.appendChild(tabs);
+    new OptionTab("general", "General", tabBtns, tabs);
+    new OptionTab("grid", "Grid", tabBtns, tabs);
 
-    contentContainer.append(text);
-    this.addText("Colors", contentContainer, "category");
-    contentContainer.append(colorsContainer);
-    this.addText("Grid", contentContainer, "category");
+    // const text = document.createElement("p");
+    // text.textContent = "After any changes (save/reset) refresh game";
+    // text.style = "color:#fff;";
+    // text.classList.add("options-text");
 
-    contentContainer.classList.add("menu-options");
+    // this.contentContainer.append(text);
+    this.addText("Colors", this.contentContainer, "category");
+    this.contentContainer.append(colorsContainer);
+    this.addText("Grid", this.contentContainer, "category");
 
-    this.viewBox.node.append(contentContainer);
+    this.contentContainer.classList.add("menu-options");
 
-    this.container.add([this.viewBox, resetBtn.container]);
+    this.container.add(resetBtn.container);
 
     Object.entries(colors).forEach((color) => {
       const input = document.createElement("input");
@@ -71,13 +66,13 @@ export class Options extends MenuTab {
 
     this.isSimpleColors = this.addCheckbox(
       "Simple colors",
-      contentContainer,
+      this.contentContainer,
       "shader.lightenFactor"
     );
 
     this.strongerHighlight = this.addCheckbox(
       "Stronger higlight",
-      contentContainer,
+      this.contentContainer,
       "shader.activeOffset"
     );
   }

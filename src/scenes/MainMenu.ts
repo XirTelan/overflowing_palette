@@ -1,10 +1,11 @@
 import { Scene } from "phaser";
-import { GameConfig, LevelData } from "../types";
+import { GameConfig, LanguageConfig } from "../types";
 import { MenuBtn } from "../classes/ui/MenuBtn";
 import { LevelSelection } from "../classes/MainMenu/LevelSelection/LevelSelection";
 import { MenuTab } from "../classes/MainMenu/MenuTab";
 import { LevelEditor } from "../classes/MainMenu/LevelEditor";
-import { Options } from "../classes/MainMenu/Options";
+import { Options } from "../classes/MainMenu/Options/Options";
+import { getLocal } from "../utils";
 
 const TABS_KEYS = ["LevelEditor", "LevelSelector", "Options"];
 const OFFSET_X = 500;
@@ -59,9 +60,7 @@ export class MainMenu extends Scene {
     const width = this.cameras.main.width;
     const height = this.cameras.main.height;
 
-    this.add.shader("distortion", width / 2, height / 2, width, height, [
-      "background",
-    ]);
+    this.loadBg(width, height);
 
     const isExist = this.textures.exists("gradient");
     if (!isExist) {
@@ -88,6 +87,26 @@ export class MainMenu extends Scene {
 
     graphics.lineBetween(50, 0, 50, this.cameras.main.height);
   }
+  private loadBg(width: number, height: number) {
+    const { current: background } = this.cache.json.get("config")[
+      "background"
+    ] as GameConfig["background"];
+
+    const bg = this.add.shader(
+      "distortion",
+      width / 2,
+      height / 2,
+      width,
+      height,
+      [background.key]
+    );
+    console.log(background);
+    if (!background) return;
+
+    bg.setUniform("darkOverlay.value", background.distortion);
+    bg.setUniform("darkOverlay.value", background.overlay ? 0.7 : 0);
+  }
+
   private makeMenuBtns() {
     const config: GameConfig["mainMenu"]["buttonsBlock"] =
       this.cache.json.get("config")["mainMenu"]["buttonsBlock"];

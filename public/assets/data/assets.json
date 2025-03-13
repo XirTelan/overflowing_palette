@@ -91,5 +91,31 @@
         "url": "grid_border.png"
       }
     ]
+  },
+  {
+    "path": "assets/textures/backgrounds",
+
+    "files": [
+      {
+        "type": "image",
+        "key": "bg1",
+        "url": "bg1.webp"
+      },
+      {
+        "type": "image",
+        "key": "bg2",
+        "url": "bg2.webp"
+      },
+      {
+        "type": "image",
+        "key": "bg3",
+        "url": "bg3.webp"
+      },
+      {
+        "type": "image",
+        "key": "bg4",
+        "url": "bg4.webp"
+      }
+    ]
   }
 ]

@@ -1,4 +1,30 @@
 {
+  "version": 1.1,
+  "background": {
+    "current": {
+      "key": "bg4",
+      "distortion": 1,
+      "overlay": 0
+    },
+    "options": [
+      {
+        "key": "bg1",
+        "name": "Thessaleo Falls"
+      },
+      {
+        "key": "bg2",
+        "name": "Overflowing Palette"
+      },
+      {
+        "key": "bg3",
+        "name": "Riccioli Islands"
+      },
+      {
+        "key": "bg4",
+        "name": "Mt. Firmament"
+      }
+    ]
+  },
   "colors": {
     "0": { "x": 1, "y": 0.302, "z": 0.275 },
     "1": { "x": 0.357, "y": 0.8, "z": 0.498 },

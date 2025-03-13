@@ -6,7 +6,10 @@ export enum ColorType {
   "purple",
   "cyan",
 }
-
+export type Color = {
+  colorName: string;
+  value: Vector3;
+};
 export type Vector2 = {
   x: number;
   y: number;
@@ -112,6 +115,8 @@ export type BackgroundConfig = {
   }[];
 };
 export type GameConfig = {
+  background: BackgroundConfig;
+  colors: ColorConfig;
   mainMenu: {
     buttonsBlock: {
       x: number;

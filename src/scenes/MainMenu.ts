@@ -92,6 +92,8 @@ export class MainMenu extends Scene {
     const config: GameConfig["mainMenu"]["buttonsBlock"] =
       this.cache.json.get("config")["mainMenu"]["buttonsBlock"];
 
+    const local: LanguageConfig = getLocal(this);
+
     const container = this.add.container(config.x, config.y);
 
     const defaultOffset = 100 + config.gap;
@@ -99,26 +101,26 @@ export class MainMenu extends Scene {
     const levelSelector = this.createButton(
       0,
       0,
-      "Select Level",
+      local.mainMenu.selectLevel,
       "LevelSelector"
     ).container;
     const levelEditor = this.createButton(
       0,
       defaultOffset,
-      "Create Level",
+      local.mainMenu.createLevel,
       "LevelEditor"
     ).container;
     const options = this.createButton(
       0,
       defaultOffset * 2,
-      "Options",
+      local.mainMenu.options,
       "Options"
     ).container;
 
     const git = this.createButton(
       0,
       this.cameras.main.height - 300,
-      "Open Docs\n (GitHub)",
+      local.mainMenu.gitHub,
       "Git"
     );
     git.btn.on("pointerdown", () => {

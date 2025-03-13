@@ -50,3 +50,10 @@ export const loadingShaderInitConfig = {
   transition: { type: "1f", value: 0.0 },
   active: { type: "1f", value: 0.0 },
 };
+
+export const getLocal = (scene: Scene) => {
+  const defaultLang = "en";
+  const jsonData = scene.cache.json.get("localization");
+  const savedLang = localStorage.getItem("lang");
+  return jsonData.langs[savedLang ?? defaultLang];
+};

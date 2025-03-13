@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "langsAvailable": [
+      {
+        "key": "en",
+        "name": "English"
+      }
+    ]
+  },
+  "langs": {
+    "en": {
+      "mainMenu": {
+        "selectLevel": "Select Level",
+        "createLevel": "Create Level",
+        "options": "Options",
+        "gitHub": "Open Docs\n (GitHub)"
+      },
+      "game": {
+        "ui": {
+          "mode": "Mode:Editor",
+          "turnsRemains": "Remaining Moves:",
+          "targetColor": "Turn all the blocks into",
+          "targetColorEditor": "Target color:",
+          "movesCount": "Moves count:"
+        }
+      },
+      "resultScreen": {
+        "win": "CLEARED",
+        "time": "Time elapsed:",
+        "btnMain": "Main Menu",
+        "btnNext": "Next Level"
+      },
+      "options": {
+        "tabs": {
+          "general": "General",
+          "colors": "Colors",
+          "gameplay": "Gameplay"
+        },
+        "generalTab": {
+          "languageBlock": "Text Language",
+          "languageSelection": "Language Selection",
+          "background": "Background",
+          "image": "Image",
+          "distortion": "Distortion",
+          "overlay": "Overlay"
+        }
+      },
+      "import": "Import",
+      "export": "Export",
+      "copyJson": "Copy as JSON",
+      "copyString": "Copy as String"
+    }
+  }
+}

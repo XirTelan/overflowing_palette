@@ -9,6 +9,11 @@
       },
       {
         "type": "json",
+        "key": "localization",
+        "url": "localization.json"
+      },
+      {
+        "type": "json",
         "key": "levels",
         "url": "levels.json"
       }

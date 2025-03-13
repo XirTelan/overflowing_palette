@@ -1,5 +1,6 @@
 import { Game } from "../../scenes/Game";
 import { LevelData } from "../../types";
+import { getLocal } from "../../utils";
 import { PrimaryBtn } from "../ui/PrimaryBtn";
 
 export class Export {
@@ -11,8 +12,15 @@ export class Export {
   scene: Game;
 
   constructor(scene: Game) {
-    this.openButton = new PrimaryBtn(160, 320, "Export", 250, 50, scene, () =>
-      this.open()
+    const local = getLocal(scene);
+    this.openButton = new PrimaryBtn(
+      160,
+      320,
+      local.export,
+      250,
+      50,
+      scene,
+      () => this.open()
     );
     this.scene = scene;
   }
@@ -33,6 +41,8 @@ export class Export {
   }
   private render() {
     const scene = this.scene;
+
+    const local = getLocal(scene);
 
     const arr = scene.grid.board.map((cell) => {
       return cell.map((cell) => cell.color);
@@ -62,7 +72,7 @@ export class Export {
     this.copyBtnJson = new PrimaryBtn(
       scene.cameras.main.width / 2 + 200,
       920,
-      "Copy JSON",
+      local.copyJson,
       400,
       50,
       scene,
@@ -75,7 +85,7 @@ export class Export {
     this.copyBtnString = new PrimaryBtn(
       scene.cameras.main.width / 2 - 200,
       920,
-      "Copy STRING",
+      local.copyString,
       400,
       50,
       scene,

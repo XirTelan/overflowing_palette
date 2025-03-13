@@ -1,16 +1,19 @@
 import { Scene } from "phaser";
 import { BaseBlock } from "../common/BaseBlock";
 import { Game } from "../../scenes/Game";
-import { GameStatus, LevelData, LevelsJson } from "../../types";
+import { GameMode, GameStatus, LevelData, LevelsJson } from "../../types";
 import { PrimaryBtn } from "../ui/PrimaryBtn";
+import { getLocal } from "../../utils";
 
 export class ResultScreen extends BaseBlock {
   scene: Game;
   nextLevelData: {
-    mode: string;
+    mode: GameMode;
     levelData: LevelData;
     levelKey: string;
   };
+  local;
+
   constructor(width: number, height: number, scene: Game) {
     const centerX = scene.cameras.main.width / 2;
     const centerY = scene.cameras.main.height / 2;
@@ -19,8 +22,10 @@ export class ResultScreen extends BaseBlock {
 
     scene.gameStates.state = GameStatus.Waiting;
 
+    this.local = getLocal(scene).resultScreen;
+
     const levelKey = this.scene.gameStates.levelKey;
-    // debugger;
+
     this.saveRecordAboutLevel(levelKey);
 
     const timeElapsed = new Date(scene.time.now - scene.startTime)
@@ -34,7 +39,7 @@ export class ResultScreen extends BaseBlock {
         .text({
           x: width / 2,
           y: 10,
-          text: "CLEARED",
+          text: this.local.win,
           style: {
             color: "#000",
             font: "32px OpenSans_Bold",
@@ -44,7 +49,7 @@ export class ResultScreen extends BaseBlock {
       scene.make.text({
         x: 10,
         y: 70,
-        text: `Time elapsed: ${timeElapsed} `,
+        text: `${this.local.time} ${timeElapsed} `,
         style: {
           color: "#fff",
           font: "32px OpenSans_Bold",
@@ -53,7 +58,7 @@ export class ResultScreen extends BaseBlock {
       new PrimaryBtn(
         width / 2 - 110,
         height - 33,
-        "Main Menu",
+        this.local.btnMain,
         300,
         50,
         this.scene,
@@ -85,7 +90,7 @@ export class ResultScreen extends BaseBlock {
   }
   createNextLevelBtn(x: number, y: number) {
     this.container.add(
-      new PrimaryBtn(x, y, "Next Level", 300, 50, this.scene, () => {
+      new PrimaryBtn(x, y, this.local.btnNext, 300, 50, this.scene, () => {
         this.scene.scene.start("LoadingGame", this.nextLevelData);
       }).container
     );
@@ -135,7 +140,7 @@ export class ResultScreen extends BaseBlock {
     }.${nextLevelIndx + 1}`;
 
     this.nextLevelData = {
-      mode: "Play",
+      mode: GameMode.Play,
       levelKey: newKey,
       levelData: nextCategory.levels[nextLevelIndx],
     };

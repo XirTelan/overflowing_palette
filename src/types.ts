@@ -38,6 +38,79 @@ export enum GameStatus {
   "Active",
 }
 
+export type LanguageConfig = {
+  mainMenu: {
+    selectLevel: string;
+    createLevel: string;
+    options: string;
+    gitHub: string;
+  };
+  game: {
+    ui: {
+      mode: string;
+      turnsRemains: string;
+      targetColor: string;
+      targetColorEditor: string;
+      movesCount: string;
+    };
+  };
+  resultScreen: {
+    win: string;
+    time: string;
+    btnMain: string;
+    btnNext: string;
+  };
+  options: {
+    tabs: {
+      general: string;
+      colors: string;
+      gameplay: string;
+    };
+    generalTab: {
+      languageBlock: string;
+      languageSelection: string;
+      background: string;
+      image: string;
+      distortion: string;
+      overlay: string;
+    };
+  };
+  import: string;
+  export: string;
+  copyJson: string;
+  copyString: string;
+};
+
+export type LocalizationConfig = {
+  meta: {
+    langsAvailable: {
+      key: string;
+      name: string;
+    }[];
+  };
+  langs: {
+    [key: string]: LanguageConfig;
+  };
+};
+
+export type ColorConfig = {
+  [key in ColorType]: {
+    colorName: string;
+    value: Vector3;
+  };
+};
+
+export type BackgroundConfig = {
+  current: {
+    key: string;
+    distortion: number;
+    overlay: number;
+  };
+  options: {
+    key: string;
+    name: string;
+  }[];
+};
 export type GameConfig = {
   mainMenu: {
     buttonsBlock: {

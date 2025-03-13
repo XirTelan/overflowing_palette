@@ -8,7 +8,7 @@ import {
   Vector3,
 } from "../types";
 import Grid from "../classes/Grid";
-import { cicleThrougColors, getColorName } from "../utils";
+import { cicleThrougColors, getColorName, getLocal } from "../utils";
 import ColorBtn from "../classes/ui/ColorBtn";
 import { ValueSelector } from "../classes/ui/ValueSelector";
 import { Export } from "../classes/Game/Export";
@@ -225,7 +225,10 @@ function initTextUI(scene: Game) {
   const {
     game: { ui },
   } = scene.cache.json.get("config");
-  if (scene.gameStates.mode == "Editor") {
+
+  const local = getLocal(scene);
+
+  if (scene.gameStates.mode == GameMode.Editor) {
     loadEditorUI(scene, ui);
   }
   if (scene.gameStates.mode == "Play") {
@@ -239,7 +242,7 @@ function initTextUI(scene: Game) {
     x: icon.x + 50,
     y: icon.y,
     text: `Overflowing Palette ${
-      scene.gameStates.mode === "Editor" ? "| Mode:Editor" : ""
+      scene.gameStates.mode === GameMode.Editor ? `| ${local.game.ui.mode}` : ""
     }`,
     style: {
       color: "#ab9c6b",
@@ -312,10 +315,12 @@ function initGame(
 function loadPlayUI(scene: Game, ui: UiOptions) {
   const colors = scene.colors;
 
+  const local = getLocal(scene);
+
   const turnRemainsText = scene.make.text({
     x: 60,
     y: 110,
-    text: `Remaining Moves:`,
+    text: local.game.ui.turnsRemains,
     style: {
       color: "#fff",
       font: "22px OpenSans_Regular",
@@ -335,7 +340,7 @@ function loadPlayUI(scene: Game, ui: UiOptions) {
   const targetColorText = scene.make.text({
     x: ui.targetUI.x,
     y: ui.targetUI.y,
-    text: `Turn all the blocks into`,
+    text: local.game.ui.targetColor,
     style: {
       color: `#cbcbcc`,
       font: "30px OpenSans_Regular",
@@ -357,10 +362,12 @@ function loadPlayUI(scene: Game, ui: UiOptions) {
   });
 }
 function loadEditorUI(scene: Game, ui: UiOptions) {
+  const local = getLocal(scene);
+
   scene.make.text({
     x: 60,
     y: 110,
-    text: `Moves count:`,
+    text: local.game.ui.movesCount,
     style: {
       color: "#fff",
       font: "22px OpenSans_Regular",
@@ -369,7 +376,7 @@ function loadEditorUI(scene: Game, ui: UiOptions) {
   scene.make.text({
     x: 60,
     y: 200,
-    text: `Target color:`,
+    text: local.game.ui.targetColorEditor,
     style: {
       color: "#fff",
       font: "22px OpenSans_Regular",

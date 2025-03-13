@@ -20,7 +20,11 @@
 }
 
 :root {
-  --clr-bg: 121212;
+  --clr-bg: #000;
+  --clr-primary: #ab9c6b;
+  --clr-accent: #ffcd3f;
+  --clr-border-3: #636e86;
+  --clr-text-invers: #3f3f3f;
 }
 
 body {
@@ -38,6 +42,12 @@ button {
   appearance: none;
   margin: 0;
   padding: 0;
+
+  border: 0;
+
+  &:not(:disabled) {
+    cursor: pointer;
+  }
 }
 
 #app {
@@ -130,11 +140,14 @@ button {
     -webkit-appearance: none;
     appearance: none;
     border: none;
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
+    padding: 0;
+    width: 120px;
+    height: 60px;
+    background: transparent;
     overflow: hidden;
     cursor: pointer;
+    border: 1px solid white;
+    border-radius: 5px;
   }
 
   input[type="color"]::-webkit-color-swatch-wrapper {
@@ -146,4 +159,257 @@ button {
 }
 
 .option-tab__button {
+  height: 60px;
+  width: 200px;
+  font: 28px OpenSans_Bold;
+  background: #121212;
+
+  &.active {
+    background-color: #333;
+  }
+
+  &:hover {
+    background-color: #fff;
+    color: #000;
+  }
+}
+
+.option-tab {
+  border-top: 3px solid #333;
+  position: absolute;
+  display: none;
+  flex-direction: column;
+  opacity: 0;
+  transition: all 300ms ease-in-out;
+  width: calc(100% - 2rem);
+}
+
+.option-tab.active {
+  border-top: 3px solid #333;
+  display: flex;
+  opacity: 1;
+}
+
+.colors {
+  --border-radius: 5px;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  border-radius: var(--border-radius);
+
+  .selector {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 1rem;
+
+    .selector__index {
+      position: relative;
+      width: 50px;
+      height: 50px;
+      background: #dadee2;
+      border: 3px solid #333;
+      border-radius: var(--border-radius);
+      display: flex;
+      align-content: center;
+      flex-wrap: wrap;
+      justify-content: center;
+      outline: 3px solid var(--clr-border-3);
+      outline-offset: 4px;
+
+      span {
+        z-index: 1;
+        color: var(--clr-text-invers);
+        font: 24px "OpenSans_Bold";
+      }
+
+      &::before {
+        content: "";
+        width: 100%;
+        height: 50%;
+        background: #f7fafe;
+        position: absolute;
+        border-radius: var(--border-radius) var(--border-radius) 0 0;
+      }
+    }
+
+    .selector__name {
+      font-size: 32px;
+      text-align: center;
+      height: 50px;
+      background: transparent;
+      border: 3px solid #333;
+      border-radius: var(--border-radius);
+      max-width: 300px;
+    }
+  }
+  .selector:not(:last-child) {
+    border-bottom: 3px solid #333;
+  }
+  .selector:nth-last-child(-n + 2) {
+    border-bottom: none;
+  }
+}
+
+.primary-btn {
+  width: 200px;
+  height: 50px;
+  background: url("./assets//textures/uiatlas.webp") 75px 0;
+  &:hover {
+    outline: 4px solid red;
+    outline-offset: -4px;
+  }
+}
+
+.select-wrapper {
+  position: relative;
+  display: flex;
+  min-width: 300px;
+}
+
+.select {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .select__label {
+    font: 32px OpenSans_Bold;
+  }
+
+  select {
+    appearance: none;
+    flex: 1;
+    padding: 1rem;
+    text-align: center;
+    border-radius: var(--border-radius);
+    font-size: 20px;
+    color: #ebe5d7;
+    min-width: 200px;
+    font-family: "OpenSans_Regular";
+
+    &:active {
+      color: var(--clr-text-invers);
+      background: #d8d8d8;
+    }
+  }
+  .icon {
+    position: absolute;
+    mask: no-repeat
+      url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg>');
+    height: 20px;
+    width: 20px;
+    background: #fce395;
+    right: 14px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+  }
+}
+
+.option-folder {
+  --border-radius: 5px;
+
+  margin: 1rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 0;
+
+  .option-folder__title {
+    background: #ffffff1c;
+    border-radius: var(--border-radius);
+    margin: 1rem 0;
+    color: white;
+    padding: 0.5rem 1rem;
+    mask: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 1) 80%,
+      rgba(0, 212, 255, 0) 100%
+    );
+  }
+
+  .folder-content__item {
+    border-radius: var(--border-radius);
+    margin-top: 1rem;
+    background: #000000a1;
+    padding: 1rem;
+    outline: 2px solid #16191a;
+    outline-offset: 5px;
+
+    &:hover {
+      outline-color: #fffbdd;
+    }
+  }
+}
+
+.value-selector {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .value-selector__label {
+    font: 32px "OpenSans_Bold";
+  }
+
+  .value-selector__input-wrapper {
+    display: flex;
+    align-items: center;
+    background: #3c3c3c;
+    border-radius: 100px;
+    min-width: 300px;
+
+    .value-selector__value {
+      padding: 0 1rem;
+      flex: 1;
+      color: #fff;
+      text-align: center;
+      font: 32px "OpenSans_Regular";
+    }
+
+    .value-selector__button {
+      position: relative;
+      background: white;
+      width: 60px;
+      height: 60px;
+      border-radius: 100%;
+      outline: 2px solid #d8d8d8;
+      outline-offset: -6px;
+
+      .icon {
+        height: 40px;
+        width: 40px;
+        mask: no-repeat
+          url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg>');
+        background: #000;
+        background-size: contain;
+        background-position: center;
+        margin: auto;
+        rotate: -90deg;
+      }
+
+      &:disabled {
+        scale: 0.9;
+        background: #757573;
+        outline-color: #888;
+
+        .icon {
+          background: #3c3c3c;
+        }
+      }
+
+      &:hover:not(:disabled) {
+        box-shadow: 0 0 0 5px #c1b166;
+
+        .icon {
+          background: #c1b166;
+        }
+      }
+    }
+
+    .value-selector__button--left .icon {
+      rotate: 90deg;
+    }
+  }
 }

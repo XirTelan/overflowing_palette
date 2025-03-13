@@ -3,10 +3,10 @@ precision mediump float;
 uniform vec2 resolution;
 uniform float time;
 uniform sampler2D iChannel0;
+uniform float darkOverlay;
 
 float radius = 0.3;
 float speed = 0.05;
-float darkOverlay = 0.7;
 varying vec2 fragCoord;
 
 float perlinNoise(vec2 p) {

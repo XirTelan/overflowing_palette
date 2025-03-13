@@ -208,6 +208,11 @@ export type UiOptions = {
   };
 };
 
+export enum GameMode {
+  "Play",
+  "Editor",
+}
+
 export type GameStates = {
   levelKey: string;
   turns: number;
@@ -220,7 +225,7 @@ export type GameStates = {
     turns: number;
     remains: number;
   };
-  mode: "Play" | "Editor";
+  mode: GameMode;
 };
 
 export type LoadingConfig = {

@@ -1,6 +1,7 @@
 import { Scene } from "phaser";
 import { PrimaryBtn } from "../../ui/PrimaryBtn";
 import { BaseBlock } from "../../common/BaseBlock";
+import { GameMode } from "../../../types";
 
 export class ImportLevel extends BaseBlock {
   viewBox: Phaser.GameObjects.DOMElement;
@@ -47,7 +48,7 @@ export class ImportLevel extends BaseBlock {
       const levelData = JSON.parse(atob(data));
 
       if (!("turns" in levelData) || !("board" in levelData)) return;
-      this.scene.scene.start("LoadingGame", { mode: "Play", levelData });
+      this.scene.scene.start("LoadingGame", { mode: GameMode.Play, levelData });
     } catch (error) {
       console.error("catch");
       this.hide();

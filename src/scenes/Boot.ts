@@ -1,5 +1,5 @@
 import { Scene } from "phaser";
-import { LoadingConfig, Vector2 } from "../types";
+import { ColorConfig, LoadingConfig, Vector2 } from "../types";
 import { LoadingScreen } from "../classes/ui/LoadingScreen";
 import { loadingShaderInitConfig } from "../utils";
 
@@ -85,20 +85,32 @@ export class Boot extends Scene {
       ...shaders.base.init,
       screenResolution: { type: "2f", value: resolution },
     };
+
+    const distortionShader = cache.shader.get("distortion");
+    console.log(distortionShader);
+    distortionShader.uniforms = {
+      ...distortionShader.uniforms,
+      darkOverlay: { type: "1f", value: 0.7 },
+    };
   }
 
   loadUserConfig() {
-    const config = this.cache.json.get("config");
+    const config: { colors: ColorConfig } = this.cache.json.get("config");
 
     this.loadShaderUserConfig(["activeOffset", "lightenFactor"]);
 
-    const colors = localStorage.getItem("colors");
-    if (colors) {
-      config.colors = {
-        ...config.colors,
-        ...JSON.parse(colors),
-      };
-    }
+    const savedColors = localStorage.getItem("colors");
+
+    if (!savedColors) return;
+
+    const parsedData = JSON.parse(savedColors);
+
+    if (!isValidColors(parsedData)) return;
+
+    config.colors = {
+      ...config.colors,
+      ...parsedData,
+    };
   }
 
   loadShaderUserConfig(keys: string[]) {
@@ -169,4 +181,17 @@ const defaultLoadingConfig: LoadingConfig = {
   width: 300,
   boxPadding: 10,
   height: 30,
+};
+
+const isValidColors = (colors: unknown): colors is ColorConfig => {
+  if (typeof colors != "object" || colors === null) return false;
+
+  return Object.entries(colors)?.every(([, value]) => {
+    return (
+      typeof value === "object" &&
+      value != null &&
+      "colorName" in value &&
+      "value" in value
+    );
+  });
 };

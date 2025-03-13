@@ -69,7 +69,7 @@ export class MainMenu extends Scene {
         const ctx = gradient.getContext();
 
         const grd = ctx.createLinearGradient(0, 0, 800, 0);
-        grd.addColorStop(0.3, "black");
+        grd.addColorStop(0.0, "black");
         grd.addColorStop(1, "rgba(0, 0, 0, 0)");
 
         ctx.fillStyle = grd;

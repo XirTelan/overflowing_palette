@@ -1,5 +1,5 @@
 import { MenuTab } from "./MenuTab";
-import { ColorType, MenuTabProps } from "../../types";
+import { ColorType, GameMode, MenuTabProps } from "../../types";
 import { ValueSelector } from "../ui/ValueSelector";
 import { cicleThrougColors, getColorName } from "../../utils";
 
@@ -17,7 +17,7 @@ export class LevelEditor extends MenuTab {
     this.actionBtn.btn.setInteractive();
     this.actionBtn.btn.on("pointerdown", () => {
       this.scene.scene.start("LoadingGame", {
-        mode: "Editor",
+        mode: GameMode.Editor,
         levelData: {
           board: this.generateField(
             this.rows,

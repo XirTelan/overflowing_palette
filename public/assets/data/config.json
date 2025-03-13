@@ -26,12 +26,29 @@
     ]
   },
   "colors": {
-    "0": { "x": 1, "y": 0.302, "z": 0.275 },
-    "1": { "x": 0.357, "y": 0.8, "z": 0.498 },
-    "2": { "x": 0.451, "y": 0.682, "z": 1 },
-    "3": { "x": 0.969, "y": 0.961, "z": 0.549 },
-    "4": { "x": 0.69, "y": 0.082, "z": 0.761 },
-    "5": { "x": 0.0, "y": 1, "z": 1 }
+    "0": { "colorName": "Red", "value": { "x": 1, "y": 0.302, "z": 0.275 } },
+    "1": {
+      "colorName": "Green",
+      "value": { "x": 0.357, "y": 0.8, "z": 0.498 }
+    },
+    "2": { "colorName": "Blue", "value": { "x": 0.451, "y": 0.682, "z": 1 } },
+    "3": {
+      "colorName": "Yellow",
+      "value": { "x": 0.969, "y": 0.961, "z": 0.549 }
+    },
+    "4": {
+      "colorName": "Orange",
+      "value": { "x": 1, "y": 0.624, "z": 0 }
+    },
+    "5": {
+      "colorName": "Purple",
+      "value": { "x": 0.69, "y": 0.082, "z": 0.761 }
+    },
+    "6": {
+      "colorName": "Pink",
+      "value": { "x": 1, "y": 0.753, "z": 0.796 }
+    },
+    "7": { "colorName": "Cyan", "value": { "x": 0.0, "y": 1, "z": 1 } }
   },
   "shaders": {
     "base": {
@@ -88,7 +105,6 @@
         },
         "emptyText": {
           "y": 50,
-          "text": "No level selected",
           "style": {
             "color": "#ffffff",
             "font": "32px OpenSans_Bold"
@@ -105,8 +121,7 @@
     "buttonsBlock": {
       "x": 100,
       "y": 150,
-      "gap": 25,
-      "keys": ["Select Level", "Create Level", "Options"]
+      "gap": 25
     },
     "menuBtn": {
       "btn": {
@@ -129,7 +144,6 @@
     }
   },
   "game": {
-    "levelsCategories": ["WutheringWaves", "Custom", "XL"],
     "selectionBox": {
       "fillStyle": { "color": "0x121212", "alpha": 0.5 }
     },
@@ -163,7 +177,6 @@
           "scale": 0.3
         },
         "hotkeyText": {
-          "text": "R",
           "style": {
             "color": "#3e3e3e",
             "font": "24px OpenSans_Bold"
@@ -174,7 +187,6 @@
           }
         },
         "text": {
-          "text": "Reset",
           "style": {
             "color": "#ffffff",
             "font": "24px OpenSans_Bold"

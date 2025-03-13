@@ -19,12 +19,12 @@ export class PrimaryBtn extends BaseBlock {
     super(x, y, scene);
 
     this.btn = scene.add
-      .nineslice(0, 0, "uiatlas", "primary", width, height, 157, 55)
+      .nineslice(0, 0, "uiatlas", "primary", width, height, 0, 55)
       .setOrigin(0.5, 0.5)
       .setScale(0.7);
 
     this.overlay = scene.add
-      .nineslice(0, 0, "uiatlas", "primary_over", width, height, 157, 55)
+      .nineslice(0, 0, "uiatlas", "primary_over", width, height, 0, 0)
       .setOrigin(0.5, 0.5)
       .setScale(0.7);
 

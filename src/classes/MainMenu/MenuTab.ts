@@ -36,6 +36,7 @@ export class MenuTab extends BaseBlock {
     this.container.add(
       scene.add.rectangle(0, 0, width, height, 0x000000, 0.6).setOrigin(0, 0)
     );
+
     const mask = scene.add
       .rectangle(x, y, width, height, 0xffffff)
       .setOrigin(0, 0)
@@ -46,13 +47,14 @@ export class MenuTab extends BaseBlock {
 
     this.actionBtn = new PrimaryBtn(
       width - 180,
-      height + 50,
+      height - 200,
       "Start",
       350,
       0,
       scene
     );
-    this.actionBtn.container.setScale(1.5);
+    this.actionBtn.container;
+    // this.actionBtn.container.setScale(1.5);
     this.container.add([this.viewBox, this.actionBtn.container]);
   }
   show() {

@@ -1,6 +1,6 @@
 import Cell from "./Cell";
 import { Game } from "../scenes/Game";
-import { ColorType, GameStatus, GridOptions, Vector2 } from "../types";
+import { ColorType, GameMode, GameStatus, GridOptions, Vector2 } from "../types";
 import { dirs } from "../utils";
 
 export default class Grid {
@@ -241,7 +241,7 @@ export default class Grid {
     );
   }
   cellAction(x: number, y: number, colorToChange: ColorType) {
-    if (this.scene.gameStates.mode == "Play") {
+    if (this.scene.gameStates.mode == GameMode.Play ) {
       if (this.scene.gameStates.state === GameStatus.Waiting) return;
       this.flip(x, y, colorToChange);
     } else this.changeColor(x, y);

@@ -1,6 +1,7 @@
 import { Scene } from "phaser";
 import {
   ColorType,
+  GameMode,
   GameStates,
   GameStatus,
   LevelData,
@@ -53,7 +54,7 @@ export class Game extends Scene {
     ]);
 
     initGame(this, mode, levelData, levelKey);
-    if (mode === "Editor") {
+    if (mode === GameMode.Editor) {
       this.selectionBox = new SelectionBox(this.grid.board, this);
     }
     initTextUI(this);
@@ -99,7 +100,7 @@ export class Game extends Scene {
       .filter(
         ([colorType]) =>
           !(
-            scene.gameStates.mode === "Play" &&
+            scene.gameStates.mode === GameMode.Play &&
             !scene.gameStates.availableColors.has(Number(colorType))
           )
       )
@@ -126,7 +127,7 @@ export class Game extends Scene {
     if (this.gameStates.state === GameStatus.Waiting) return;
     this.grid.resetBoard();
     const { initialState } = this.gameStates;
-    if (this.gameStates.mode === "Play") {
+    if (this.gameStates.mode === GameMode.Play) {
       this.gameStates.turns = initialState.turns;
       this.gameStates.remains = initialState.remains;
       this.turnCounter.text = String(this.gameStates.turns);
@@ -231,7 +232,7 @@ function initTextUI(scene: Game) {
   if (scene.gameStates.mode == GameMode.Editor) {
     loadEditorUI(scene, ui);
   }
-  if (scene.gameStates.mode == "Play") {
+  if (scene.gameStates.mode == GameMode.Play) {
     loadPlayUI(scene, ui);
   }
   const icon = scene.add

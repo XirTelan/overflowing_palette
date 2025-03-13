@@ -1,3 +1,4 @@
+import { Scene } from "phaser";
 import { ColorType, Vector3 } from "./types";
 
 export const dirs = [

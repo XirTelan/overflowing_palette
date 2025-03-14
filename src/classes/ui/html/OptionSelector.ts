@@ -1,6 +1,6 @@
-export class ValueSelector<T> {
+export class OptionSelector {
   container;
-  value: T;
+  value: number;
   options: string[];
   isCycle: boolean;
 
@@ -10,13 +10,16 @@ export class ValueSelector<T> {
 
   constructor(
     text: string,
-    defaultValue: T,
-    onLeftClick: () => T,
-    onRightClick: () => T
+    defaultValue: number,
+    options: string[],
+    isCycle: boolean,
+    onChange: (value: number) => void
   ) {
     this.container = document.createElement("div");
     this.container.classList.add("value-selector");
     this.value = defaultValue;
+    this.options = options;
+    this.isCycle = isCycle;
 
     const label = document.createElement("span");
     label.classList.add("value-selector__label");
@@ -29,16 +32,20 @@ export class ValueSelector<T> {
     leftBtn.classList.add("value-selector__button--left");
 
     leftBtn.addEventListener("click", () => {
-      this.update(onLeftClick());
+      this.back();
+      this.update();
+      onChange(this.value);
     });
 
     const value = document.createElement("span");
     value.classList.add("value-selector__value");
-    value.textContent = String(defaultValue);
+    value.textContent = String(this.options[defaultValue]);
 
     const rightBtn = this.createButton();
     rightBtn.addEventListener("click", () => {
-      this.update(onRightClick());
+      this.forward();
+      this.update();
+      onChange(this.value);
     });
 
     this.leftBtn = leftBtn;
@@ -51,6 +58,8 @@ export class ValueSelector<T> {
 
     this.container.appendChild(label);
     this.container.appendChild(inputWrapper);
+
+    this.update();
   }
   private createButton() {
     const btn = document.createElement("button");
@@ -61,7 +70,27 @@ export class ValueSelector<T> {
     return btn;
   }
 
-  update(newValue: T) {
-    this.text.textContent = String(newValue);
+  update() {
+    this.rightBtn.disabled =
+      !this.isCycle && this.value === this.options.length - 1;
+
+    this.leftBtn.disabled = !this.isCycle && this.value === 0;
+    console.log(this.value, this.options, this.options[this.value]);
+    this.text.textContent = this.options[this.value];
+  }
+  private getValue(value: number) {
+    const len = this.options.length - 1;
+
+    if (this.isCycle) return (value + len) % len;
+    else return Math.max(0, Math.min(len, value));
+  }
+  forward() {
+    console.log(this.getValue(this.value + 1));
+    this.value = this.getValue(this.value + 1);
+  }
+  back() {
+    console.log(this.getValue(this.value + 1));
+
+    this.value = this.getValue(this.value - 1);
   }
 }

@@ -4,20 +4,37 @@ import { BaseBlock } from "../common/BaseBlock";
 export class MenuBtn extends BaseBlock {
   btn: Phaser.GameObjects.Image;
   overlay: Phaser.GameObjects.Image;
+  active: Phaser.GameObjects.Container;
   text: Phaser.GameObjects.Text;
-  isActive: boolean;
+  key: string;
 
   constructor(
     scene: Scene,
     x: number,
     y: number,
     text: string,
+    tabKey: string,
     onClick: () => void
   ) {
     super(x, y, scene);
     const container = this.container;
+    this.key = tabKey;
 
     const { menuBtn } = scene.cache.json.get("config")["mainMenu"];
+
+    const active = scene.add.container(0, 0);
+    this.active = active;
+    const activeCircle = scene.add
+      .image(-50, 0, "MainBtnActiveCircle")
+      .setOrigin(0.5, 0.5)
+      .setScale(0.8);
+
+    const activeImg = scene.add
+      .image(menuBtn.btn.offset, 0, "MainBtnActive")
+      .setOrigin(0, 0.5);
+
+    active.add([activeCircle, activeImg]);
+
     this.btn = scene.add
       .image(menuBtn.btn.offset, 0, "uiatlas", "menuBtn")
       .setOrigin(0, 0.5);
@@ -40,9 +57,16 @@ export class MenuBtn extends BaseBlock {
     this.btn.on("pointerover", this.onEnter, this);
     this.btn.on("pointerout", this.onLeave, this);
 
-    container.add(this.btn);
-    container.add(this.overlay);
-    container.add(this.text);
+    this.scene.tweens.add({
+      targets: activeCircle,
+      angle: 360,
+      repeat: -1,
+      duration: 50000,
+    });
+
+    container.add([this.btn, this.overlay, active, this.text]);
+
+    this.active.setVisible(false);
     this.container.setVisible(false);
 
     //delay to make sure fonts is ready since any other mehod doesnt worked
@@ -52,9 +76,20 @@ export class MenuBtn extends BaseBlock {
     });
     this.container = container;
   }
-  setActive(state: boolean) {
-    this.isActive = state;
+
+  update(isActive: boolean) {
+    console.log("wtrf", isActive);
+    if (isActive) {
+      console.log("on");
+      this.active.setVisible(true);
+      this.text.setTintFill(0x000000);
+    } else {
+      console.log("off");
+      this.active.setVisible(false);
+      this.text.clearTint();
+    }
   }
+
   private onEnter() {
     this.overlay.setVisible(true);
     this.scene.input.setDefaultCursor("pointer");

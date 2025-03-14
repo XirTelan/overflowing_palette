@@ -1,5 +1,5 @@
 import { Scene } from "phaser";
-import { ColorType, Vector3 } from "./types";
+import { ColorConfig, ColorType, Vector3 } from "./types";
 
 export const dirs = [
   [1, 0],
@@ -28,8 +28,8 @@ export function cicleThrougColors(value: number, curTarget: ColorType) {
   const maxValue = Object.keys(ColorType).length / 2;
   return (((curTarget + value) % maxValue) + maxValue) % maxValue;
 }
-export function getColorName(indx: number) {
-  const str = ColorType[indx];
+export function getColorName(indx: number, colors: ColorConfig) {
+  const str = colors[indx as ColorType].colorName;
   return `${str[0].toUpperCase()}${str.slice(1)}`;
 }
 
@@ -57,4 +57,17 @@ export const getLocal = (scene: Scene) => {
   const jsonData = scene.cache.json.get("localization");
   const savedLang = localStorage.getItem("lang");
   return jsonData.langs[savedLang ?? defaultLang];
+};
+
+export const getUserLevelsCleared = () => {
+  const localData = localStorage.getItem("levels.cleared");
+  let cache;
+  if (localData) {
+    const parsed = JSON.parse(localData);
+    cache = new Map(parsed);
+  } else {
+    cache = new Map();
+  }
+
+  return cache;
 };

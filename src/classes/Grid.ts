@@ -1,6 +1,13 @@
 import Cell from "./Cell";
 import { Game } from "../scenes/Game";
-import { ColorType, GameMode, GameStatus, GridOptions, Vector2 } from "../types";
+import {
+  ColorType,
+  GameConfig,
+  GameMode,
+  GameStatus,
+  GridOptions,
+  Vector2,
+} from "../types";
 import { dirs } from "../utils";
 
 export default class Grid {
@@ -61,7 +68,6 @@ export default class Grid {
       .setOrigin(0, 0)
       .setTint(this.getColor());
 
-    this.border.postFX?.addShine(0.2, 1, 4);
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < columns; j++) {
         this.scene.gameStates.availableColors.add(levelData[i][j]);
@@ -105,7 +111,7 @@ export default class Grid {
     )
       return;
 
-    const { colors } = this.scene.cache.json.get("config");
+    const { colors } = this.scene.cache.json.get("config") as GameConfig;
 
     this.pendingCalls++;
     const cell = this.board[x][y];
@@ -181,7 +187,7 @@ export default class Grid {
         });
         this.board[x][y].tile.setUniform(
           "colorToTransform.value",
-          colors[newColor]
+          colors[newColor].value
         );
         this.board[x][y].tile.setUniform("curPoint.value", { x, y });
         this.board[x][y].tile.setUniform("startPoint.value", startPoint);
@@ -193,7 +199,7 @@ export default class Grid {
         this.board[x][y].tile.scale = 1;
         this.board[x][y].tile.depth = 1;
         this.board[x][y].tile.setUniform("transition.value", 0.0);
-        this.board[x][y].tile.setUniform("color.value", colors[newColor]);
+        this.board[x][y].tile.setUniform("color.value", colors[newColor].value);
 
         if (this.board[x][y].color === this.scene.gameStates.targetColor) {
           this.scene.gameStates.remains++;
@@ -241,23 +247,23 @@ export default class Grid {
     );
   }
   cellAction(x: number, y: number, colorToChange: ColorType) {
-    if (this.scene.gameStates.mode == GameMode.Play ) {
+    if (this.scene.gameStates.mode == GameMode.Play) {
       if (this.scene.gameStates.state === GameStatus.Waiting) return;
       this.flip(x, y, colorToChange);
     } else this.changeColor(x, y);
   }
   private changeColor(x: number, y: number) {
-    const { colors } = this.scene.cache.json.get("config");
+    const { colors } = this.scene.cache.json.get("config") as GameConfig;
 
     this.board[x][y].tile.setUniform(
       "color.value",
-      colors[this.scene.gameStates.selectedColor]
+      colors[this.scene.gameStates.selectedColor].value
     );
     this.board[x][y].color = Number(this.scene.gameStates.selectedColor);
   }
   private getColor() {
-    const { colors } = this.scene.cache.json.get("config");
-    const { x, y, z } = colors[this.scene.gameStates.targetColor];
+    const { colors } = this.scene.cache.json.get("config") as GameConfig;
+    const { x, y, z } = colors[this.scene.gameStates.targetColor].value;
     return Phaser.Display.Color.GetColor(x * 255, y * 255, z * 255);
   }
   updateBorderTint() {

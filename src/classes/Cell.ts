@@ -1,5 +1,5 @@
 import Grid from "./Grid";
-import { ColorType } from "../types";
+import { ColorType, GameConfig } from "../types";
 
 export default class Cell {
   tile;
@@ -20,7 +20,7 @@ export default class Cell {
     this.grid = grid;
     const { cellSize, scene } = grid;
 
-    const { colors } = scene.cache.json.get("config");
+    const { colors } = scene.cache.json.get("config") as GameConfig;
     this.colors = colors;
 
     this.tile = scene.add
@@ -33,7 +33,7 @@ export default class Cell {
         ["celltexture", "cellnoise", "cellnoise_d", "cellnoise_center"]
       )
       .setOrigin(0, 0);
-    this.tile.setUniform("color.value", colors[color]);
+    this.tile.setUniform("color.value", colors[color].value);
     this.tile.setInteractive();
     this.tile.on("pointerdown", this.onClick, this);
     this.tile.on("pointerover", this.onEnter, this);
@@ -69,6 +69,6 @@ export default class Cell {
   setColor(color: ColorType) {
     this.color = color;
 
-    this.tile.setUniform("color.value", this.colors[color]);
+    this.tile.setUniform("color.value", this.colors[color].value);
   }
 }

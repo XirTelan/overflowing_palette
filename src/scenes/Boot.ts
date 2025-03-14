@@ -1,5 +1,5 @@
 import { Scene } from "phaser";
-import { ColorConfig, LoadingConfig, Vector2 } from "../types";
+import { ColorConfig, GameConfig, LoadingConfig, Vector2 } from "../types";
 import { LoadingScreen } from "../classes/ui/LoadingScreen";
 import { loadingShaderInitConfig } from "../utils";
 
@@ -52,8 +52,12 @@ export class Boot extends Scene {
     const width = this.cameras.main.width;
     const height = this.cameras.main.height;
 
+    this.loadUserConfig("colors", isValidColors);
+    this.loadUserConfig("background");
+    this.loadUserConfig("gameplay");
+    this.checkOldSavedData();
+
     this.initShaderConfig({ x: width, y: height });
-    this.loadUserConfig();
 
     const isProduction = import.meta.env.PROD;
     if (!isProduction) {
@@ -76,57 +80,79 @@ export class Boot extends Scene {
       this.scene.start("MainMenu");
     });
   }
+  checkOldSavedData() {
+    const data = localStorage.getItem("clearedLevels");
+    if (!data) return;
+    let parsed;
+    try {
+      parsed = JSON.parse(data);
+    } catch {
+      localStorage.removeItem("clearedLevels");
+      parsed = undefined;
+    }
 
+    if (!parsed) return;
+
+    const oldLevels = Array.from(parsed);
+    const newLevels = new Map();
+    oldLevels.forEach((lvl) => {
+      newLevels.set(lvl, {
+        time: "",
+      });
+    });
+    localStorage.setItem(
+      "levels.cleared",
+      JSON.stringify(Array.from(newLevels))
+    );
+    localStorage.removeItem("clearedLevels");
+  }
   initShaderConfig(resolution: Vector2) {
     const cache = this.cache;
     const baseShader = cache.shader.get("base");
-    const { shaders } = cache.json.get("config");
+    const { shaders, gameplay } = cache.json.get("config") as GameConfig;
+
     baseShader.uniforms = {
       ...shaders.base.init,
+      lightenFactor: {
+        type: "1f",
+        value: gameplay.fluidColors ? 0.2 : 1.0,
+      },
+      activeOffset: {
+        type: "2f",
+        value: { x: gameplay.highlightIntensity ? 0.0 : 0.4, y: 0.7 },
+      },
       screenResolution: { type: "2f", value: resolution },
     };
 
     const distortionShader = cache.shader.get("distortion");
     console.log(distortionShader);
+
     distortionShader.uniforms = {
       ...distortionShader.uniforms,
       darkOverlay: { type: "1f", value: 0.7 },
+      radius: { type: "1f", value: 0.3 },
     };
   }
 
-  loadUserConfig() {
-    const config: { colors: ColorConfig } = this.cache.json.get("config");
+  loadUserConfig<T>(
+    key: keyof GameConfig,
+    check?: (data: unknown) => data is T
+  ) {
+    const config = this.cache.json.get("config") as GameConfig;
+    const storageData = localStorage.getItem(key);
+    if (!storageData) return;
 
-    this.loadShaderUserConfig(["activeOffset", "lightenFactor"]);
+    const parsedData = JSON.parse(storageData);
 
-    const savedColors = localStorage.getItem("colors");
+    if (check && !check(parsedData)) return;
 
-    if (!savedColors) return;
-
-    const parsedData = JSON.parse(savedColors);
-
-    if (!isValidColors(parsedData)) return;
-
-    config.colors = {
-      ...config.colors,
+    config[key] = {
+      ...config[key],
       ...parsedData,
     };
   }
 
-  loadShaderUserConfig(keys: string[]) {
-    const config = this.cache.json.get("config");
-    keys.forEach((key) => {
-      const data = localStorage.getItem(`shader.${key}`);
-      if (data) {
-        config.shaders.base.init = {
-          ...config.shaders.base.init,
-          [key]: JSON.parse(data),
-        };
-      }
-    });
-  }
-
-  showLoading(loadingConfig: LoadingConfig = defaultLoadingConfig) {
+  showLoading() {
     const scene = this;
     const load = this.load;
 
@@ -176,12 +202,6 @@ export class Boot extends Scene {
     });
   }
 }
-
-const defaultLoadingConfig: LoadingConfig = {
-  width: 300,
-  boxPadding: 10,
-  height: 30,
-};
 
 const isValidColors = (colors: unknown): colors is ColorConfig => {
   if (typeof colors != "object" || colors === null) return false;

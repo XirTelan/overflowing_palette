@@ -1,5 +1,9 @@
 {
   "version": 1.1,
+  "gameplay": {
+    "highlightIntensity": 0,
+    "fluidColors": 1
+  },
   "background": {
     "current": {
       "key": "bg4",

@@ -29,6 +29,11 @@
       },
       {
         "type": "audio",
+        "key": "reset",
+        "url": "reset.mp3"
+      },
+      {
+        "type": "audio",
         "key": "colorSelect",
         "url": "colorSelect.mp3"
       },
@@ -79,16 +84,21 @@
         "textureURL": "uiatlas.webp",
         "atlasURL": "uiatlas.json"
       },
-      {
-        "type": "image",
-        "key": "background",
-        "url": "bg.png"
-      },
 
       {
         "type": "image",
         "key": "grid_border",
         "url": "grid_border.png"
+      },
+      {
+        "type": "image",
+        "key": "MainBtnActive",
+        "url": "MainBtnActive.png"
+      },
+      {
+        "type": "image",
+        "key": "MainBtnActiveCircle",
+        "url": "MainBtnActiveCircle.png"
       }
     ]
   },

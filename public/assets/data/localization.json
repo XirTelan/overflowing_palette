@@ -11,6 +11,7 @@
     "en": {
       "mainMenu": {
         "selectLevel": "Select Level",
+        "endlessZen": "Endless Zen",
         "createLevel": "Create Level",
         "options": "Options",
         "gitHub": "Open Docs\n (GitHub)"
@@ -43,6 +44,16 @@
           "image": "Image",
           "distortion": "Distortion",
           "overlay": "Overlay"
+        },
+        "gameplayTab": {
+          "highlightIntensity": {
+            "text": "Highlight Intensity",
+            "options": ["Normal", "Strong"]
+          },
+          "fluidColors": {
+            "text": "Fluid Colors",
+            "options": ["Off", "On"]
+          }
         }
       },
       "import": "Import",

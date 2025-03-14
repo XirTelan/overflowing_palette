@@ -2,6 +2,7 @@ import { MenuTabProps, Vector3 } from "../../../types";
 import { getLocal } from "../../../utils";
 import { MenuTab } from "../MenuTab";
 import { ColorsTab } from "./ColorsTab";
+import { GameplayTab } from "./GameplayTab";
 import { GeneralTab } from "./GeneralTab";
 import { OptionTab } from "./OptionTab";
 
@@ -12,6 +13,7 @@ export class Options extends MenuTab {
 
   colorTab: ColorsTab;
   generalTab: GeneralTab;
+  gameplayTab: GameplayTab;
 
   tabs: OptionTab[] = [];
 
@@ -56,21 +58,19 @@ export class Options extends MenuTab {
       this
     );
 
-    this.tabs.push(
-      ...[
-        this.generalTab,
-        this.colorTab,
-        new OptionTab(
-          "gameplay",
-          false,
-          options.tabs.gameplay,
-          tabBtns,
-          tabs,
-          this.updateActiveTab,
-          this
-        ),
-      ]
+    this.gameplayTab = new GameplayTab(
+      scene,
+      "gameplay",
+      false,
+      options.tabs.gameplay,
+      800,
+      tabBtns,
+      tabs,
+      this.updateActiveTab,
+      this
     );
+
+    this.tabs.push(...[this.generalTab, this.colorTab, this.gameplayTab]);
 
     this.contentContainer.classList.add("menu-options");
 
@@ -133,7 +133,7 @@ export class Options extends MenuTab {
   }
   resetUserConfig() {
     Object.keys(localStorage).forEach((key) => {
-      if (key === "clearedLevels") return;
+      if (key === "levels.cleared") return;
       localStorage.removeItem(key);
     });
     this.hide();
@@ -150,6 +150,7 @@ export class Options extends MenuTab {
     // });
     const colorsData = this.colorTab.getValues();
     const generalData = this.generalTab.getValues();
+    const gameplayTab = this.gameplayTab.getValues();
     console.log("colorsData", colorsData);
     console.log("generalData", generalData);
 
@@ -173,6 +174,7 @@ export class Options extends MenuTab {
 
     localStorage.setItem("colors", JSON.stringify(colorsData));
     localStorage.setItem("background", JSON.stringify(generalData.background));
+    localStorage.setItem("gameplay", JSON.stringify(gameplayTab));
     localStorage.setItem("lang", generalData.lang);
     this.hide();
   }

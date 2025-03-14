@@ -1,9 +1,9 @@
-import { Scene } from "phaser";
 import { BaseBlock } from "../common/BaseBlock";
 import { Game } from "../../scenes/Game";
 import { GameMode, GameStatus, LevelData, LevelsJson } from "../../types";
 import { PrimaryBtn } from "../ui/PrimaryBtn";
-import { getLocal } from "../../utils";
+import { getLocal, getUserLevelsCleared } from "../../utils";
+import { Record } from "../ui/html/Record";
 
 export class ResultScreen extends BaseBlock {
   scene: Game;
@@ -14,9 +14,15 @@ export class ResultScreen extends BaseBlock {
   };
   local;
 
-  constructor(width: number, height: number, scene: Game) {
-    const centerX = scene.cameras.main.width / 2;
-    const centerY = scene.cameras.main.height / 2;
+  constructor(scene: Game) {
+    scene.cameras.main.postFX.addBlur(1);
+
+    const width = scene.cameras.main.width;
+    const height = scene.cameras.main.height;
+
+    const centerX = width / 2;
+    const centerY = height / 2;
+
     super(centerX - width / 2, centerY - height / 2, scene);
     this.scene = scene;
 
@@ -26,72 +32,98 @@ export class ResultScreen extends BaseBlock {
 
     const levelKey = this.scene.gameStates.levelKey;
 
-    this.saveRecordAboutLevel(levelKey);
-
     const timeElapsed = new Date(scene.time.now - scene.startTime)
       .toISOString()
       .slice(11, 19);
 
-    this.container.add([
-      scene.add.rectangle(0, 0, width, height, 0x000000, 0.95).setOrigin(0),
-      scene.add.rectangle(0, 0, width, 50, 0xffffff, 0.95).setOrigin(0),
-      scene.make
-        .text({
-          x: width / 2,
-          y: 10,
-          text: this.local.win,
-          style: {
-            color: "#000",
-            font: "32px OpenSans_Bold",
-          },
-        })
-        .setOrigin(0.5, 0),
-      scene.make.text({
-        x: 10,
-        y: 70,
-        text: `${this.local.time} ${timeElapsed} `,
-        style: {
-          color: "#fff",
-          font: "32px OpenSans_Bold",
-        },
-      }),
-      new PrimaryBtn(
-        width / 2 - 110,
-        height - 33,
-        this.local.btnMain,
-        300,
-        50,
-        this.scene,
-        () => {
-          this.scene.scene.start("MainMenu");
-        }
-      ).container,
-    ]);
+    this.saveRecordAboutLevel(levelKey, timeElapsed);
+
+    const viewBox = scene.add
+      .dom(0, 0, "div", {
+        width: `${width}px`,
+        height: `${height}px`,
+      })
+      .setOrigin(0);
+
+    const container = document.createElement("div");
+    container.classList.add("wrapper");
+
+    const content = document.createElement("div");
+    content.classList.add("result-screen");
+    container.appendChild(content);
+
+    const textBlock = document.createElement("div");
+    textBlock.classList.add("result-screen__cleared");
+    textBlock.textContent = "Level Complete";
+    const textBlockBg = document.createElement("div");
+    textBlockBg.classList.add("cleared-bg");
+
+    textBlock.append(textBlockBg);
+
+    content.appendChild(textBlock);
+
+    const resultsBlock = document.createElement("div");
+    resultsBlock.classList.add("results");
+    content.appendChild(resultsBlock);
+
+    const timeRecord = this.addRecord("Time", timeElapsed);
+    resultsBlock.appendChild(timeRecord);
+
+    viewBox.node.appendChild(container);
+    const buttonsBlock = document.createElement("div");
+    buttonsBlock.classList.add("results_buttons");
+
+    const btn = document.createElement("button");
+    btn.classList.add("primary-btn");
+    btn.textContent = "Main Menu";
+    btn.addEventListener("click", () => {
+      this.scene.scene.start("MainMenu");
+    });
+
+    buttonsBlock.append(btn);
+
+    content.appendChild(buttonsBlock);
 
     if (!levelKey) return;
 
     const isNextLevel = this.findNextLevel();
     if (isNextLevel) {
-      this.createNextLevelBtn(width / 2 + 110, height - 33);
+      const btn = document.createElement("button");
+      btn.classList.add("primary-btn");
+      btn.addEventListener("click", () => {
+        this.scene.scene.start("LoadingGame", this.nextLevelData);
+      });
+      btn.textContent = "Next Level";
+      buttonsBlock.append(btn);
     }
   }
-  saveRecordAboutLevel(levelKey: string) {
-    const localData = localStorage.getItem("clearedLevels");
-    let cache;
-    if (localData) {
-      const parsed = JSON.parse(localData);
-      cache = new Set(parsed);
-    } else {
-      cache = new Set();
-    }
-    cache.add(levelKey);
+  saveRecordAboutLevel(levelKey: string, time: string) {
+    if (!levelKey) return;
 
-    localStorage.setItem("clearedLevels", JSON.stringify(Array.from(cache)));
+    getUserLevelsCleared();
+
+    const cache = getUserLevelsCleared();
+
+    cache.set(levelKey, {
+      time,
+    });
+
+    localStorage.setItem("levels.cleared", JSON.stringify(Array.from(cache)));
+  }
+  addRecord(text: string, value: string) {
+    return new Record(
+      text,
+      value,
+      "results__item",
+      "results__label",
+      "results__value"
+    ).container;
   }
   createNextLevelBtn(x: number, y: number) {
     this.container.add(
       new PrimaryBtn(x, y, this.local.btnNext, 300, 50, this.scene, () => {
         this.scene.scene.start("LoadingGame", this.nextLevelData);
+        this.scene.cameras.main.postFX.clear();
       }).container
     );
   }

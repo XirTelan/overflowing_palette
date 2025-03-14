@@ -2,7 +2,6 @@ import { Scene } from "phaser";
 import { OptionTab } from "./OptionTab";
 import { Select } from "../../ui/html/Select";
 import { OptionFolder } from "../../ui/html/OptionFolder";
-import { ValueSelector } from "../../ui/html/ValueSelector";
 import { getLocal } from "../../../utils";
 import {
   BackgroundConfig,
@@ -10,6 +9,7 @@ import {
   LanguageConfig,
   LocalizationConfig,
 } from "../../../types";
+import { OptionSelector } from "../../ui/html/OptionSelector";
 
 type GeneralTabConfig = {
   background: BackgroundConfig;
@@ -101,7 +101,7 @@ export class GeneralTab extends OptionTab {
       this.currentConfig.background.options.map((obj) => obj.key)
     );
 
-    const distortion = new ValueSelector(
+    const distortion = new OptionSelector(
       generalTab.distortion,
       this.currentConfig.background.current.distortion,
       ["Off", "On"],
@@ -110,7 +110,7 @@ export class GeneralTab extends OptionTab {
         this.currentConfig.background.current.distortion = val;
       }
     );
-    const overlay = new ValueSelector(
+    const overlay = new OptionSelector(
       generalTab.overlay,
       this.currentConfig.background.current.overlay,
       ["Off", "On"],

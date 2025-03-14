@@ -1,8 +1,9 @@
 import { Scene } from "phaser";
-import { ColorType, LevelData } from "../../../types";
+import { ColorType, GameConfig, GameMode, LevelData } from "../../../types";
 import { PrimaryBtn } from "../../ui/PrimaryBtn";
 import { NormalizedRgbToColor } from "../../../utils";
 import { BaseBlock } from "../../common/BaseBlock";
+import { Record } from "../../ui/html/Record";
 
 export class SelectedLevelInfo extends BaseBlock {
   previewBlock: PreviewBlock;
@@ -27,8 +28,8 @@ export class SelectedLevelInfo extends BaseBlock {
       scene.cache.json.get("config")["mainMenu"]["levelSelection"];
 
     this.container.add([
-      scene.add.rectangle(0, 0, width, height, 0x000000, 0.6).setOrigin(0, 0),
-      scene.add.rectangle(0, 0, width, 45, 0x000000, 1).setOrigin(0, 0),
+      scene.add.rectangle(0, 0, width, height, 0x000000, 0.7).setOrigin(0, 0),
+      scene.add.rectangle(0, 0, width, 45, 0x000000, 0.6).setOrigin(0, 0),
       scene.make
         .text({
           x: width / 2,
@@ -49,8 +50,8 @@ export class SelectedLevelInfo extends BaseBlock {
       })
       .setOrigin(0.5, 0);
 
-    this.previewBlock = new PreviewBlock(0, 40, scene);
-    this.levelInfo = new InfoBlock(20, 40, scene);
+    this.previewBlock = new PreviewBlock(10, 60, scene);
+    this.levelInfo = new InfoBlock(0, 40, scene);
 
     this.container.add([
       this.emptyBlock,
@@ -58,18 +59,26 @@ export class SelectedLevelInfo extends BaseBlock {
       this.previewBlock.container,
     ]);
 
-    this.actionBtn = actionBtn;
-    actionBtn.container.setPosition(width / 2 + 70, height - 50);
-    actionBtn.container.parentContainer.remove(actionBtn.container);
-    actionBtn.container.setScale(1);
+    if (actionBtn) {
+      this.actionBtn = actionBtn;
+      actionBtn.container.setPosition(width / 2 + 70, height - 50);
+      actionBtn.container.parentContainer.remove(actionBtn.container);
+      actionBtn.container.setScale(1);
 
-    this.container.add(actionBtn.container);
+      this.container.add(actionBtn.container);
 
-    actionBtn.hide();
+      actionBtn.hide();
+    }
     this.previewBlock.hide();
     this.levelInfo.hide();
   }
-  updateInfo(levelData: LevelData | undefined, levelKey?: string) {
+  updateInfo(
+    levelData: LevelData | undefined,
+    levelKey?: string,
+    clearedLevel?: {
+      time: string;
+    }
+  ) {
     if (!levelData) {
       this.actionBtn.hide();
       this.previewBlock.hide();
@@ -78,8 +87,7 @@ export class SelectedLevelInfo extends BaseBlock {
       return;
     }
     this.actionBtn.container.setVisible(true);
-
-    this.levelInfo.update(String(levelData.turns), levelData.targetColor);
+    this.levelInfo.update(String(levelData.turns), levelData, clearedLevel);
     this.levelInfo.container.setVisible(true);
 
     this.previewBlock.updatePreview(levelData.board);
@@ -87,7 +95,7 @@ export class SelectedLevelInfo extends BaseBlock {
 
     this.actionBtn.btn.on("pointerdown", () => {
       this.scene.scene.start("LoadingGame", {
-        mode: "Play",
+        mode: GameMode.Play,
         levelKey,
         levelData,
       });
@@ -108,7 +116,7 @@ class PreviewBlock extends BaseBlock {
     const { selectedLevelInfo } =
       this.scene.cache.json.get("config")["mainMenu"]["levelSelection"];
 
-    const { colors } = this.scene.cache.json.get("config");
+    const { colors } = this.scene.cache.json.get("config") as GameConfig;
 
     const rows = level.length;
     const cols = level[0].length;
@@ -130,88 +138,137 @@ class PreviewBlock extends BaseBlock {
     graphics.clear();
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {
-        const color = colors[level[i][j] as ColorType];
+        const color = colors[level[i][j] as ColorType].value;
         graphics.fillStyle(NormalizedRgbToColor(color));
         graphics.fillRect(j * 50, i * 50, 50, 50);
       }
     }
   }
 }
-class InfoBlock extends BaseBlock {
-  turnsText: Phaser.GameObjects.Text;
-  tartgetColorText: Phaser.GameObjects.Text;
+class InfoBlock {
+  scene: Scene;
+  container: Phaser.GameObjects.DOMElement;
+  turnsText: HTMLElement;
+  tartgetColorText: HTMLElement;
+  author: HTMLElement;
+  gridSize: HTMLElement;
+  clearedBlock: ClearedBlock;
+
   constructor(x: number, y: number, scene: Scene) {
-    super(x, y, scene);
+    this.scene = scene;
 
-    const { selectedLevelInfo } =
-      scene.cache.json.get("config")["mainMenu"]["levelSelection"];
-
-    this.container = scene.add.container(
-      selectedLevelInfo.infoBlock.x,
-      selectedLevelInfo.infoBlock.y
-    );
-    this.container.add(
-      scene.add
-        .rectangle(
-          0,
-          -10,
-          selectedLevelInfo.infoBlock.width,
-          selectedLevelInfo.infoBlock.height,
-          0x000000,
-          1
-        )
-        .setOrigin(0, 0)
-    );
-
-    const staticText = scene.make.text({
-      ...selectedLevelInfo.targetColorTextOffset,
-      text: "Target color:",
-      style: selectedLevelInfo.defaultStyle,
-    });
-
-    this.tartgetColorText = scene.make
-      .text({
-        x:
-          selectedLevelInfo.infoBlock.width -
-          selectedLevelInfo.targetColorTextOffset.x,
-        y: staticText.y,
-        text: "No color",
-        style: selectedLevelInfo.defaultStyle,
+    const vieBox = scene.add
+      .dom(x, 380, "div", {
+        width: `420px`,
+        height: `500px`,
+        fontSize: "24px",
+        overflow: "auto",
       })
-      .setOrigin(1, 0);
+      .setOrigin(0);
 
-    const staticText2 = scene.make.text({
-      ...selectedLevelInfo.turnsTextOffset,
-      text: "Turns:",
-      style: selectedLevelInfo.defaultStyle,
-    });
+    this.container = vieBox;
 
-    this.turnsText = scene.make
-      .text({
-        x:
-          selectedLevelInfo.infoBlock.width -
-          selectedLevelInfo.turnsTextOffset.x,
-        y: staticText2.y,
+    const container = document.createElement("div");
 
-        text: "0",
-        style: { ...selectedLevelInfo.defaultStyle, color: "#ffcd3f" },
-      })
-      .setOrigin(1, 0);
+    container.classList.add("info-block");
+    console.log(vieBox);
 
-    this.container.add([
-      this.tartgetColorText,
-      this.turnsText,
-      staticText,
-      staticText2,
-    ]);
+    vieBox.node.append(container);
+
+    this.tartgetColorText = this.addRecord("Target Color:", "red");
+    this.turnsText = this.addRecord("Moves:", "0");
+    this.author = this.addRecord("Author:", "");
+    this.gridSize = this.addRecord("Grid Size:", "");
+
+    this.clearedBlock = new ClearedBlock();
+    this.clearedBlock.hide();
+
+    container.appendChild(this.turnsText);
+    container.appendChild(this.tartgetColorText);
+    container.appendChild(this.author);
+    container.appendChild(this.gridSize);
+    container.appendChild(this.clearedBlock.container);
   }
-  update(turns: string, color: ColorType) {
-    this.tartgetColorText.setText(`${ColorType[color]}`);
-    const { colors } = this.scene.cache.json.get("config");
-    const { x, y, z } = colors[color];
-    this.tartgetColorText.setColor(
-      Phaser.Display.Color.RGBToString(x * 255, y * 255, z * 255)
+  addRecord(text: string, value: string, overrideClass?: string) {
+    return new Record(
+      text,
+      value,
+      overrideClass ?? "preview-item",
+      "preview-item__label",
+      "preview-item__value"
+    ).container;
+  }
+
+  update(turns: string, levelData: LevelData, cleared?: ClearedData) {
+    const { colors } = this.scene.cache.json.get("config") as GameConfig;
+    this.tartgetColorText.childNodes[1].textContent = `${
+      colors[levelData.targetColor as ColorType].colorName
+    }`;
+    const { x, y, z } = colors[levelData.targetColor as ColorType].value;
+    const textElement = this.tartgetColorText.childNodes[1] as HTMLElement;
+    textElement.style.color = Phaser.Display.Color.RGBToString(
+      x * 255,
+      y * 255,
+      z * 255
     );
-    this.turnsText.setText(turns);
+
+    this.turnsText.childNodes[1].textContent = turns;
+    this.gridSize.childNodes[1].textContent = `${levelData.board.length}x${levelData.board[0].length} `;
+
+    if (levelData.author) {
+      this.author.style.display = "flex";
+      this.author.childNodes[1].textContent = levelData.author;
+    } else {
+      this.author.style.display = "none";
+    }
+
+    if (cleared) {
+      this.clearedBlock.show();
+      this.clearedBlock.time.textContent = cleared.time;
+    } else {
+      this.clearedBlock.hide();
+    }
+  }
+  hide() {
+    this.container.setVisible(false);
+  }
+}
+
+type ClearedData = {
+  time: string;
+};
+
+class ClearedBlock {
+  container: HTMLElement;
+  time: HTMLElement;
+
+  constructor() {
+    const container = document.createElement("div");
+
+    const text = document.createElement("p");
+    text.classList.add("preview-item-cleared");
+    //[TASK][i18n]
+    text.textContent = "CLEARED";
+
+    const timeRecord = new Record(
+      "Time",
+      "A long time ago",
+      "preview-item",
+      "preview-item__label",
+      "preview-item__value"
+    );
+
+    container.appendChild(text);
+    container.appendChild(timeRecord.container);
+
+    this.time = timeRecord.value;
+    this.container = container;
+  }
+
+  hide() {
+    this.container.style.display = "none";
+  }
+  show() {
+    this.container.style.display = "block";
   }
 }

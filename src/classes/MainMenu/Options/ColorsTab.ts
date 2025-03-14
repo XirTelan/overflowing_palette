@@ -48,7 +48,7 @@ export class ColorsTab extends OptionTab {
     });
   }
 
-  private createColorSelector(index, name, value) {
+  private createColorSelector(index: number, name: string, value: Vector3) {
     const container = document.createElement("div");
     container.classList.add("selector");
 
@@ -64,7 +64,6 @@ export class ColorsTab extends OptionTab {
 
     const colorPicker = document.createElement("input");
     colorPicker.setAttribute("type", "color");
-    console.log("val:", value, NormalizedRgbToHexString(value));
     colorPicker.defaultValue = `${NormalizedRgbToHexString(value)}`;
 
     container.appendChild(indexBlock);

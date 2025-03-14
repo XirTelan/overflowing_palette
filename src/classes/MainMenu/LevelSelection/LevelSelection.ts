@@ -9,13 +9,16 @@ import {
 import { SelectedLevelInfo } from "./SelectedLevelInfo";
 import { PrimaryBtn } from "../../ui/PrimaryBtn";
 import { ImportLevel } from "./Import";
+import { getUserLevelsCleared } from "../../../utils";
 
 export class LevelSelection extends MenuTab {
   selectedLevelData: LevelData;
   selectedFolder: string;
   selectedLevelInfo: SelectedLevelInfo;
   levelsList: Phaser.GameObjects.DOMElement;
-  clearedLevels: Set<string>;
+  clearedLevels: Map<any, any>;
+  importBlock: ImportLevel;
+
   constructor(props: MenuTabProps) {
     super(props);
     const { x, y, scene, width, height } = props;
@@ -36,11 +39,13 @@ export class LevelSelection extends MenuTab {
     this.selectedLevelInfo = new SelectedLevelInfo(
       x + width,
       y,
-      scene.cameras.main.width - x - width - 10,
+      scene.cameras.main.width - x - width,
       height,
       this.actionBtn,
       scene
     );
+    this.importBlock = new ImportLevel(this.scene);
+    this.importBlock.hide();
 
     this.selectedLevelInfo.container.add(
       new PrimaryBtn(
@@ -69,21 +74,21 @@ export class LevelSelection extends MenuTab {
     if (!levels) return;
 
     this.levelsList.node.replaceChildren();
+
+    const levelContainer = document.createElement("div");
+    levelContainer.classList.add("folder-container");
+
+    this.levelsList.node.appendChild(levelContainer);
+
     this.selectedFolder = folder.folderName;
     this.selectedLevelInfo.show();
 
-    const localData = localStorage.getItem("clearedLevels");
-    let cache;
-    if (localData) {
-      const parsed = JSON.parse(localData);
-      cache = new Set<string>(parsed);
-    } else {
-      cache = new Set<string>();
-    }
+    const cache = getUserLevelsCleared();
+
     this.clearedLevels = cache;
 
     for (const category of folder.categories) {
-      this.levelsList.node.append(this.createCategory(category));
+      levelContainer.append(this.createCategory(category));
     }
   }
 
@@ -93,17 +98,21 @@ export class LevelSelection extends MenuTab {
 
     this.levelsList.node.replaceChildren();
 
+    const levelContainer = document.createElement("div");
+    levelContainer.classList.add("level-container");
+
+    this.levelsList.node.appendChild(levelContainer);
+
     for (const folder of levels) {
-      this.levelsList.node.append(
+      levelContainer.appendChild(
         this.createFolderBtn(folder.folderName, folder)
       );
     }
     const importBtn = this.createBtn("Import");
     importBtn.addEventListener("click", () => {
-      const btn = new ImportLevel(this.scene);
-      btn.render();
+      this.importBlock.show();
     });
-    this.levelsList.node.append(importBtn);
+    levelContainer.appendChild(importBtn);
   }
   createLvlBtn(text: string, levelData: LevelData, key: string) {
     const card = this.createBtn(text);
@@ -111,7 +120,11 @@ export class LevelSelection extends MenuTab {
       card.classList.add("cleared");
     }
     card.addEventListener("click", () => {
-      this.selectedLevelInfo.updateInfo(levelData, key);
+      this.selectedLevelInfo.updateInfo(
+        levelData,
+        key,
+        this.clearedLevels.get(key)
+      );
     });
     return card;
   }

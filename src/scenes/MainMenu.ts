@@ -6,12 +6,17 @@ import { MenuTab } from "../classes/MainMenu/MenuTab";
 import { LevelEditor } from "../classes/MainMenu/LevelEditor";
 import { Options } from "../classes/MainMenu/Options/Options";
 import { getLocal } from "../utils";
+import { Background } from "../classes/ui/Background";
+import { EndlessZen } from "../classes/MainMenu/EndlessZen";
 
-const TABS_KEYS = ["LevelEditor", "LevelSelector", "Options"];
+const TABS_KEYS = ["LevelEditor", "EndlessZen", "LevelSelector", "Options"];
+
 const OFFSET_X = 500;
+
 export class MainMenu extends Scene {
   activeTab: string;
   tabs = new Map<string, MenuTab>();
+  tabBtns = new Map<string, MenuBtn>();
 
   constructor() {
     super("MainMenu");
@@ -28,9 +33,18 @@ export class MainMenu extends Scene {
       x: OFFSET_X,
       y: 0,
       scene: this,
-      width: width,
+      width: 1000,
       height: height,
       key: "LevelSelector",
+    });
+
+    const endlessZen = new EndlessZen({
+      x: OFFSET_X,
+      y: 0,
+      scene: this,
+      width: 1000,
+      height: height,
+      key: "EndlessZen",
     });
 
     const levelEditor = new LevelEditor({
@@ -52,6 +66,7 @@ export class MainMenu extends Scene {
     });
 
     this.tabs.set("LevelSelector", levelSeletor);
+    this.tabs.set("EndlessZen", endlessZen);
     this.tabs.set("LevelEditor", levelEditor);
     this.tabs.set("Options", options);
     this.cameras.main.fadeIn(1000, 0, 0, 0);
@@ -59,8 +74,7 @@ export class MainMenu extends Scene {
   private createBackground() {
     const width = this.cameras.main.width;
     const height = this.cameras.main.height;
-
-    this.loadBg(width, height);
+    new Background(this);
 
     const isExist = this.textures.exists("gradient");
     if (!isExist) {
@@ -87,25 +101,6 @@ export class MainMenu extends Scene {
 
     graphics.lineBetween(50, 0, 50, this.cameras.main.height);
   }
-  private loadBg(width: number, height: number) {
-    const { current: background } = this.cache.json.get("config")[
-      "background"
-    ] as GameConfig["background"];
-
-    const bg = this.add.shader(
-      "distortion",
-      width / 2,
-      height / 2,
-      width,
-      height,
-      [background.key]
-    );
-    console.log(background);
-    if (!background) return;
-
-    bg.setUniform("darkOverlay.value", background.distortion);
-    bg.setUniform("darkOverlay.value", background.overlay ? 0.7 : 0);
-  }
 
   private makeMenuBtns() {
     const config: GameConfig["mainMenu"]["buttonsBlock"] =
@@ -117,24 +112,29 @@ export class MainMenu extends Scene {
 
     const defaultOffset = 100 + config.gap;
 
-    const levelSelector = this.createButton(
-      0,
-      0,
-      local.mainMenu.selectLevel,
-      "LevelSelector"
-    ).container;
-    const levelEditor = this.createButton(
-      0,
-      defaultOffset,
-      local.mainMenu.createLevel,
-      "LevelEditor"
-    ).container;
-    const options = this.createButton(
-      0,
-      defaultOffset * 2,
-      local.mainMenu.options,
-      "Options"
-    ).container;
+    const buttonData = [
+      { key: "LevelSelector", text: local.mainMenu.selectLevel },
+      {
+        key: "EndlessZen",
+        text: local.mainMenu.endlessZen,
+      },
+      {
+        key: "LevelEditor",
+        text: local.mainMenu.createLevel,
+      },
+      {
+        key: "Options",
+        text: local.mainMenu.options,
+      },
+    ];
+
+    buttonData.forEach(({ key, text }, indx) => {
+      const btn = this.createButton(0, indx * defaultOffset, text, key);
+      this.tabBtns.set(key, btn);
+      container.add(btn.container);
+    });
+
+    console.log("asdasdasd", this.tabBtns);
 
     const git = this.createButton(
       0,
@@ -142,6 +142,7 @@ export class MainMenu extends Scene {
       local.mainMenu.gitHub,
       "Git"
     );
+
     git.btn.on("pointerdown", () => {
       window.open(
         "https://github.com/XirTelan/overflowing_palette",
@@ -149,15 +150,17 @@ export class MainMenu extends Scene {
       );
     });
     git.text.setFontSize(24);
-
-    container.add([levelSelector, levelEditor, options, git.container]);
+    container.add(git.container);
   }
   private createButton(x: number, y: number, text: string, tabKey: string) {
-    return new MenuBtn(this, x, y, text, () => {
+    return new MenuBtn(this, x, y, text, tabKey, () => {
       TABS_KEYS.forEach((key) => {
         const tab = this.tabs.get(key);
+
         if (!tab) return;
-        if (tabKey == key && !tab.container.visible) tab.show();
+        const isActive = tabKey == key && !tab.container.visible;
+        this.tabBtns.get(key)?.update(isActive);
+        if (isActive) tab.show();
         else tab.hide();
       });
     });

@@ -4,8 +4,7 @@ uniform vec2 resolution;
 uniform float time;
 uniform sampler2D iChannel0;
 uniform float darkOverlay;
-
-float radius = 0.3;
+uniform float radius;
 float speed = 0.05;
 varying vec2 fragCoord;
 

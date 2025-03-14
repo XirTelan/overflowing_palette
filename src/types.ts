@@ -3,7 +3,9 @@ export enum ColorType {
   "green",
   "blue",
   "yellow",
+  "orange",
   "purple",
+  "pink",
   "cyan",
 }
 export type Color = {
@@ -25,6 +27,8 @@ export type LevelData = {
   board: number[][];
   targetColor: number;
   turns: number;
+  author?: string;
+  tools?: [number, number, number];
 };
 
 export type LevelsJson = LevelFolder[];
@@ -44,6 +48,7 @@ export enum GameStatus {
 export type LanguageConfig = {
   mainMenu: {
     selectLevel: string;
+    endlessZen: string;
     createLevel: string;
     options: string;
     gitHub: string;
@@ -114,9 +119,17 @@ export type BackgroundConfig = {
     name: string;
   }[];
 };
+
 export type GameConfig = {
+  gameplay: {
+    highlightIntensity: number;
+    fluidColors: number;
+  };
   background: BackgroundConfig;
   colors: ColorConfig;
+  shaders: {
+    base: { init: Record<string, unknown> };
+  };
   mainMenu: {
     buttonsBlock: {
       x: number;
@@ -127,6 +140,7 @@ export type GameConfig = {
   };
   game: {
     gridOptions: GridOptions;
+    ui: UiOptions;
   };
 };
 
@@ -188,6 +202,7 @@ export type UiOptions = {
   };
   colorButtons: {
     gap: number;
+    size: number;
   };
   closeBtn: {
     offset: {

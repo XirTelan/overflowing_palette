@@ -37,7 +37,7 @@ export default class ColorBtn {
     this.active = active;
 
     const pointer = this.scene.add.triangle(
-      active.x + btnSize / 2 + 20,
+      btnSize / 2 + 20,
       10,
       x - 5,
       y,

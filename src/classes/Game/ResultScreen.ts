@@ -10,8 +10,6 @@ export class ResultScreen extends BaseBlock {
   nextLevelData: GameSceneData;
   local;
 
-  viewBox: Phaser.GameObjects.DOMElement;
-
   constructor(scene: Game) {
     scene.cameras.main.postFX.addBlur(1);
 
@@ -21,6 +19,7 @@ export class ResultScreen extends BaseBlock {
     const centerY = height / 2;
 
     super(centerX - width / 2, centerY - height / 2, scene);
+
     this.scene = scene;
 
     scene.gameStates.state = GameStatus.Waiting;
@@ -41,6 +40,7 @@ export class ResultScreen extends BaseBlock {
         height: `${height}px`,
       })
       .setOrigin(0);
+    viewBox.depth = 2;
 
     const resultContent = this.createResultContent(viewBox.node, timeElapsed);
     const buttonBlock = this.createButtonsBlock(resultContent);
@@ -63,6 +63,9 @@ export class ResultScreen extends BaseBlock {
       btn.textContent = "Next Level";
       buttonBlock.append(btn);
     }
+
+    scene.input.enabled = false;
+    scene.setGameState(GameStatus.Waiting);
   }
 
   generateNextLevel() {
@@ -81,7 +84,7 @@ export class ResultScreen extends BaseBlock {
 
   createResultContent(viewBox: Element, time: string) {
     const container = document.createElement("div");
-    container.classList.add("wrapper");
+    container.classList.add("wrapper", "results-screen__wrapper");
 
     const content = document.createElement("div");
     content.classList.add("result-screen");
@@ -112,17 +115,35 @@ export class ResultScreen extends BaseBlock {
     const buttonsBlock = document.createElement("div");
     buttonsBlock.classList.add("results_buttons");
 
-    const btn = document.createElement("button");
-    btn.classList.add("primary-btn");
-    btn.textContent = "Main Menu";
-    btn.addEventListener("click", () => {
+    const btn = this.createPrimiryBtn("Main Menu", () => {
       this.scene.scene.start("MainMenu");
     });
-
     buttonsBlock.append(btn);
+
+    if (this.scene.gameStates.mode === GameMode.Endless) {
+      const shareBtn = this.createShareButton();
+      buttonsBlock.append(shareBtn);
+    }
 
     container.appendChild(buttonsBlock);
     return buttonsBlock;
+  }
+
+  createPrimiryBtn(text: string, onClick: () => void) {
+    const btn = document.createElement("button");
+    btn.classList.add("primary-btn");
+    btn.textContent = text;
+    btn.addEventListener("click", () => {
+      onClick();
+    });
+    return btn;
+  }
+
+  createShareButton() {
+    const btn = this.createPrimiryBtn("Share", () => {
+      this.scene.exportBlock.show();
+    });
+    return btn;
   }
 
   saveRecordAboutLevel(levelKey: string, time: string) {

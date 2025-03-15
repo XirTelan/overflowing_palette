@@ -1,3 +1,5 @@
+import { clamp } from "../../../utils";
+
 export class OptionSelector {
   container;
   value: number;
@@ -82,15 +84,12 @@ export class OptionSelector {
     const len = this.options.length - 1;
 
     if (this.isCycle) return (value + len) % len;
-    else return Math.max(0, Math.min(len, value));
+    else return clamp(value, 0, len);
   }
   forward() {
-    console.log(this.getValue(this.value + 1));
     this.value = this.getValue(this.value + 1);
   }
   back() {
-    console.log(this.getValue(this.value + 1));
-
     this.value = this.getValue(this.value - 1);
   }
 }

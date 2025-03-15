@@ -247,10 +247,12 @@ export default class Grid {
     );
   }
   cellAction(x: number, y: number, colorToChange: ColorType) {
-    if (this.scene.gameStates.mode == GameMode.Play) {
-      if (this.scene.gameStates.state === GameStatus.Waiting) return;
-      this.flip(x, y, colorToChange);
-    } else this.changeColor(x, y);
+    if (this.scene.gameStates.mode == GameMode.Editor) {
+      this.changeColor(x, y);
+      return;
+    }
+    if (this.scene.gameStates.state === GameStatus.Waiting) return;
+    this.flip(x, y, colorToChange);
   }
   private changeColor(x: number, y: number) {
     const { colors } = this.scene.cache.json.get("config") as GameConfig;

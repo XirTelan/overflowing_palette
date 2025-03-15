@@ -1,9 +1,9 @@
 import { Scene } from "phaser";
 import { ColorType, GameConfig, GameMode, LevelData } from "../../../types";
 import { PrimaryBtn } from "../../ui/PrimaryBtn";
-import { NormalizedRgbToColor } from "../../../utils";
 import { BaseBlock } from "../../common/BaseBlock";
 import { Record } from "../../ui/html/Record";
+import { normalizedRgbToColor } from "../../../utils";
 
 export class SelectedLevelInfo extends BaseBlock {
   previewBlock: PreviewBlock;
@@ -139,7 +139,7 @@ class PreviewBlock extends BaseBlock {
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {
         const color = colors[level[i][j] as ColorType].value;
-        graphics.fillStyle(NormalizedRgbToColor(color));
+        graphics.fillStyle(normalizedRgbToColor(color));
         graphics.fillRect(j * 50, i * 50, 50, 50);
       }
     }

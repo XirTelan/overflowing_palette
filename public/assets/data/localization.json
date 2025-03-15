@@ -19,10 +19,12 @@
       "game": {
         "ui": {
           "mode": "Mode:Editor",
-          "turnsRemains": "Remaining Moves:",
+          "movesRemain": "Remaining Moves:",
+          "movesUsed": "Moves Used:",
           "targetColor": "Turn all the blocks into",
           "targetColorEditor": "Target color:",
-          "movesCount": "Moves count:"
+          "movesCount": "Moves count:",
+          "resetBtn": "Reset"
         }
       },
       "resultScreen": {

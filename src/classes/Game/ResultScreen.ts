@@ -1,24 +1,21 @@
 import { BaseBlock } from "../common/BaseBlock";
 import { Game } from "../../scenes/Game";
-import { GameMode, GameStatus, LevelData, LevelsJson } from "../../types";
+import { GameMode, GameSceneData, GameStatus, LevelsJson } from "../../types";
 import { PrimaryBtn } from "../ui/PrimaryBtn";
-import { getLocal, getUserLevelsCleared } from "../../utils";
 import { Record } from "../ui/html/Record";
+import { generateLevel, getLocal, getUserLevelsCleared } from "../../utils";
 
 export class ResultScreen extends BaseBlock {
   scene: Game;
-  nextLevelData: {
-    mode: GameMode;
-    levelData: LevelData;
-    levelKey: string;
-  };
+  nextLevelData: GameSceneData;
   local;
+
+  viewBox: Phaser.GameObjects.DOMElement;
 
   constructor(scene: Game) {
     scene.cameras.main.postFX.addBlur(1);
 
-    const width = scene.cameras.main.width;
-    const height = scene.cameras.main.height;
+    const { width, height } = scene.cameras.main;
 
     const centerX = width / 2;
     const centerY = height / 2;
@@ -45,6 +42,44 @@ export class ResultScreen extends BaseBlock {
       })
       .setOrigin(0);
 
+    const resultContent = this.createResultContent(viewBox.node, timeElapsed);
+    const buttonBlock = this.createButtonsBlock(resultContent);
+
+    const isEndless = this.scene.gameStates.mode === GameMode.Endless;
+    let isNextLevel;
+
+    if (isEndless) {
+      isNextLevel = this.generateNextLevel();
+    } else {
+      isNextLevel = this.findNextLevel();
+    }
+
+    if (isNextLevel) {
+      const btn = document.createElement("button");
+      btn.classList.add("primary-btn");
+      btn.addEventListener("click", () => {
+        this.scene.scene.start("LoadingGame", this.nextLevelData);
+      });
+      btn.textContent = "Next Level";
+      buttonBlock.append(btn);
+    }
+  }
+
+  generateNextLevel() {
+    if (!this.scene.gameStates.endlessOptions) return false;
+
+    const { rows, columns, colorsCount, difficulty } =
+      this.scene.gameStates.endlessOptions!;
+
+    this.nextLevelData = {
+      mode: GameMode.Endless,
+      levelData: generateLevel(rows, columns, colorsCount, difficulty),
+      endlessOptions: this.scene.gameStates.endlessOptions,
+    };
+    return true;
+  }
+
+  createResultContent(viewBox: Element, time: string) {
     const container = document.createElement("div");
     container.classList.add("wrapper");
 
@@ -66,10 +101,14 @@ export class ResultScreen extends BaseBlock {
     resultsBlock.classList.add("results");
     content.appendChild(resultsBlock);
 
-    const timeRecord = this.addRecord("Time", timeElapsed);
+    const timeRecord = this.addRecord("Time", time);
     resultsBlock.appendChild(timeRecord);
 
-    viewBox.node.appendChild(container);
+    viewBox.appendChild(container);
+    return container;
+  }
+
+  createButtonsBlock(container: HTMLElement) {
     const buttonsBlock = document.createElement("div");
     buttonsBlock.classList.add("results_buttons");
 
@@ -82,25 +121,12 @@ export class ResultScreen extends BaseBlock {
 
     buttonsBlock.append(btn);
 
-    content.appendChild(buttonsBlock);
-
-    if (!levelKey) return;
-
-    const isNextLevel = this.findNextLevel();
-    if (isNextLevel) {
-      const btn = document.createElement("button");
-      btn.classList.add("primary-btn");
-      btn.addEventListener("click", () => {
-        this.scene.scene.start("LoadingGame", this.nextLevelData);
-      });
-      btn.textContent = "Next Level";
-      buttonsBlock.append(btn);
-    }
+    container.appendChild(buttonsBlock);
+    return buttonsBlock;
   }
+
   saveRecordAboutLevel(levelKey: string, time: string) {
     if (!levelKey) return;
-
-    getUserLevelsCleared();
 
     const cache = getUserLevelsCleared();
 
@@ -129,6 +155,8 @@ export class ResultScreen extends BaseBlock {
   }
   findNextLevel() {
     const levelKey = this.scene.gameStates.levelKey;
+    if (!levelKey) return false;
+
     const [folderName, categoryName, indx] = levelKey.split(".");
     if (!folderName || !categoryName || !indx) return false;
     const levels: LevelsJson = this.scene.cache.json.get("levels");

@@ -5,9 +5,9 @@ import { LevelSelection } from "../classes/MainMenu/LevelSelection/LevelSelectio
 import { MenuTab } from "../classes/MainMenu/MenuTab";
 import { LevelEditor } from "../classes/MainMenu/LevelEditor";
 import { Options } from "../classes/MainMenu/Options/Options";
-import { getLocal } from "../utils";
 import { Background } from "../classes/ui/Background";
 import { EndlessZen } from "../classes/MainMenu/EndlessZen";
+import { getLocal } from "../utils";
 
 const TABS_KEYS = ["LevelEditor", "EndlessZen", "LevelSelector", "Options"];
 
@@ -42,7 +42,7 @@ export class MainMenu extends Scene {
       x: OFFSET_X,
       y: 0,
       scene: this,
-      width: 1000,
+      width: width,
       height: height,
       key: "EndlessZen",
     });

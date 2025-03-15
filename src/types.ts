@@ -1,3 +1,5 @@
+import { RATES } from "./utils";
+
 export enum ColorType {
   "red",
   "green",
@@ -44,6 +46,14 @@ export enum GameStatus {
   "Waiting",
   "Active",
 }
+export type LevelDifficulty = keyof typeof RATES;
+
+export type EndlessOptions = {
+  rows: number;
+  columns: number;
+  colorsCount: number;
+  difficulty: LevelDifficulty;
+};
 
 export type LanguageConfig = {
   mainMenu: {
@@ -56,10 +66,12 @@ export type LanguageConfig = {
   game: {
     ui: {
       mode: string;
-      turnsRemains: string;
+      movesRemain: string;
+      movesUsed: string;
       targetColor: string;
       targetColorEditor: string;
       movesCount: string;
+      resetBtn: string;
     };
   };
   resultScreen: {
@@ -226,7 +238,15 @@ export type UiOptions = {
 export enum GameMode {
   "Play",
   "Editor",
+  "Endless",
 }
+
+export type GameSceneData = {
+  mode: GameMode;
+  levelData: LevelData;
+  levelKey?: string;
+  endlessOptions?: EndlessOptions;
+};
 
 export type GameStates = {
   levelKey: string;
@@ -240,6 +260,7 @@ export type GameStates = {
     turns: number;
     remains: number;
   };
+  endlessOptions?: EndlessOptions;
   mode: GameMode;
 };
 

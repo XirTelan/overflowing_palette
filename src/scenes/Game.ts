@@ -1,9 +1,11 @@
-import { Scale, Scene } from "phaser";
+import { Scene } from "phaser";
 import {
   ColorConfig,
   ColorType,
+  EndlessOptions,
   GameConfig,
   GameMode,
+  GameSceneData,
   GameStates,
   GameStatus,
   LevelData,
@@ -11,13 +13,13 @@ import {
   Vector3,
 } from "../types";
 import Grid from "../classes/Grid";
-import { cicleThrougColors, getColorName, getLocal } from "../utils";
 import ColorBtn from "../classes/ui/ColorBtn";
 import { ValueSelector } from "../classes/ui/ValueSelector";
 import { Export } from "../classes/Game/Export";
 import { SelectionBox } from "../classes/Game/SelectionBox";
 import { ResultScreen } from "../classes/Game/ResultScreen";
 import { Background } from "../classes/ui/Background";
+import { cicleThrougColors, getColorName, getLocal } from "../utils";
 
 const FADE_DELAY = 500;
 
@@ -37,15 +39,7 @@ export class Game extends Scene {
 
   preload() {}
 
-  create({
-    mode,
-    levelKey,
-    levelData,
-  }: {
-    mode: GameMode;
-    levelKey: string;
-    levelData: LevelData;
-  }) {
+  create({ mode, levelKey, levelData, endlessOptions }: GameSceneData) {
     const { colors } = this.cache.json.get("config") as GameConfig;
     this.colors = colors;
 
@@ -55,6 +49,9 @@ export class Game extends Scene {
     if (mode === GameMode.Editor) {
       this.selectionBox = new SelectionBox(this.grid.board, this);
     }
+    if (mode == GameMode.Endless) {
+      this.gameStates.endlessOptions = endlessOptions;
+    }
     this.initTextUI(this);
     this.initButtons();
     this.startTime = this.time.now;
@@ -62,22 +59,32 @@ export class Game extends Scene {
   }
 
   changeGameState(state: GameStatus) {
+    const isEndless = this.gameStates.mode === GameMode.Endless;
+
     if (state === GameStatus.Waiting) {
-      this.gameStates.turns = Math.max(0, this.gameStates.turns - 1);
+      this.gameStates.turns = isEndless
+        ? this.gameStates.turns + 1
+        : this.gameStates.turns - 1;
       this.turnCounter.text = String(this.gameStates.turns);
       this.gameStates.state = GameStatus.Waiting;
+      return;
     }
 
     if (state === GameStatus.Active) {
-      this.gameStates.state = GameStatus.Active;
-
       if (this.gameStates.remains === 0) {
+        this.gameStates.state = GameStatus.Waiting;
         new ResultScreen(this);
-      } else if (this.gameStates.turns == 0) {
+        return;
+      }
+
+      if (!isEndless && this.gameStates.turns === 0) {
         this.resetGame();
       }
+
+      this.gameStates.state = GameStatus.Active;
     }
   }
+
   changeSelectedColor(color: ColorType) {
     this.gameStates.selectedColor = color;
     this.colorSelectionButtons.forEach((btn) => btn.update());
@@ -93,12 +100,12 @@ export class Game extends Scene {
 
     const cellSize = ui.colorButtons.size;
     const isEditorMode = scene.gameStates.mode === GameMode.Editor;
-    const isPlayMode = scene.gameStates.mode === GameMode.Play;
 
     Object.entries(colors).forEach(([colorType, colorValue], index) => {
       const colorId = Number(colorType);
 
-      if (isPlayMode && !scene.gameStates.availableColors.has(colorId)) return;
+      if (!isEditorMode && !scene.gameStates.availableColors.has(colorId))
+        return;
 
       const offsetX =
         isEditorMode && index >= 4 ? cellSize + ui.colorButtons.gap * 2 : 0;
@@ -117,7 +124,7 @@ export class Game extends Scene {
       scene.colorSelectionButtons.push(newBtn);
     });
 
-    scene.btnContainer.y -= (scene.colorSelectionButtons.length * 80) / 4;
+    scene.btnContainer.y -= (scene.colorSelectionButtons.length * cellSize) / 4;
 
     createResetButton(this);
     createCloseButton(this);
@@ -125,9 +132,11 @@ export class Game extends Scene {
 
   resetGame() {
     if (this.gameStates.state === GameStatus.Waiting) return;
+    this.sound.play("reset");
+
     this.grid.resetBoard();
     const { initialState } = this.gameStates;
-    if (this.gameStates.mode === GameMode.Play) {
+    if (this.gameStates.mode !== GameMode.Editor) {
       this.gameStates.turns = initialState.turns;
       this.gameStates.remains = initialState.remains;
       this.turnCounter.text = String(this.gameStates.turns);
@@ -138,16 +147,20 @@ export class Game extends Scene {
   private initTextUI(scene: Game) {
     const {
       game: { ui },
-    } = scene.cache.json.get("config");
+    } = scene.cache.json.get("config") as GameConfig;
 
     const local = getLocal(scene);
 
     if (scene.gameStates.mode == GameMode.Editor) {
       this.loadEditorUI(scene, ui);
-    }
-    if (scene.gameStates.mode == GameMode.Play) {
+    } else {
       this.loadPlayUI(scene, ui);
     }
+    this.createTitle(scene, local.game.ui.mode);
+    this.createTriangles(scene, ui);
+  }
+
+  private createTitle(scene: Game, mode: string) {
     const icon = scene.add
       .image(60, 50, "uiatlas", "icon")
       .setScale(0.5)
@@ -156,46 +169,45 @@ export class Game extends Scene {
       x: icon.x + 50,
       y: icon.y,
       text: `Overflowing Palette ${
-        scene.gameStates.mode === GameMode.Editor
-          ? `| ${local.game.ui.mode}`
-          : ""
+        scene.gameStates.mode === GameMode.Editor ? `| ${mode}` : ""
       }`,
       style: {
         color: "#ab9c6b",
         font: "26px OpenSans_Bold",
       },
     });
-    //[TODO] replace with eitherr config or texture
-    let commonProps = [0, 30, -20, 0, 20, 0];
+  }
+
+  private createTriangles(scene: Game, ui: UiOptions) {
+    const commonProps1 = [0, 30, -20, 0, 20, 0];
+    const commonProps2 = [80, 0, 25, -15, 0, 15, 0, 0x94844c];
+    const commonProps3 = [0, -20, -10, 0, 10, 0, 0xffffff, 0.2];
+
     scene.add.triangle(
       ui.targetUI.x - 45,
       ui.targetUI.y + 15,
-      ...commonProps,
+      ...commonProps1,
       0xffffff
     );
     scene.add.triangle(
       ui.targetUI.x - 5,
       ui.targetUI.y + 15,
-      ...commonProps,
+      ...commonProps1,
       0x94844c
     );
 
-    commonProps = [80, 0, 25, -15, 0, 15, 0, 0x94844c];
-
-    scene.add.triangle(scene.btnContainer.x - 10, ...commonProps);
-    scene.add.triangle(scene.btnContainer.x + 20, ...commonProps);
-
-    commonProps = [0, -20, -10, 0, 10, 0, 0xffffff, 0.2];
+    scene.add.triangle(scene.btnContainer.x - 10, ...commonProps2);
+    scene.add.triangle(scene.btnContainer.x + 20, ...commonProps2);
 
     scene.add.triangle(
       scene.btnContainer.x + 10,
       scene.cameras.main.height - 240,
-      ...commonProps
+      ...commonProps3
     );
     scene.add.triangle(
       scene.btnContainer.x + 10,
       scene.cameras.main.height - 220,
-      ...commonProps
+      ...commonProps3
     );
   }
 
@@ -264,7 +276,10 @@ export class Game extends Scene {
     const turnRemainsText = scene.make.text({
       x: 60,
       y: 110,
-      text: local.game.ui.turnsRemains,
+      text:
+        this.gameStates.mode === GameMode.Endless
+          ? local.game.ui.movesUsed
+          : local.game.ui.movesRemain,
       style: {
         color: "#fff",
         font: "22px OpenSans_Regular",
@@ -321,6 +336,8 @@ export class Game extends Scene {
 function createResetButton(scene: Game) {
   const { resetBtn } = scene.cache.json.get("config")["game"]["ui"];
 
+  const local = getLocal(scene);
+
   const resetImage = scene.add
     .image(
       scene.btnContainer.x,
@@ -356,6 +373,7 @@ function createResetButton(scene: Game) {
 
   scene.make.text({
     ...resetBtn.text,
+    text: local.game.ui.resetBtn,
     x: hotkeyBtn.x + 60,
     y: hotkeyBtn.y,
   });
@@ -365,7 +383,6 @@ function createResetButton(scene: Game) {
 
   resetImage.setInteractive();
   resetImage.on("pointerdown", () => {
-    scene.sound.play("reset");
     scene.resetGame();
   });
   resetImage.on("pointerover", () => {

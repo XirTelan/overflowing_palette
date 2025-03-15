@@ -1,8 +1,8 @@
 import { Scene } from "phaser";
 import { OptionTab } from "./OptionTab";
-import { ColorConfig, ColorType, Vector3 } from "../../../types";
-import { NormalizedRgbToColor, NormalizedRgbToHexString } from "../../../utils";
+import { ColorConfig, Vector3 } from "../../../types";
 import { OptionFolder } from "../../ui/html/OptionFolder";
+import { normalizedRgbToHexString } from "../../../utils";
 
 export class ColorsTab extends OptionTab {
   colorInputs: ColorInputs = {
@@ -64,7 +64,7 @@ export class ColorsTab extends OptionTab {
 
     const colorPicker = document.createElement("input");
     colorPicker.setAttribute("type", "color");
-    colorPicker.defaultValue = `${NormalizedRgbToHexString(value)}`;
+    colorPicker.defaultValue = `${normalizedRgbToHexString(value)}`;
 
     container.appendChild(indexBlock);
     container.appendChild(colorName);

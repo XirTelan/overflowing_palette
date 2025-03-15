@@ -2,7 +2,6 @@ import { Scene } from "phaser";
 import {
   ColorConfig,
   ColorType,
-  EndlessOptions,
   GameConfig,
   GameMode,
   GameSceneData,
@@ -10,7 +9,6 @@ import {
   GameStatus,
   LevelData,
   UiOptions,
-  Vector3,
 } from "../types";
 import Grid from "../classes/Grid";
 import ColorBtn from "../classes/ui/ColorBtn";
@@ -20,6 +18,7 @@ import { SelectionBox } from "../classes/Game/SelectionBox";
 import { ResultScreen } from "../classes/Game/ResultScreen";
 import { Background } from "../classes/ui/Background";
 import { cicleThrougColors, getColorName, getLocal } from "../utils";
+import { PrimaryBtn } from "../classes/ui/PrimaryBtn";
 
 const FADE_DELAY = 500;
 
@@ -32,6 +31,7 @@ export class Game extends Scene {
   selectionBox: SelectionBox;
   startTime: number;
   colors: ColorConfig;
+  exportBlock: Export;
 
   constructor() {
     super("Game");
@@ -45,7 +45,7 @@ export class Game extends Scene {
 
     new Background(this);
 
-    initGame(this, mode, levelData, levelKey);
+    initGame(this, mode, levelData, levelKey ?? "");
     if (mode === GameMode.Editor) {
       this.selectionBox = new SelectionBox(this.grid.board, this);
     }
@@ -54,6 +54,8 @@ export class Game extends Scene {
     }
     this.initTextUI(this);
     this.initButtons();
+    this.exportBlock = new Export(this);
+
     this.startTime = this.time.now;
     this.cameras.main.fadeIn(FADE_DELAY, 0, 0, 0);
   }
@@ -85,6 +87,10 @@ export class Game extends Scene {
     }
   }
 
+  setGameState(state: GameStatus) {
+    this.gameStates.state == state;
+  }
+
   changeSelectedColor(color: ColorType) {
     this.gameStates.selectedColor = color;
     this.colorSelectionButtons.forEach((btn) => btn.update());
@@ -101,6 +107,9 @@ export class Game extends Scene {
     const cellSize = ui.colorButtons.size;
     const isEditorMode = scene.gameStates.mode === GameMode.Editor;
 
+    const colorsCount = isEditorMode
+      ? 8
+      : scene.gameStates.availableColors.size;
     Object.entries(colors).forEach(([colorType, colorValue], index) => {
       const colorId = Number(colorType);
 
@@ -108,8 +117,8 @@ export class Game extends Scene {
         return;
 
       const offsetX =
-        isEditorMode && index >= 4 ? cellSize + ui.colorButtons.gap * 2 : 0;
-      const adjustedIndex = isEditorMode ? (index + 4) % 4 : index;
+        colorsCount > 4 && index >= 4 ? cellSize + ui.colorButtons.gap * 2 : 0;
+      const adjustedIndex = (index + 4) % 4;
       const offsetY = adjustedIndex * (cellSize + ui.colorButtons.gap);
 
       const newBtn = new ColorBtn(
@@ -159,58 +168,6 @@ export class Game extends Scene {
     this.createTitle(scene, local.game.ui.mode);
     this.createTriangles(scene, ui);
   }
-
-  private createTitle(scene: Game, mode: string) {
-    const icon = scene.add
-      .image(60, 50, "uiatlas", "icon")
-      .setScale(0.5)
-      .setOrigin(0);
-    scene.make.text({
-      x: icon.x + 50,
-      y: icon.y,
-      text: `Overflowing Palette ${
-        scene.gameStates.mode === GameMode.Editor ? `| ${mode}` : ""
-      }`,
-      style: {
-        color: "#ab9c6b",
-        font: "26px OpenSans_Bold",
-      },
-    });
-  }
-
-  private createTriangles(scene: Game, ui: UiOptions) {
-    const commonProps1 = [0, 30, -20, 0, 20, 0];
-    const commonProps2 = [80, 0, 25, -15, 0, 15, 0, 0x94844c];
-    const commonProps3 = [0, -20, -10, 0, 10, 0, 0xffffff, 0.2];
-
-    scene.add.triangle(
-      ui.targetUI.x - 45,
-      ui.targetUI.y + 15,
-      ...commonProps1,
-      0xffffff
-    );
-    scene.add.triangle(
-      ui.targetUI.x - 5,
-      ui.targetUI.y + 15,
-      ...commonProps1,
-      0x94844c
-    );
-
-    scene.add.triangle(scene.btnContainer.x - 10, ...commonProps2);
-    scene.add.triangle(scene.btnContainer.x + 20, ...commonProps2);
-
-    scene.add.triangle(
-      scene.btnContainer.x + 10,
-      scene.cameras.main.height - 240,
-      ...commonProps3
-    );
-    scene.add.triangle(
-      scene.btnContainer.x + 10,
-      scene.cameras.main.height - 220,
-      ...commonProps3
-    );
-  }
-
   private loadEditorUI(scene: Game, ui: UiOptions) {
     const local = getLocal(scene);
 
@@ -249,7 +206,9 @@ export class Game extends Scene {
       }
     );
 
-    new Export(scene);
+    new PrimaryBtn(150, 350, "Export", 300, 50, this, () => {
+      this.exportBlock.show();
+    });
 
     new ValueSelector<string>(
       scene,
@@ -330,6 +289,57 @@ export class Game extends Scene {
         font: "30px OpenSans_Regular",
       },
     });
+  }
+
+  private createTitle(scene: Game, mode: string) {
+    const icon = scene.add
+      .image(60, 50, "uiatlas", "icon")
+      .setScale(0.5)
+      .setOrigin(0);
+    scene.make.text({
+      x: icon.x + 50,
+      y: icon.y,
+      text: `Overflowing Palette ${
+        scene.gameStates.mode === GameMode.Editor ? `| ${mode}` : ""
+      }`,
+      style: {
+        color: "#ab9c6b",
+        font: "26px OpenSans_Bold",
+      },
+    });
+  }
+
+  private createTriangles(scene: Game, ui: UiOptions) {
+    const commonProps1 = [0, 30, -20, 0, 20, 0];
+    const commonProps2 = [80, 0, 25, -15, 0, 15, 0, 0x94844c];
+    const commonProps3 = [0, -20, -10, 0, 10, 0, 0xffffff, 0.2];
+
+    scene.add.triangle(
+      ui.targetUI.x - 45,
+      ui.targetUI.y + 15,
+      ...commonProps1,
+      0xffffff
+    );
+    scene.add.triangle(
+      ui.targetUI.x - 5,
+      ui.targetUI.y + 15,
+      ...commonProps1,
+      0x94844c
+    );
+
+    scene.add.triangle(scene.btnContainer.x - 10, ...commonProps2);
+    scene.add.triangle(scene.btnContainer.x + 20, ...commonProps2);
+
+    scene.add.triangle(
+      scene.btnContainer.x + 10,
+      scene.cameras.main.height - 240,
+      ...commonProps3
+    );
+    scene.add.triangle(
+      scene.btnContainer.x + 10,
+      scene.cameras.main.height - 220,
+      ...commonProps3
+    );
   }
 }
 

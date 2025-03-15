@@ -78,13 +78,10 @@ export class MenuBtn extends BaseBlock {
   }
 
   update(isActive: boolean) {
-    console.log("wtrf", isActive);
     if (isActive) {
-      console.log("on");
       this.active.setVisible(true);
       this.text.setTintFill(0x000000);
     } else {
-      console.log("off");
       this.active.setVisible(false);
       this.text.clearTint();
     }

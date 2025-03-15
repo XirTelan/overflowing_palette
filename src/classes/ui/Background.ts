@@ -18,9 +18,7 @@ export class Background {
       height,
       [background.key]
     );
-    console.log(background);
     if (!background) return;
-    console.log("background", background);
     bg.setUniform("radius.value", background.distortion ? 0.3 : 0.0);
     bg.setUniform("darkOverlay.value", background.overlay ? 0.7 : 0.0);
   }

@@ -77,7 +77,6 @@ export class OptionSelector {
       !this.isCycle && this.value === this.options.length - 1;
 
     this.leftBtn.disabled = !this.isCycle && this.value === 0;
-    console.log(this.value, this.options, this.options[this.value]);
     this.text.textContent = this.options[this.value];
   }
   private getValue(value: number) {

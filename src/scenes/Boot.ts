@@ -62,11 +62,9 @@ export class Boot extends Scene {
     const isProduction = import.meta.env.PROD;
     if (!isProduction) {
       const debugConfig = localStorage.getItem("debug");
-      console.log("debugConfig", debugConfig);
       if (debugConfig) {
         const data = JSON.parse(debugConfig);
         if (data.mode != "none") {
-          console.log("wtf");
           this.scene.start("LoadingGame", {
             ...data,
           });
@@ -125,7 +123,6 @@ export class Boot extends Scene {
     };
 
     const distortionShader = cache.shader.get("distortion");
-    console.log(distortionShader);
 
     distortionShader.uniforms = {
       ...distortionShader.uniforms,

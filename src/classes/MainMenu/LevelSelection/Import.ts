@@ -1,7 +1,6 @@
 import { Scene } from "phaser";
 import { PrimaryBtn } from "../../ui/PrimaryBtn";
 import { BaseBlock } from "../../common/BaseBlock";
-import { GameMode, LevelData } from "../../../types";
 import { SelectedLevelInfo } from "./SelectedLevelInfo";
 import { OptionFolder } from "../../ui/html/OptionFolder";
 
@@ -13,7 +12,6 @@ export class ImportLevel extends BaseBlock {
 
   constructor(scene: Scene) {
     super(0, 0, scene);
-    const width = scene.cameras.main.width;
     const height = scene.cameras.main.height;
 
     this.viewBox = scene.add
@@ -56,7 +54,7 @@ export class ImportLevel extends BaseBlock {
     btn.textContent = "Load";
     btn.addEventListener("click", () => {
       const levelData = this.parseString(textArea.value);
-      if (!("turns" in levelData) || !("board" in levelData)) return;
+      if (!levelData) return;
       this.previewBlock.show();
       this.previewBlock.updateInfo(levelData);
     });

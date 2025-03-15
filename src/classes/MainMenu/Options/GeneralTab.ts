@@ -96,7 +96,6 @@ export class GeneralTab extends OptionTab {
       (e) => {
         const target = e.target as HTMLSelectElement;
         this.currentConfig.background.current.key = target?.value;
-        console.log(this.currentConfig);
       },
       this.currentConfig.background.options.map((obj) => obj.key)
     );

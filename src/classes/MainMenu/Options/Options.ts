@@ -1,4 +1,4 @@
-import { MenuTabProps, Vector3 } from "../../../types";
+import { MenuTabProps } from "../../../types";
 import { getLocal } from "../../../utils";
 import { MenuTab } from "../MenuTab";
 import { ColorsTab } from "./ColorsTab";
@@ -25,8 +25,6 @@ export class Options extends MenuTab {
     const { options } = getLocal(scene);
 
     this.actionBtn.text.setText("Save");
-    // this.actionBtn.container.setScale(1);
-    // this.actionBtn.container.setPosition(props.width - 175, props.height - 25);
     this.actionBtn.btn.on("pointerdown", this.saveUserConfig, this);
 
     const tabBtns = document.createElement("div");
@@ -73,8 +71,6 @@ export class Options extends MenuTab {
     this.tabs.push(...[this.generalTab, this.colorTab, this.gameplayTab]);
 
     this.contentContainer.classList.add("menu-options");
-
-    // this.container.add(resetBtn.container);
   }
 
   updateActiveTab(key: string) {
@@ -139,38 +135,9 @@ export class Options extends MenuTab {
     this.hide();
   }
   saveUserConfig() {
-    // const colors: Record<number, Vector3> = {};
-    // this.inputs.forEach((input, indx) => {
-    //   const color = Phaser.Display.Color.HexStringToColor(input.value);
-    //   colors[indx] = {
-    //     x: color.red / 255,
-    //     y: color.green / 255,
-    //     z: color.blue / 255,
-    //   };
-    // });
     const colorsData = this.colorTab.getValues();
     const generalData = this.generalTab.getValues();
     const gameplayTab = this.gameplayTab.getValues();
-    console.log("colorsData", colorsData);
-    console.log("generalData", generalData);
-
-    // if (this.isSimpleColors.checked) {
-    //   localStorage.setItem(
-    //     "shader.lightenFactor",
-    //     JSON.stringify({ type: "1f", value: 1.0 })
-    //   );
-    // } else {
-    //   localStorage.removeItem("shader.lightenFactor");
-    // }
-
-    // if (this.strongerHighlight.checked) {
-    //   localStorage.setItem(
-    //     "shader.activeOffset",
-    //     JSON.stringify({ type: "2f", value: { x: 0.0, y: 0.7 } })
-    //   );
-    // } else {
-    //   localStorage.removeItem("shader.activeOffset");
-    // }
 
     localStorage.setItem("colors", JSON.stringify(colorsData));
     localStorage.setItem("background", JSON.stringify(generalData.background));

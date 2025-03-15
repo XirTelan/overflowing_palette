@@ -171,7 +171,6 @@ class InfoBlock {
     const container = document.createElement("div");
 
     container.classList.add("info-block");
-    console.log(vieBox);
 
     vieBox.node.append(container);
 

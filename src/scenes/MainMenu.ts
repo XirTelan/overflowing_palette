@@ -9,7 +9,33 @@ import { Background } from "../classes/ui/Background";
 import { EndlessZen } from "../classes/MainMenu/EndlessZen";
 import { getLocal } from "../utils";
 
-const TABS_KEYS = ["LevelEditor", "EndlessZen", "LevelSelector", "Options"];
+type TabConfig = {
+  key: string;
+  type: new (...args: any[]) => MenuTab;
+  props?: Partial<MenuTab>;
+};
+
+const TABS: TabConfig[] = [
+  {
+    key: "LevelSelector",
+    props: {
+      width: 1000,
+    },
+    type: LevelSelection,
+  },
+  {
+    key: "LevelEditor",
+    type: LevelEditor,
+  },
+  {
+    key: "EndlessZen",
+    type: EndlessZen,
+  },
+  {
+    key: "Options",
+    type: Options,
+  },
+];
 
 const OFFSET_X = 500;
 
@@ -21,56 +47,30 @@ export class MainMenu extends Scene {
   constructor() {
     super("MainMenu");
   }
-  preload() {}
   create() {
-    this.createBackground();
-    this.makeMenuBtns();
-
     const width = this.cameras.main.width - OFFSET_X;
     const height = this.cameras.main.height;
 
-    const levelSeletor = new LevelSelection({
-      x: OFFSET_X,
-      y: 0,
-      scene: this,
-      width: 1000,
-      height: height,
-      key: "LevelSelector",
+    this.createBackground();
+    this.makeMenuBtns();
+
+    TABS.forEach((tab) => {
+      const newTab = new tab.type({
+        x: OFFSET_X,
+        y: 0,
+        scene: this,
+        width: width,
+        height: height,
+        key: tab.key,
+        ...tab.props,
+      });
+
+      this.tabs.set(tab.key, newTab);
     });
 
-    const endlessZen = new EndlessZen({
-      x: OFFSET_X,
-      y: 0,
-      scene: this,
-      width: width,
-      height: height,
-      key: "EndlessZen",
-    });
-
-    const levelEditor = new LevelEditor({
-      x: OFFSET_X,
-      y: 0,
-      scene: this,
-      width: width,
-      height: height,
-      key: "LevelEditor",
-    });
-
-    const options = new Options({
-      x: 500,
-      y: 0,
-      scene: this,
-      width: width,
-      height: height,
-      key: "Options",
-    });
-
-    this.tabs.set("LevelSelector", levelSeletor);
-    this.tabs.set("EndlessZen", endlessZen);
-    this.tabs.set("LevelEditor", levelEditor);
-    this.tabs.set("Options", options);
     this.cameras.main.fadeIn(1000, 0, 0, 0);
   }
+
   private createBackground() {
     const width = this.cameras.main.width;
     const height = this.cameras.main.height;
@@ -95,22 +95,22 @@ export class MainMenu extends Scene {
 
     this.add.image(0, 0, "gradient").setOrigin(0);
 
-    const graphics = this.add.graphics();
-    graphics.fillStyle(0x161616, 1);
-    graphics.lineStyle(4, 0x444444, 0.6);
-
-    graphics.lineBetween(50, 0, 50, this.cameras.main.height);
+    this.add
+      .graphics()
+      .fillStyle(0x161616, 1)
+      .lineStyle(4, 0x444444, 0.6)
+      .lineBetween(50, 0, 50, this.cameras.main.height);
   }
 
   private makeMenuBtns() {
-    const config: GameConfig["mainMenu"]["buttonsBlock"] =
-      this.cache.json.get("config")["mainMenu"]["buttonsBlock"];
+    const { x, y, gap } = this.cache.json.get("config").mainMenu
+      .buttonsBlock as GameConfig["mainMenu"]["buttonsBlock"];
 
     const local: LanguageConfig = getLocal(this);
 
-    const container = this.add.container(config.x, config.y);
+    const container = this.add.container(x, y);
 
-    const defaultOffset = 100 + config.gap;
+    const defaultOffset = 100 + gap;
 
     const buttonData = [
       { key: "LevelSelector", text: local.mainMenu.selectLevel },
@@ -134,8 +134,6 @@ export class MainMenu extends Scene {
       container.add(btn.container);
     });
 
-    console.log("asdasdasd", this.tabBtns);
-
     const git = this.createButton(
       0,
       this.cameras.main.height - 300,
@@ -154,7 +152,7 @@ export class MainMenu extends Scene {
   }
   private createButton(x: number, y: number, text: string, tabKey: string) {
     return new MenuBtn(this, x, y, text, tabKey, () => {
-      TABS_KEYS.forEach((key) => {
+      TABS.forEach(({ key }) => {
         const tab = this.tabs.get(key);
 
         if (!tab) return;

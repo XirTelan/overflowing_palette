@@ -17,7 +17,12 @@ import { Export } from "../classes/Game/Export";
 import { SelectionBox } from "../classes/Game/SelectionBox";
 import { ResultScreen } from "../classes/Game/ResultScreen";
 import { Background } from "../classes/ui/Background";
-import { cicleThrougColors, getColorName, getLocal } from "../utils";
+import {
+  cycleThroughColors,
+  generateLevel,
+  getColorName,
+  getLocal,
+} from "../utils";
 import { PrimaryBtn } from "../classes/ui/PrimaryBtn";
 
 const FADE_DELAY = 500;
@@ -51,6 +56,19 @@ export class Game extends Scene {
     }
     if (mode == GameMode.Endless) {
       this.gameStates.endlessOptions = endlessOptions;
+      new PrimaryBtn(1250, 990, "Skip Level", 350, 50, this, () => {
+        this.scene.start("LoadingGame", {
+          mode,
+          levelKey,
+          levelData: generateLevel(
+            endlessOptions!.rows,
+            endlessOptions!.columns,
+            endlessOptions!.colorsCount,
+            endlessOptions!.difficulty
+          ),
+          endlessOptions,
+        });
+      });
     }
     this.initTextUI(this);
     this.initButtons();
@@ -464,7 +482,7 @@ function initGame(
 }
 
 function changeTargetColor(value: number, scene: Game) {
-  let newTarget = cicleThrougColors(value, scene.gameStates.targetColor);
+  let newTarget = cycleThroughColors(value, scene.gameStates.targetColor);
   scene.gameStates.targetColor = newTarget;
   scene.grid.updateBorderTint();
   return getColorName(newTarget, scene.colors);

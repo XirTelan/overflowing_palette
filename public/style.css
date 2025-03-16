@@ -576,6 +576,12 @@ button {
   }
 }
 
+.results {
+  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
 .results,
 .results_buttons {
   min-width: 400px;

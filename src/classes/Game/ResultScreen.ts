@@ -107,6 +107,14 @@ export class ResultScreen extends BaseBlock {
     const timeRecord = this.addRecord("Time", time);
     resultsBlock.appendChild(timeRecord);
 
+    if (this.scene.gameStates.mode === GameMode.Endless) {
+      const turnUsed = this.addRecord(
+        "Moves used",
+        String(this.scene.gameStates.turns)
+      );
+      resultsBlock.appendChild(turnUsed);
+    }
+
     viewBox.appendChild(container);
     return container;
   }

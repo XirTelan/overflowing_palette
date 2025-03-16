@@ -9,6 +9,11 @@
       },
       {
         "type": "json",
+        "key": "localization",
+        "url": "localization.json"
+      },
+      {
+        "type": "json",
         "key": "levels",
         "url": "levels.json"
       }
@@ -21,6 +26,11 @@
         "type": "audio",
         "key": "mouseOver",
         "url": "mouseOver.mp3"
+      },
+      {
+        "type": "audio",
+        "key": "reset",
+        "url": "reset.mp3"
       },
       {
         "type": "audio",
@@ -54,23 +64,29 @@
     "files": [
       {
         "type": "image",
-        "key": "celltexture",
-        "url": "celltexture.png"
-      },
-      {
-        "type": "image",
-        "key": "cellnoise",
-        "url": "cellnoise.png"
-      },
-      {
-        "type": "image",
         "key": "cellnoise_d",
-        "url": "cellnoise_d.png"
+        "url": "cellnoise_d.webp"
       },
       {
         "type": "image",
         "key": "cellnoise_center",
-        "url": "cellnoise_center.png"
+        "url": "cellnoise_center.webp"
+      }
+    ]
+  },
+  {
+    "path": "assets/icons/",
+
+    "files": [
+      {
+        "type": "image",
+        "key": "swapAll",
+        "url": "swapAll.png"
+      },
+      {
+        "type": "image",
+        "key": "swapLine",
+        "url": "swapLine.png"
       }
     ]
   },
@@ -84,16 +100,57 @@
         "textureURL": "uiatlas.webp",
         "atlasURL": "uiatlas.json"
       },
-      {
-        "type": "image",
-        "key": "background",
-        "url": "bg.png"
-      },
 
       {
         "type": "image",
         "key": "grid_border",
         "url": "grid_border.png"
+      },
+      {
+        "type": "image",
+        "key": "MainBtnActive",
+        "url": "MainBtnActive.png"
+      },
+      {
+        "type": "image",
+        "key": "btnRound",
+        "url": "btnRound.png"
+      },
+      {
+        "type": "image",
+        "key": "btnRoundOver",
+        "url": "btnRoundOver.png"
+      },
+      {
+        "type": "image",
+        "key": "MainBtnActiveCircle",
+        "url": "MainBtnActiveCircle.png"
+      }
+    ]
+  },
+  {
+    "path": "assets/textures/backgrounds",
+
+    "files": [
+      {
+        "type": "image",
+        "key": "bg1",
+        "url": "bg1.webp"
+      },
+      {
+        "type": "image",
+        "key": "bg2",
+        "url": "bg2.webp"
+      },
+      {
+        "type": "image",
+        "key": "bg3",
+        "url": "bg3.webp"
+      },
+      {
+        "type": "image",
+        "key": "bg4",
+        "url": "bg4.webp"
       }
     ]
   }

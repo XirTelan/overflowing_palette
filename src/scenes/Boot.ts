@@ -1,5 +1,5 @@
 import { Scene } from "phaser";
-import { ColorConfig, GameConfig, LoadingConfig, Vector2 } from "../types";
+import { ColorConfig, GameConfig,  Vector2 } from "../types";
 import { LoadingScreen } from "../classes/ui/LoadingScreen";
 import { loadingShaderInitConfig } from "../utils";
 
@@ -46,7 +46,11 @@ export class Boot extends Scene {
     this.showLoading();
 
     this.cameras.main.fadeIn(300, 0, 0, 0);
+
     this.load.pack("assets_pack", "assets/data/assets.json");
+    if (!this.cache.json.exists("config")) {
+      this.load.json("config", "assets/data/config.json");
+    }
   }
   create() {
     const width = this.cameras.main.width;

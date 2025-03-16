@@ -8,6 +8,7 @@ showcase: https://youtu.be/9FPFLpCEiQI
 - [Usage](#usage)
   - [Level Selection](#level-selection)
     - [Import Level](#import-level)
+  - [Endless Zen](#endless-zen)
   - [Level Editor](#level-editor)
     - [Controls](#controls)
     - [Export Level](#export-level)
@@ -21,15 +22,6 @@ showcase: https://youtu.be/9FPFLpCEiQI
   - [Code](#code)
     - [Shader](#shader)
 - [Installation/Building for Offline](#installation)
-
-## Plans for next update (1.1 16 march) 
-
-1. Redo the options menu—more settings, plus a couple of background choices.
-2. A new mode in the levels will include a mechanic called "Tools." These will have limited uses but won’t consume moves. Right now, this mainly consists of different ways to swap tiles.
-3. Zen Random—still working out the details, but the idea is a randomly generated board without a move counter.
-4. Level Preview will show also grid size, author (if it's not mine) , cleared time ( for cleared levels)
-5. Level Preview for import level
-6. New UI for export levels
 
 
 ## General
@@ -51,10 +43,12 @@ Vite, Phaser 3
 ## Usage 
 
 ### Level Selection
-![image](https://github.com/user-attachments/assets/f3c3c88a-779a-42f4-9124-2b3c8ee6379e)
+![image](https://github.com/user-attachments/assets/e9c641ff-0b9d-459f-b254-b8caa26f98b8)
+
 
 #### Default - Levels from the Game 
-![image](https://github.com/user-attachments/assets/a0498864-4c22-4145-859c-7a2a46719691)
+![image](https://github.com/user-attachments/assets/ab81da30-b86f-4be4-aefd-e407506edd61)
+
 
 Levels are separated by regions.  
 **Green background** - Cleared stages  
@@ -64,30 +58,36 @@ Levels are separated by regions.
 
 ## Level Editor
 
-![image](https://github.com/user-attachments/assets/f2269afd-b52c-429c-aeeb-8aec8d36e25f)
+![image](https://github.com/user-attachments/assets/919f8640-4756-412d-a509-e49164c89a34)
+
 
 The editor is quite straightforward. Choose the grid size you want.  
 Although the values are limited from **2 to 100**, fields larger than **25x25** can be hard to use and may take some time to load.
 
 - **Fill Color** - Determines the color used to fill the grid.
 
-![image](https://github.com/user-attachments/assets/7a0b2885-4123-4cf6-87ae-a34d93a6b4b9)
+![image](https://github.com/user-attachments/assets/d3881ec8-6bb7-439e-92fb-a80ecaa3f288)
+
 
 You can use **box selection** to select multiple cells at once by clicking and dragging a selection area over them (calculated at the cell center).
 
 ## Export Level
 
-![image](https://github.com/user-attachments/assets/9db3855f-c4ba-4e56-9a3d-b368ecacdcdd)
+![image](https://github.com/user-attachments/assets/e5b49faa-29cd-4176-8171-111371c486b3)
+
 
 - **Copy STRING** - Used for in-game import.
 - **Copy JSON** - Used for offline addition to the levels info JSON file.
 
 ### Options
-  ![image](https://github.com/user-attachments/assets/ce8fcb57-3ecc-46a0-b7b6-8417a506ed7d)
+![image](https://github.com/user-attachments/assets/ac11775e-f2f6-4411-989d-e37645832952)
 
-  NOTE: After any changes refresh browser page \
-  Colors - I think everything is clear, BUT keep in mind: you will only change the colors. \
-  The names will stay the same. So, if you swap colors (red and blue, for example), the game will still show the name 'Red' for the 1st color and 'Blue' for the 3rd color if they are the targets.
+
+General – Change language and backgroun settings. Added 4 new backgrounds, toggle overlay and distortion effect.
+
+Colors – Now 8 colors; you can also rename them.
+
+Gameplay – Options to disable dynamic tile backgrounds and adjust highlight intensity.
 
   Simple colors - remove any animation/shades etc on cells. 
   Stronger higlight - cell on mouse over will be more visible. 

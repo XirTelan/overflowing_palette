@@ -1,5 +1,6 @@
 import { MenuTabProps } from "../../../types";
 import { getLocal } from "../../../utils";
+import { PrimaryBtn } from "../../ui/PrimaryBtn";
 import { MenuTab } from "../MenuTab";
 import { ColorsTab } from "./ColorsTab";
 import { GameplayTab } from "./GameplayTab";
@@ -26,6 +27,19 @@ export class Options extends MenuTab {
 
     this.actionBtn.text.setText("Save");
     this.actionBtn.btn.on("pointerdown", this.saveUserConfig, this);
+
+    const reset = new PrimaryBtn(
+      980,
+      880,
+      "Reset",
+      350,
+      50,
+      this.scene,
+      this.resetUserConfig,
+      this
+    );
+
+    this.container.add(reset.container);
 
     const tabBtns = document.createElement("div");
     const tabs = document.createElement("div");
@@ -133,6 +147,8 @@ export class Options extends MenuTab {
       localStorage.removeItem(key);
     });
     this.hide();
+    this.scene.cache.json.remove("config");
+    this.scene.scene.start("Boot");
   }
   saveUserConfig() {
     const colorsData = this.colorTab.getValues();
@@ -144,5 +160,6 @@ export class Options extends MenuTab {
     localStorage.setItem("gameplay", JSON.stringify(gameplayTab));
     localStorage.setItem("lang", generalData.lang);
     this.hide();
+    this.scene.scene.start("Boot");
   }
 }

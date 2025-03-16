@@ -6,15 +6,21 @@ import {
   GameMode,
   GameStatus,
   GridOptions,
+  Tools,
   Vector2,
 } from "../types";
 import { DIRECTIONS } from "../utils";
+import { SwapSelection } from "./Game/SwapSelection";
 
 export default class Grid {
   scene: Game;
   container: Phaser.GameObjects.Container;
+
+  activeSwap?: SwapSelection;
+
   transitionSpeed = 800;
   transitionSpeedMinimum = 50;
+
   pendingCalls = 0;
   board: Cell[][] = [];
   cellSize: number;
@@ -247,13 +253,33 @@ export default class Grid {
     );
   }
   cellAction(x: number, y: number, colorToChange: ColorType) {
-    if (this.scene.gameStates.mode == GameMode.Editor) {
+    const { mode, state, selectedTool } = this.scene.gameStates;
+
+    if (mode == GameMode.Editor) {
       this.changeColor(x, y);
       return;
     }
-    if (this.scene.gameStates.state === GameStatus.Waiting) return;
+    if (state === GameStatus.Waiting && this.activeSwap) {
+      this.activeSwap.cancelSwapSelection();
+      this.activeSwap = undefined;
+    }
+    if (state === GameStatus.Waiting) return;
+
+    if (selectedTool !== Tools.none) {
+      this.swapSelection(x, y);
+      return;
+    }
     this.flip(x, y, colorToChange);
   }
+
+  swapSelection(x: number, y: number) {
+    this.activeSwap = new SwapSelection(this.scene, this, x, y);
+  }
+
+  removeSwapSelection() {
+    this.activeSwap = undefined;
+  }
+
   private changeColor(x: number, y: number) {
     const { colors } = this.scene.cache.json.get("config") as GameConfig;
 

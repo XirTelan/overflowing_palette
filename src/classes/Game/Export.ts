@@ -150,6 +150,7 @@ export class Export {
     const jsonData: LevelData = {
       targetColor: this.scene.gameStates.targetColor,
       turns: this.scene.gameStates.turns,
+      tools: this.scene.gameStates.availableTools,
       board: data,
     };
 

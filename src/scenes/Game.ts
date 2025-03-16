@@ -8,6 +8,7 @@ import {
   GameStates,
   GameStatus,
   LevelData,
+  Tools,
   UiOptions,
 } from "../types";
 import Grid from "../classes/Grid";
@@ -18,18 +19,21 @@ import { SelectionBox } from "../classes/Game/SelectionBox";
 import { ResultScreen } from "../classes/Game/ResultScreen";
 import { Background } from "../classes/ui/Background";
 import {
+  availableTools,
   cycleThroughColors,
   generateLevel,
   getColorName,
   getLocal,
 } from "../utils";
 import { PrimaryBtn } from "../classes/ui/PrimaryBtn";
+import { ToolBtn } from "../classes/ui/ToolBtn";
 
 const FADE_DELAY = 500;
 
 export class Game extends Scene {
   grid: Grid;
   colorSelectionButtons: ColorBtn[];
+  toolsButtons: ToolBtn[] = [];
   btnContainer: Phaser.GameObjects.Container;
   gameStates: GameStates;
   turnCounter: Phaser.GameObjects.Text;
@@ -152,9 +156,50 @@ export class Game extends Scene {
     });
 
     scene.btnContainer.y -= (scene.colorSelectionButtons.length * cellSize) / 4;
+  }
 
-    createResetButton(this);
-    createCloseButton(this);
+  createToolsButtons() {
+    let count = 0;
+    this.gameStates.availableTools?.forEach((toolCount, indx) => {
+      if (toolCount == 0) return;
+
+      this.toolsButtons.push(
+        new ToolBtn(
+          this,
+          150,
+          600 + count * 160,
+          toolCount,
+          availableTools[(indx + 1) as keyof typeof availableTools].hotkey,
+          indx + 1
+        )
+      );
+      count++;
+    });
+  }
+
+  changeSelectedTool(tool: Tools) {
+    if (this.gameStates.selectedTool === tool) return;
+    this.notification?.destroy();
+
+    if (tool !== Tools.none) {
+      const { width } = this.cameras.main;
+      const container = this.add.container(width / 2, 100);
+      this.notification = container;
+      this.notification.add(this.add.rectangle(0, 0, 300, 60, 0x000000, 0.4));
+      this.notification.add(
+        this.add
+          .text(0, 0, "Swap tool  is Selected ", {
+            font: "24px OpenSans_Bold",
+          })
+          .setOrigin(0.5)
+      );
+    }
+    this.gameStates.selectedTool = tool;
+    this.toolsButtons.forEach((btn) => btn.update());
+  }
+
+  useTool(tool: Tools) {
+    this.toolsButtons.find((btn) => btn.toolKey === tool)?.decrease();
   }
 
   resetGame() {
@@ -168,6 +213,7 @@ export class Game extends Scene {
       this.gameStates.remains = initialState.remains;
       this.turnCounter.text = String(this.gameStates.turns);
       this.gameStates.state = GameStatus.Active;
+      this.toolsButtons.forEach((btn) => btn.reset());
     }
   }
 
@@ -224,7 +270,7 @@ export class Game extends Scene {
       }
     );
 
-    new PrimaryBtn(150, 350, "Export", 300, 50, this, () => {
+    new PrimaryBtn(150, 650, "Export", 300, 50, this, () => {
       this.exportBlock.show();
     });
 
@@ -241,6 +287,52 @@ export class Game extends Scene {
         return changeTargetColor(1, scene);
       }
     );
+
+    scene.make.text({
+      x: 60,
+      y: 290,
+      text: "Tools:",
+      style: {
+        color: "#fff",
+        font: "22px OpenSans_Regular",
+      },
+    });
+
+    Object.entries(availableTools).forEach(([key, data], index) => {
+      scene.make.text({
+        x: 60,
+        y: ui.tools.y + ui.tools.offset * index - 50,
+        text: data.text,
+        style: {
+          color: "#fff",
+          font: "22px OpenSans_Regular",
+        },
+      });
+
+      new ValueSelector<number>(
+        scene,
+        ui.tools.x,
+        ui.tools.y + ui.tools.offset * index,
+        ui.targetValueSelector.width,
+        scene.gameStates.availableTools[index],
+        () => {
+          this.gameStates.availableTools[index] = Phaser.Math.Clamp(
+            this.gameStates.availableTools[index] - 1,
+            0,
+            100
+          );
+          return this.gameStates.availableTools[index];
+        },
+        () => {
+          this.gameStates.availableTools[index] = Phaser.Math.Clamp(
+            this.gameStates.availableTools[index] + 1,
+            0,
+            100
+          );
+          return this.gameStates.availableTools[index];
+        }
+      );
+    });
   }
 
   private loadPlayUI(scene: Game, ui: UiOptions) {
@@ -461,6 +553,7 @@ function initGame(
     levelKey,
     turns: levelData.turns,
     targetColor: levelData.targetColor,
+    availableTools: levelData.tools ?? [0, 0, 0],
     selectedColor: ColorType.red,
     availableColors: new Set(),
     state: GameStatus.Active,
@@ -470,6 +563,7 @@ function initGame(
       turns: levelData.turns,
       remains: 0,
     },
+    selectedTool: Tools.none,
   };
 
   scene.gameStates = gameStates;

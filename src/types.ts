@@ -25,6 +25,13 @@ export type Vector3 = {
   z: number;
 };
 
+export enum Tools {
+  "none",
+  "All",
+  "Horizontal",
+  "Vertical",
+}
+
 export type LevelData = {
   board: number[][];
   targetColor: number;
@@ -233,6 +240,11 @@ export type UiOptions = {
     y: number;
     width: number;
   };
+  tools: {
+    x: number;
+    y: number;
+    offset: number;
+  };
 };
 
 export enum GameMode {
@@ -256,6 +268,8 @@ export type GameStates = {
   selectedColor: ColorType;
   remains: number;
   availableColors: Set<ColorType>;
+  selectedTool: Tools;
+  availableTools: [number, number, number];
   initialState: {
     turns: number;
     remains: number;

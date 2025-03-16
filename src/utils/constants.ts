@@ -20,3 +20,26 @@ export const loadingShaderInitConfig = {
   transition: { type: "1f", value: 0.0 },
   active: { type: "1f", value: 0.0 },
 };
+
+export const availableTools = {
+  1: {
+    textureKey: "swapAll",
+    text: "All way swap",
+    hotkey: "Q",
+    props: {},
+  },
+  2: {
+    textureKey: "swapLine",
+    hotkey: "W",
+    text: "Vertical swap",
+    props: {
+      rotation: 1.5708,
+    },
+  },
+  3: {
+    textureKey: "swapLine",
+    text: "Horizontal swap",
+    hotkey: "E",
+    props: {},
+  },
+};

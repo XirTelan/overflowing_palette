@@ -38,6 +38,9 @@ export class Game extends Scene {
   gameStates: GameStates;
   turnCounter: Phaser.GameObjects.Text;
   selectionBox: SelectionBox;
+
+  notification: Phaser.GameObjects.Container;
+
   startTime: number;
   colors: ColorConfig;
   exportBlock: Export;
@@ -55,6 +58,7 @@ export class Game extends Scene {
     new Background(this);
 
     initGame(this, mode, levelData, levelKey ?? "");
+
     if (mode === GameMode.Editor) {
       this.selectionBox = new SelectionBox(this.grid.board, this);
     }
@@ -110,7 +114,7 @@ export class Game extends Scene {
   }
 
   setGameState(state: GameStatus) {
-    this.gameStates.state == state;
+    this.gameStates.state = state;
   }
 
   changeSelectedColor(color: ColorType) {
@@ -119,8 +123,18 @@ export class Game extends Scene {
   }
 
   private initButtons() {
+    if (
+      this.gameStates.mode != GameMode.Editor &&
+      this.gameStates.availableTools
+    ) {
+      this.createToolsButtons();
+    }
+    this.createColorSelectionButtons();
+    createResetButton(this);
+    createCloseButton(this);
+  }
+  createColorSelectionButtons() {
     const scene = this;
-
     const {
       game: { ui },
       colors,
@@ -132,11 +146,13 @@ export class Game extends Scene {
     const colorsCount = isEditorMode
       ? 8
       : scene.gameStates.availableColors.size;
-    Object.entries(colors).forEach(([colorType, colorValue], index) => {
-      const colorId = Number(colorType);
 
-      if (!isEditorMode && !scene.gameStates.availableColors.has(colorId))
-        return;
+    const availableColors = Object.entries(colors).filter(
+      ([colorType]) =>
+        isEditorMode || scene.gameStates.availableColors.has(Number(colorType))
+    );
+    availableColors.forEach(([colorType, colorValue], index) => {
+      const colorId = Number(colorType);
 
       const offsetX =
         colorsCount > 4 && index >= 4 ? cellSize + ui.colorButtons.gap * 2 : 0;
@@ -203,7 +219,6 @@ export class Game extends Scene {
   }
 
   resetGame() {
-    if (this.gameStates.state === GameStatus.Waiting) return;
     this.sound.play("reset");
 
     this.grid.resetBoard();
@@ -229,7 +244,10 @@ export class Game extends Scene {
     } else {
       this.loadPlayUI(scene, ui);
     }
-    this.createTitle(scene, local.game.ui.mode);
+    this.time.delayedCall(50, () => {
+      this.createTitle(scene, local.game.ui.mode);
+    });
+
     this.createTriangles(scene, ui);
   }
   private loadEditorUI(scene: Game, ui: UiOptions) {
@@ -503,6 +521,7 @@ function createResetButton(scene: Game) {
 
   resetImage.setInteractive();
   resetImage.on("pointerdown", () => {
+    if (scene.gameStates.state === GameStatus.Waiting) return;
     scene.resetGame();
   });
   resetImage.on("pointerover", () => {

@@ -91,7 +91,7 @@ export class ImportLevel extends BaseBlock {
       if (!("turns" in levelData) || !("board" in levelData)) return;
       return levelData;
     } catch (error) {
-      console.error("catch");
+      console.warn("Not correct string");
     }
   }
   hide(): void {

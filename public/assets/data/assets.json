@@ -75,6 +75,22 @@
     ]
   },
   {
+    "path": "assets/icons/",
+
+    "files": [
+      {
+        "type": "image",
+        "key": "swapAll",
+        "url": "swapAll.png"
+      },
+      {
+        "type": "image",
+        "key": "swapLine",
+        "url": "swapLine.png"
+      }
+    ]
+  },
+  {
     "path": "assets/textures/",
 
     "files": [
@@ -94,6 +110,16 @@
         "type": "image",
         "key": "MainBtnActive",
         "url": "MainBtnActive.png"
+      },
+      {
+        "type": "image",
+        "key": "btnRound",
+        "url": "btnRound.png"
+      },
+      {
+        "type": "image",
+        "key": "btnRoundOver",
+        "url": "btnRoundOver.png"
       },
       {
         "type": "image",

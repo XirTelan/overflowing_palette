@@ -8,7 +8,7 @@ import {
   GridOptions,
   Vector2,
 } from "../types";
-import { dirs } from "../utils";
+import { DIRECTIONS } from "../utils";
 
 export default class Grid {
   scene: Game;
@@ -217,7 +217,7 @@ export default class Grid {
       },
     });
 
-    for (const [dx, dy] of dirs) {
+    for (const [dx, dy] of DIRECTIONS) {
       this.scene.time.delayedCall(animationDelay, () => {
         this.bfs(
           x + dx,

@@ -1,4 +1,4 @@
-export const dirs = [
+export const DIRECTIONS = [
   [1, 0],
   [-1, 0],
   [0, 1],

@@ -1,5 +1,5 @@
 import { LevelData, LevelDifficulty } from "../types";
-import { dirs, RATES } from "./constants";
+import { DIRECTIONS, RATES } from "./constants";
 
 export function generateBoard(
   rows: number,
@@ -36,7 +36,7 @@ export function generateBoard(
     const [r, c] = queue.pop()!;
     let color = board[r][c];
 
-    dirs.forEach(([dx, dy]) => {
+    DIRECTIONS.forEach(([dx, dy]) => {
       const nr = r + dx;
       const nc = c + dy;
 

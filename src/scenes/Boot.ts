@@ -1,5 +1,5 @@
 import { Scene } from "phaser";
-import { ColorConfig, GameConfig,  Vector2 } from "../types";
+import { ColorConfig, GameConfig, Vector2 } from "../types";
 import { LoadingScreen } from "../classes/ui/LoadingScreen";
 import { loadingShaderInitConfig } from "../utils";
 
@@ -22,12 +22,12 @@ export class Boot extends Scene {
           {
             type: "image",
             key: "celltexture",
-            url: "assets/textures/shaders/celltexture.png",
+            url: "assets/textures/shaders/celltexture.webp",
           },
           {
             type: "image",
             key: "cellnoise",
-            url: "assets/textures/shaders/cellnoise.png",
+            url: "assets/textures/shaders/cellnoise.webp",
           },
         ],
       },

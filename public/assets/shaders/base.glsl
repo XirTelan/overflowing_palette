@@ -68,7 +68,7 @@ vec3 lighten(vec3 color) {
 }
 
 vec2 fluidDistortion(vec2 uv, float time) {
-    float n = perlinNoise(uv * 7.0 + time);
+    float n = perlinNoise(uv * 15.0 + time);
     float angle = n * 6.28318;
     vec2 offset = vec2(cos(angle), sin(angle)) * 0.1;
     return offset;

@@ -65,12 +65,12 @@
       {
         "type": "image",
         "key": "cellnoise_d",
-        "url": "cellnoise_d.png"
+        "url": "cellnoise_d.webp"
       },
       {
         "type": "image",
         "key": "cellnoise_center",
-        "url": "cellnoise_center.png"
+        "url": "cellnoise_center.webp"
       }
     ]
   },

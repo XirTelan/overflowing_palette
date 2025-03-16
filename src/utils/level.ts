@@ -32,18 +32,25 @@ export function generateBoard(
     return nextRow >= 0 && nextRow < rows && nextCol >= 0 && nextCol < cols;
   };
 
+  const countByColors = new Map();
+  const max = cols * rows;
   while (queue.length > 0) {
     const [r, c] = queue.pop()!;
     let color = board[r][c];
-
+    const currColorCount = countByColors.get(color) ?? 0;
     DIRECTIONS.forEach(([dx, dy]) => {
       const nr = r + dx;
       const nc = c + dy;
 
       if (!isValid(nr, nc)) return;
 
-      if (board[nr][nc] === null && Math.random() < spreadChance) {
+      if (
+        currColorCount < max / 2 &&
+        board[nr][nc] === null &&
+        Math.random() < spreadChance
+      ) {
         board[nr][nc] = color;
+        countByColors.set(color, (countByColors.get(color) || 0) + 1);
         queue.push([nr, nc]);
       }
     });

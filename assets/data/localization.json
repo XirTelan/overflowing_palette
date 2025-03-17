@@ -9,6 +9,14 @@
   },
   "langs": {
     "en": {
+      "endlessZen": {
+        "folderName": "Grid Options",
+        "columnsCount": "Columns",
+        "rowsCount": "Rows",
+        "colorsCount": "Colors count",
+        "difficulty": "Difficulty",
+        "difficulties": ["Easy", "Medium", "Hard", "Mess"]
+      },
       "mainMenu": {
         "selectLevel": "Select Level",
         "endlessZen": "Endless Zen",
@@ -36,6 +44,8 @@
         "movesUsed": "Moves used"
       },
       "options": {
+        "btnSave": "Save",
+        "btnReset": "Reset",
         "tabs": {
           "general": "General",
           "colors": "Colors",
@@ -63,7 +73,8 @@
             "options": ["Off", "On"]
           },
           "soundVolume": "Sound volume"
-        }
+        },
+        "defaultToggle": ["Off", "On"]
       },
       "import": "Import",
       "exportBlock": {

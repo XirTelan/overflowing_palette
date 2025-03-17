@@ -81,7 +81,7 @@ export class Game extends Scene {
     this.initTextUI(this);
     this.initButtons();
 
-    this.sound.setVolume(gameplay.sound ?? 100 / 100);
+    this.sound.setVolume((gameplay.sound ?? 50) / 100);
     this.exportBlock = new Export(this);
 
     this.startTime = this.time.now;

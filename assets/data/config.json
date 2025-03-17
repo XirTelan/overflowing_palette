@@ -3,7 +3,11 @@
   "gameplay": {
     "highlightIntensity": 0,
     "fluidColors": 1,
-    "sound": 50
+    "sound": 50,
+    "transition": {
+      "default": 500,
+      "minimum": 50
+    }
   },
   "background": {
     "current": {
@@ -153,10 +157,6 @@
       "fillStyle": { "color": "0x121212", "alpha": 0.5 }
     },
     "gridOptions": {
-      "transition": {
-        "default": 500,
-        "minimum": 50
-      },
       "offset": {
         "x": 100,
         "y": 120

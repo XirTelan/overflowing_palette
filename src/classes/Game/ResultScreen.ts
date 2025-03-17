@@ -1,6 +1,12 @@
 import { BaseBlock } from "../common/BaseBlock";
 import { Game } from "../../scenes/Game";
-import { GameMode, GameSceneData, GameStatus, LevelsJson } from "../../types";
+import {
+  GameMode,
+  GameSceneData,
+  GameStatus,
+  LanguageConfig,
+  LevelsJson,
+} from "../../types";
 import { PrimaryBtn } from "../ui/PrimaryBtn";
 import { Record } from "../ui/html/Record";
 import { generateLevel, getLocal, getUserLevelsCleared } from "../../utils";
@@ -8,7 +14,7 @@ import { generateLevel, getLocal, getUserLevelsCleared } from "../../utils";
 export class ResultScreen extends BaseBlock {
   scene: Game;
   nextLevelData: GameSceneData;
-  local;
+  local: LanguageConfig["resultScreen"];
 
   constructor(scene: Game) {
     scene.cameras.main.postFX.addBlur(1);
@@ -24,7 +30,8 @@ export class ResultScreen extends BaseBlock {
 
     scene.gameStates.state = GameStatus.Waiting;
 
-    this.local = getLocal(scene).resultScreen;
+    const { resultScreen } = getLocal(scene);
+    this.local = resultScreen;
 
     const levelKey = this.scene.gameStates.levelKey;
 
@@ -60,7 +67,7 @@ export class ResultScreen extends BaseBlock {
       btn.addEventListener("click", () => {
         this.scene.scene.start("LoadingGame", this.nextLevelData);
       });
-      btn.textContent = "Next Level";
+      btn.textContent = resultScreen.btnNext;
       buttonBlock.append(btn);
     }
 
@@ -92,7 +99,7 @@ export class ResultScreen extends BaseBlock {
 
     const textBlock = document.createElement("div");
     textBlock.classList.add("result-screen__cleared");
-    textBlock.textContent = "Level Complete";
+    textBlock.textContent = this.local.win;
     const textBlockBg = document.createElement("div");
     textBlockBg.classList.add("cleared-bg");
 
@@ -104,12 +111,12 @@ export class ResultScreen extends BaseBlock {
     resultsBlock.classList.add("results");
     content.appendChild(resultsBlock);
 
-    const timeRecord = this.addRecord("Time", time);
+    const timeRecord = this.addRecord(this.local.time, time);
     resultsBlock.appendChild(timeRecord);
 
     if (this.scene.gameStates.mode === GameMode.Endless) {
       const turnUsed = this.addRecord(
-        "Moves used",
+        this.local.movesUsed,
         String(this.scene.gameStates.turns)
       );
       resultsBlock.appendChild(turnUsed);
@@ -123,7 +130,7 @@ export class ResultScreen extends BaseBlock {
     const buttonsBlock = document.createElement("div");
     buttonsBlock.classList.add("results_buttons");
 
-    const btn = this.createPrimiryBtn("Main Menu", () => {
+    const btn = this.createPrimiryBtn(this.local.btnMain, () => {
       this.scene.scene.start("MainMenu");
     });
     buttonsBlock.append(btn);
@@ -148,7 +155,7 @@ export class ResultScreen extends BaseBlock {
   }
 
   createShareButton() {
-    const btn = this.createPrimiryBtn("Share", () => {
+    const btn = this.createPrimiryBtn(this.local.btnShare, () => {
       this.scene.exportBlock.show();
     });
     return btn;

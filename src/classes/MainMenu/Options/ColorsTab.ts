@@ -2,7 +2,7 @@ import { Scene } from "phaser";
 import { OptionTab } from "./OptionTab";
 import { ColorConfig, Vector3 } from "../../../types";
 import { OptionFolder } from "../../ui/html/OptionFolder";
-import { normalizedRgbToHexString } from "../../../utils";
+import { getLocal, normalizedRgbToHexString } from "../../../utils";
 
 export class ColorsTab extends OptionTab {
   colorInputs: ColorInputs = {
@@ -32,11 +32,12 @@ export class ColorsTab extends OptionTab {
     );
 
     const { colors }: { colors: ColorConfig } = scene.cache.json.get("config");
+    const { options } = getLocal(scene);
 
     const colorsList = document.createElement("div");
     colorsList.classList.add("colors");
 
-    const folder = new OptionFolder("Colors customization");
+    const folder = new OptionFolder(options.colorsTab.folderName);
     folder.add(colorsList);
 
     this.tab.appendChild(folder.container);

@@ -86,12 +86,17 @@ export type LanguageConfig = {
     time: string;
     btnMain: string;
     btnNext: string;
+    btnShare: string;
+    movesUsed: string;
   };
   options: {
     tabs: {
       general: string;
       colors: string;
       gameplay: string;
+    };
+    colorsTab: {
+      folderName: string;
     };
     generalTab: {
       languageBlock: string;
@@ -101,11 +106,35 @@ export type LanguageConfig = {
       distortion: string;
       overlay: string;
     };
+    gameplayTab: {
+      folderName: string;
+      highlightIntensity: {
+        text: string;
+        options: [string, string];
+      };
+      fluidColors: {
+        text: string;
+        options: [string, string];
+      };
+      soundVolume: string;
+    };
   };
   import: string;
-  export: string;
-  copyJson: string;
-  copyString: string;
+  exportBlock: {
+    title: string;
+    copyJson: string;
+    copyString: string;
+    switch: {
+      string: string;
+      json: string;
+    };
+    folders: {
+      string: string;
+      json: string;
+    };
+    cancelBtn: string;
+    copy: string;
+  };
 };
 
 export type LocalizationConfig = {
@@ -143,6 +172,7 @@ export type GameConfig = {
   gameplay: {
     highlightIntensity: number;
     fluidColors: number;
+    sound: number;
   };
   background: BackgroundConfig;
   colors: ColorConfig;

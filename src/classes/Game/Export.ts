@@ -28,7 +28,7 @@ export class Export {
 
     const { width, height } = scene.cameras.main;
 
-    const local = getLocal(scene);
+    const { exportBlock } = getLocal(scene);
 
     const bg = scene.add
       .rectangle(0, 0, width, height, 0x000000, 0.6)
@@ -48,8 +48,8 @@ export class Export {
     contentContainer.classList.add("wrapper", "export-wrapper");
     this.viewBox.node.appendChild(contentContainer);
 
-    this.folderString = new OptionFolder("Export as string");
-    this.folderJson = new OptionFolder("Export as JSON");
+    this.folderString = new OptionFolder(exportBlock.folders.string);
+    this.folderJson = new OptionFolder(exportBlock.folders.json);
 
     const baseText = document.createElement("textarea");
     baseText.classList.add("export__base");
@@ -77,25 +77,25 @@ export class Export {
     btn.addEventListener("click", () => {
       this.hide();
     });
-    btn.textContent = "Cancel";
+    btn.textContent = exportBlock.cancelBtn;
 
     const btn2 = document.createElement("button");
     btn2.classList.add("primary-btn");
     btn2.addEventListener("click", () => {
       this.copyToClipboard();
     });
-    btn2.textContent = "Copy to clipboard";
+    btn2.textContent = exportBlock.copy;
 
     buttonsBlock.appendChild(btn);
     buttonsBlock.appendChild(btn2);
 
     const exportTypeSwitch = new Switch(
       {
-        text: "By string",
+        text: exportBlock.switch.string,
         value: "string",
       },
       {
-        text: "By JSON",
+        text: exportBlock.switch.json,
         value: "json",
       },
       (value) => {
@@ -104,7 +104,7 @@ export class Export {
     );
 
     const title = document.createElement("div");
-    title.textContent = "EXPORT LEVEL";
+    title.textContent = exportBlock.title;
     title.className = "block-title";
 
     contentContainer.appendChild(title);

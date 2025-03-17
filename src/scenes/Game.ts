@@ -52,7 +52,7 @@ export class Game extends Scene {
   preload() {}
 
   create({ mode, levelKey, levelData, endlessOptions }: GameSceneData) {
-    const { colors } = this.cache.json.get("config") as GameConfig;
+    const { colors, gameplay } = this.cache.json.get("config") as GameConfig;
     this.colors = colors;
 
     new Background(this);
@@ -80,6 +80,8 @@ export class Game extends Scene {
     }
     this.initTextUI(this);
     this.initButtons();
+
+    this.sound.setVolume(gameplay.sound / 100);
     this.exportBlock = new Export(this);
 
     this.startTime = this.time.now;

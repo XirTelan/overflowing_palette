@@ -26,6 +26,7 @@
   --clr-border-3: #fffbdd;
   --clr-border-2: #636e86;
   --clr-text-invers: #3f3f3f;
+  --clr-slider: #d0c374;
 }
 
 body {
@@ -643,6 +644,48 @@ button {
   width: 100%;
   background: #3b3b3b;
   margin: 0;
+}
+
+.range-slider {
+  position: relative;
+  min-width: 400px;
+  gap: 1rem;
+  align-items: center;
+
+  display: flex;
+}
+.range-slider__input {
+  -webkit-appearance: none;
+  appearance: none;
+  display: flex;
+  flex: 1;
+  transition: background 0.3s ease-in-out;
+  border-radius: 50px;
+  height: 15px;
+  background: linear-gradient(to right, var(--clr-slider) 50%, #e0e0e0 50%);
+}
+.range-slider__value {
+  min-width: 50px;
+  padding: 0 1rem;
+  font: 26px OpenSans_Bold;
+}
+
+.range-slider__input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 40px;
+  border-radius: 50px;
+  background: white;
+  cursor: pointer;
+}
+
+.range-slider__input::-moz-range-thumb {
+  width: 20px;
+  height: 40px;
+  background: white;
+  border-radius: 50px;
+  cursor: pointer;
 }
 
 .switch-container {

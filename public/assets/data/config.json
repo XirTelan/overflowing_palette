@@ -2,7 +2,8 @@
   "version": 1.1,
   "gameplay": {
     "highlightIntensity": 0,
-    "fluidColors": 1
+    "fluidColors": 1,
+    "sound": 100
   },
   "background": {
     "current": {

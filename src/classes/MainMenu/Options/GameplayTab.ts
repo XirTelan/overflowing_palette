@@ -4,6 +4,7 @@ import { OptionTab } from "./OptionTab";
 import { getLocal } from "../../../utils";
 import { GameConfig } from "../../../types";
 import { OptionSelector } from "../../ui/html/OptionSelector";
+import { RangeSlider } from "../../ui/html/RangeSlider";
 
 export class GameplayTab extends OptionTab {
   currentConfig;
@@ -55,9 +56,16 @@ export class GameplayTab extends OptionTab {
         this.currentConfig.highlightIntensity = val;
       }
     );
-
+    const soundLevel = new RangeSlider(
+      "Sound volume",
+      this.currentConfig.sound,
+      (val) => {
+        this.currentConfig.sound = val;
+      }
+    );
     folder.add(fluidColors.container);
     folder.add(highlightIntensity.container);
+    folder.add(soundLevel.container);
 
     this.tab.appendChild(folder.container);
   }

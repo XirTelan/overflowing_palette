@@ -87,7 +87,7 @@ export class GeneralTab extends OptionTab {
     this.tab.appendChild(languageBlock.container);
   }
   private createBackgroundSection() {
-    const { generalTab } = getLocal(this.scene)["options"];
+    const { generalTab, defaultToggle } = getLocal(this.scene)["options"];
 
     const bgImage = new Select(
       generalTab.image,
@@ -103,7 +103,7 @@ export class GeneralTab extends OptionTab {
     const distortion = new OptionSelector(
       generalTab.distortion,
       this.currentConfig.background.current.distortion,
-      ["Off", "On"],
+      defaultToggle,
       false,
       (val) => {
         this.currentConfig.background.current.distortion = val;
@@ -112,7 +112,7 @@ export class GeneralTab extends OptionTab {
     const overlay = new OptionSelector(
       generalTab.overlay,
       this.currentConfig.background.current.overlay,
-      ["Off", "On"],
+      defaultToggle,
       false,
       (val) => {
         this.currentConfig.background.current.overlay = val;

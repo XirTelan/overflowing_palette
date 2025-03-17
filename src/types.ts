@@ -53,13 +53,12 @@ export enum GameStatus {
   "Waiting",
   "Active",
 }
-export type LevelDifficulty = keyof typeof RATES;
 
 export type EndlessOptions = {
   rows: number;
   columns: number;
   colorsCount: number;
-  difficulty: LevelDifficulty;
+  difficulty: string;
 };
 
 export type LanguageConfig = {
@@ -69,6 +68,14 @@ export type LanguageConfig = {
     createLevel: string;
     options: string;
     gitHub: string;
+  };
+  endlessZen: {
+    folderName: string;
+    columnsCount: string;
+    rowsCount: string;
+    colorsCount: string;
+    difficulty: string;
+    difficulties: string[];
   };
   game: {
     ui: {
@@ -90,6 +97,8 @@ export type LanguageConfig = {
     movesUsed: string;
   };
   options: {
+    btnSave: string;
+    btnReset: string;
     tabs: {
       general: string;
       colors: string;
@@ -118,6 +127,7 @@ export type LanguageConfig = {
       };
       soundVolume: string;
     };
+    defaultToggle: [string, string];
   };
   import: string;
   exportBlock: {

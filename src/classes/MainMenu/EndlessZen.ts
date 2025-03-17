@@ -1,26 +1,23 @@
 import { MenuTab } from "./MenuTab";
-import {
-  ColorType,
-  GameMode,
-  LevelDifficulty,
-  MenuTabProps,
-} from "../../types";
+import { ColorType, GameMode, MenuTabProps } from "../../types";
 
 import { OptionFolder } from "../ui/html/OptionFolder";
 import { ValueSelector } from "../ui/html/ValueSelector";
-import { generateLevel } from "../../utils";
+import { generateLevel, getLocal } from "../../utils";
 import { OptionSelector } from "../ui/html/OptionSelector";
 
 export class EndlessZen extends MenuTab {
   selectedFillColor: ColorType = 0;
   rows: number = 8;
   columns: number = 10;
-  difficulty: LevelDifficulty = "Medium";
+  difficulty = 1;
   colorsCount: number = 4;
 
   constructor(props: MenuTabProps) {
     super(props);
     const { scene, width, height } = props;
+
+    const { endlessZen } = getLocal(scene);
 
     const viewBox = scene.add
       .dom(0, 0, "div", {
@@ -29,11 +26,11 @@ export class EndlessZen extends MenuTab {
       })
       .setOrigin(0);
 
-    const folder = new OptionFolder("Grid Options");
+    const folder = new OptionFolder(endlessZen.folderName);
     viewBox.node.appendChild(folder.container);
 
     const columns = new ValueSelector(
-      "Columns",
+      endlessZen.columnsCount,
       this.columns,
       () => {
         this.columns = Phaser.Math.Clamp(this.columns - 1, 2, 100);
@@ -46,7 +43,7 @@ export class EndlessZen extends MenuTab {
     );
 
     const rows = new ValueSelector<number>(
-      "Rows",
+      endlessZen.rowsCount,
       this.rows,
       () => {
         this.rows = Phaser.Math.Clamp(this.rows - 1, 2, 100);
@@ -59,7 +56,7 @@ export class EndlessZen extends MenuTab {
     );
 
     const colorsCount = new ValueSelector<number>(
-      "Colors count",
+      endlessZen.colorsCount,
       this.colorsCount,
       () => {
         this.colorsCount = Phaser.Math.Clamp(this.colorsCount - 1, 2, 8);
@@ -71,16 +68,15 @@ export class EndlessZen extends MenuTab {
       }
     );
 
-    const diffOptions: LevelDifficulty[] = ["Easy", "Medium", "Hard", "Mess"];
-    const difficultyIndex = diffOptions.indexOf(this.difficulty);
+    const diffOptions = endlessZen.difficulties;
 
     const difficulty = new OptionSelector(
-      "Difficulty",
-      difficultyIndex,
+      endlessZen.difficulty,
+      this.difficulty,
       diffOptions,
       false,
       (selectedIndex) => {
-        this.difficulty = diffOptions[selectedIndex];
+        this.difficulty = selectedIndex;
       }
     );
 

@@ -25,13 +25,13 @@ export class Options extends MenuTab {
     const scene = this.scene;
     const { options } = getLocal(scene);
 
-    this.actionBtn.text.setText("Save");
+    this.actionBtn.text.setText(options.btnSave);
     this.actionBtn.btn.on("pointerdown", this.saveUserConfig, this);
 
     const reset = new PrimaryBtn(
       980,
       880,
-      "Reset",
+      options.btnReset,
       350,
       50,
       this.scene,

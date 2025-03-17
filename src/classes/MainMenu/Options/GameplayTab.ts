@@ -36,7 +36,7 @@ export class GameplayTab extends OptionTab {
 
     const { gameplayTab } = getLocal(scene)["options"];
 
-    const folder = new OptionFolder("Grid options");
+    const folder = new OptionFolder(gameplayTab.folderName);
 
     const fluidColors = new OptionSelector(
       gameplayTab.fluidColors.text,
@@ -57,7 +57,7 @@ export class GameplayTab extends OptionTab {
       }
     );
     const soundLevel = new RangeSlider(
-      "Sound volume",
+      gameplayTab.soundVolume,
       this.currentConfig.sound,
       (val) => {
         this.currentConfig.sound = val;

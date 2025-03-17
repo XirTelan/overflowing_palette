@@ -28,16 +28,21 @@
         }
       },
       "resultScreen": {
-        "win": "CLEARED",
-        "time": "Time elapsed:",
+        "win": "Level Complete",
+        "time": "Time:",
         "btnMain": "Main Menu",
-        "btnNext": "Next Level"
+        "btnNext": "Next Level",
+        "btnShare": "Share",
+        "movesUsed": "Moves used"
       },
       "options": {
         "tabs": {
           "general": "General",
           "colors": "Colors",
           "gameplay": "Gameplay"
+        },
+        "colorsTab": {
+          "folderName": "Colors customization"
         },
         "generalTab": {
           "languageBlock": "Text Language",
@@ -48,6 +53,7 @@
           "overlay": "Overlay"
         },
         "gameplayTab": {
+          "folderName": "Grid Options",
           "highlightIntensity": {
             "text": "Highlight Intensity",
             "options": ["Normal", "Strong"]
@@ -55,13 +61,24 @@
           "fluidColors": {
             "text": "Fluid Colors",
             "options": ["Off", "On"]
-          }
+          },
+          "soundVolume": "Sound volume"
         }
       },
       "import": "Import",
-      "export": "Export",
-      "copyJson": "Copy as JSON",
-      "copyString": "Copy as String"
+      "exportBlock": {
+        "title": "EXPORT LEVEL",
+        "switch": {
+          "string": "By string",
+          "json": "By JSON"
+        },
+        "folders": {
+          "string": "Export as string",
+          "json": "Export as JSON"
+        },
+        "cancelBtn": "Cancel",
+        "copy": "Copy to clipboard"
+      }
     }
   }
 }

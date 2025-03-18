@@ -5,11 +5,12 @@ export class RangeSlider {
   text: HTMLSpanElement;
   valueText: HTMLElement;
   input: HTMLInputElement;
-  private bg: HTMLDivElement;
 
   constructor(
     text: string,
     defaultValue: number,
+    from: number,
+    to: number,
     onChange: (value: number) => void
   ) {
     this.container = document.createElement("div");
@@ -29,8 +30,8 @@ export class RangeSlider {
 
     const input = document.createElement("input");
     input.setAttribute("type", "range");
-    input.setAttribute("min", "0");
-    input.setAttribute("max", "100");
+    input.setAttribute("min", `${from}`);
+    input.setAttribute("max", `${to}`);
     input.value = String(defaultValue);
     input.className = "range-slider__input";
     input.addEventListener("input", (e) => {

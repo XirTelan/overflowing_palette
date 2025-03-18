@@ -145,6 +145,8 @@ export class Game extends Scene {
     const cellSize = ui.colorButtons.size;
     const isEditorMode = scene.gameStates.mode === GameMode.Editor;
 
+    scene.gameStates.availableColors.add(scene.gameStates.targetColor)
+
     const colorsCount = isEditorMode
       ? 8
       : scene.gameStates.availableColors.size;

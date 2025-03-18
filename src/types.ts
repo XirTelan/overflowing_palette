@@ -116,6 +116,7 @@ export type LanguageConfig = {
       overlay: string;
     };
     gameplayTab: {
+      animationSpeed: string;
       folderName: string;
       highlightIntensity: {
         text: string;
@@ -183,6 +184,9 @@ export type GameConfig = {
     highlightIntensity: number;
     fluidColors: number;
     sound: number;
+    transitionDefault: number;
+    transitionMinimum: number;
+    transitionMax: number;
   };
   background: BackgroundConfig;
   colors: ColorConfig;
@@ -204,10 +208,6 @@ export type GameConfig = {
 };
 
 export type GridOptions = {
-  transition: {
-    default: number;
-    minimum: number;
-  };
   offset: {
     x: number;
     y: number;

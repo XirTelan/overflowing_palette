@@ -63,6 +63,7 @@
           "overlay": "Overlay"
         },
         "gameplayTab": {
+          "animationSpeed": "Animation Speed",
           "folderName": "Grid Options",
           "highlightIntensity": {
             "text": "Highlight Intensity",

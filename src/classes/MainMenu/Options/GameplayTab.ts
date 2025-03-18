@@ -1,7 +1,7 @@
 import { Scene } from "phaser";
 import { OptionFolder } from "../../ui/html/OptionFolder";
 import { OptionTab } from "./OptionTab";
-import { getLocal } from "../../../utils";
+import { getLocal, mapRange } from "../../../utils";
 import { GameConfig } from "../../../types";
 import { OptionSelector } from "../../ui/html/OptionSelector";
 import { RangeSlider } from "../../ui/html/RangeSlider";
@@ -56,15 +56,40 @@ export class GameplayTab extends OptionTab {
         this.currentConfig.highlightIntensity = val;
       }
     );
+    const transitionSpeed = new RangeSlider(
+      gameplayTab.animationSpeed,
+      100 -
+        mapRange(
+          this.currentConfig.transitionDefault,
+          config.gameplay.transitionMinimum,
+          config.gameplay.transitionMax,
+          0,
+          100
+        ),
+      0,
+      100,
+      (val) => {
+        this.currentConfig.transitionDefault = mapRange(
+          100 - val,
+          0,
+          100,
+          config.gameplay.transitionMinimum,
+          config.gameplay.transitionMax
+        );
+      }
+    );
     const soundLevel = new RangeSlider(
       gameplayTab.soundVolume,
       this.currentConfig.sound,
+      0,
+      100,
       (val) => {
         this.currentConfig.sound = val;
       }
     );
     folder.add(fluidColors.container);
     folder.add(highlightIntensity.container);
+    folder.add(transitionSpeed.container);
     folder.add(soundLevel.container);
 
     this.tab.appendChild(folder.container);

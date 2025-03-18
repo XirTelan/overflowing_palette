@@ -35,11 +35,13 @@ export default class Grid {
     const columns = levelData[0].length;
     const tiles = [];
 
-    const { gridOptions }: { gridOptions: GridOptions } =
-      scene.cache.json.get("config")["game"];
+    const {
+      game: { gridOptions },
+      gameplay,
+    } = scene.cache.json.get("config") as GameConfig;
 
-    this.transitionSpeed = gridOptions.transition.default;
-    this.transitionSpeedMinimum = gridOptions.transition.minimum;
+    this.transitionSpeed = gameplay.transitionDefault;
+    this.transitionSpeedMinimum = gameplay.transitionMinimum;
 
     const cellSize = Math.min(
       (gridOptions.height - gridOptions.gap * (rows - 1)) / rows,
@@ -189,7 +191,8 @@ export default class Grid {
       repeat: 0,
       onStart: () => {
         this.scene.sound.play("tileFlip", {
-          detune: 150 * level,
+          detune: Math.min(50 * level, 600),
+          volume: level ? Math.min(0.4, 1 - 0.9 + level * 0.1) : 1,
         });
         this.board[x][y].tile.setUniform(
           "colorToTransform.value",

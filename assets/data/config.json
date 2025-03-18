@@ -4,10 +4,9 @@
     "highlightIntensity": 0,
     "fluidColors": 1,
     "sound": 50,
-    "transition": {
-      "default": 500,
-      "minimum": 50
-    }
+    "transitionDefault": 500,
+    "transitionMinimum": 50,
+    "transitionMax": 850
   },
   "background": {
     "current": {

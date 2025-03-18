@@ -56,6 +56,28 @@ Levels are separated by regions.
 
 ### Import Levels  
 
+![image](https://github.com/user-attachments/assets/164a4706-2872-4383-ab69-69c82631e306)
+
+Shoud paste level in base64 format (or simply "string"):
+After "Load" you will see preview for that level if its correct "string". 
+
+## Endless Zen
+
+![image](https://github.com/user-attachments/assets/78e36cf8-292f-4c5a-907d-e02563e25a25)
+
+
+Auto-generated levels without a move counter.
+
+Choose board size, number of colors, and difficulty (which affects how shuffled the board starts).
+
+Option to skip a level if you don’t like the generated result.
+
+After completing a level, you can start another with the same settings.
+
+You can share completed levels with others. (Your number of moves will be set as a goal for others to beat.)
+
+
+
 ## Level Editor
 
 ![image](https://github.com/user-attachments/assets/919f8640-4756-412d-a509-e49164c89a34)

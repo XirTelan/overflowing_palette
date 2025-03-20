@@ -77,7 +77,7 @@ export class GeneralTab extends OptionTab {
       meta.langsAvailable.map((obj) => obj.name),
       (e) => {
         const target = e.target as HTMLSelectElement;
-        this.currentConfig.background.current.key = target?.value;
+        this.currentConfig.lang = target?.value;
       },
       meta.langsAvailable.map((obj) => obj.key)
     );

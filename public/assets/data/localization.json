@@ -4,11 +4,25 @@
       {
         "key": "en",
         "name": "English"
+      },
+      {
+        "key": "ru",
+        "name": "Русский"
       }
     ]
   },
   "langs": {
     "en": {
+      "previewBlock": {
+        "preview": "Preview",
+        "author": "Author",
+        "moves": "Moves",
+        "gridSize": "Grid size",
+        "targetColor": "Target Color",
+        "cleared": "CLEARED",
+        "time": "Time",
+        "timeDefault": "A long time ago"
+      },
       "endlessZen": {
         "folderName": "Grid Options",
         "columnsCount": "Columns",
@@ -18,6 +32,8 @@
         "difficulties": ["Easy", "Medium", "Hard", "Mess"]
       },
       "mainMenu": {
+        "startBtn": "Start",
+        "backBtn": "Back",
         "selectLevel": "Select Level",
         "endlessZen": "Endless Zen",
         "createLevel": "Create Level",
@@ -32,8 +48,21 @@
           "targetColor": "Turn all the blocks into",
           "targetColorEditor": "Target color:",
           "movesCount": "Moves count:",
-          "resetBtn": "Reset"
+          "resetBtn": "Reset",
+          "export": "Экспорт",
+          "tools": "Tools"
+        },
+        "tools": {
+          "verticalSwap": "Vertical Swap",
+          "horizontalSwap": "Horizontal Swap",
+          "allwaySwap": "All Way Swap"
         }
+      },
+      "levelEditor": {
+        "folderName": "Grid Options",
+        "gridColumns": "Columns:",
+        "gridRows": "Rows:",
+        "gridColor": "Fill Color"
       },
       "resultScreen": {
         "win": "Level Complete",
@@ -90,6 +119,116 @@
         },
         "cancelBtn": "Cancel",
         "copy": "Copy to clipboard"
+      }
+    },
+
+    "ru": {
+      "previewBlock": {
+        "preview": "Предпросмотр",
+        "author": "Автор",
+        "moves": "Ходы",
+        "gridSize": "Размер поля",
+        "targetColor": "Цель",
+        "cleared": "ПРОЙДЕНО",
+        "time": "Время:",
+        "timeDefault": "Это было давно"
+      },
+      "endlessZen": {
+        "folderName": "Параметры поля",
+        "columnsCount": "Столбцы",
+        "rowsCount": "Строки",
+        "colorsCount": "Количество цветов",
+        "difficulty": "Сложность",
+        "difficulties": ["Легко", "Средне", "Сложно", "Хаос"]
+      },
+      "mainMenu": {
+        "startBtn": "Начать",
+        "backBtn": "Back",
+        "selectLevel": "Выбрать уровень",
+        "endlessZen": "Бесконечный дзен",
+        "createLevel": "Создать уровень",
+        "options": "Настройки",
+        "gitHub": "Открыть документацию\n (GitHub)"
+      },
+      "game": {
+        "ui": {
+          "mode": "Режим:Редактор",
+          "movesRemain": "Оставшиеся ходы:",
+          "movesUsed": "Использованные ходы:",
+          "targetColor": "Преобразуйте все блоки в",
+          "targetColorEditor": "Целевой цвет:",
+          "movesCount": "Количество ходов:",
+          "resetBtn": "Сброс",
+          "export": "Экспорт",
+          "tools": "Устройства"
+        },
+        "tools": {
+          "verticalSwap": "Обмен:Вертикальный",
+          "horizontalSwap": "Обмен:Горизонтальный",
+          "allwaySwap": "Обме:Во все стороны"
+        }
+      },
+      "levelEditor": {
+        "folderName": "Параметры поля",
+        "gridColumns": "Столбцов",
+        "gridRows": "Ряды",
+        "gridColor": "Цвет поля"
+      },
+      "resultScreen": {
+        "win": "Уровень пройден",
+        "time": "Время:",
+        "btnMain": "Главное меню",
+        "btnNext": "Следующий уровень",
+        "btnShare": "Поделиться",
+        "movesUsed": "Использовано ходов"
+      },
+      "options": {
+        "btnSave": "Сохранить",
+        "btnReset": "Сброс",
+        "tabs": {
+          "general": "Общие",
+          "colors": "Цвета",
+          "gameplay": "Геймплей"
+        },
+        "colorsTab": {
+          "folderName": "Настройка цветов"
+        },
+        "generalTab": {
+          "languageBlock": "Язык текста",
+          "languageSelection": "Выбор языка",
+          "background": "Фон",
+          "image": "Изображение",
+          "distortion": "Искажение",
+          "overlay": "Наложение"
+        },
+        "gameplayTab": {
+          "animationSpeed": "Скорость анимации",
+          "folderName": "Параметры поля",
+          "highlightIntensity": {
+            "text": "Интенсивность подсветки",
+            "options": ["Обычная", "Сильная"]
+          },
+          "fluidColors": {
+            "text": "Анимация поля",
+            "options": ["Выкл", "Вкл"]
+          },
+          "soundVolume": "Громкость звука"
+        },
+        "defaultToggle": ["Выкл", "Вкл"]
+      },
+      "import": "Импорт",
+      "exportBlock": {
+        "title": "ЭКСПОРТ УРОВНЯ",
+        "switch": {
+          "string": "Как строку",
+          "json": "Как JSON"
+        },
+        "folders": {
+          "string": "Экспорт в виде строки",
+          "json": "Экспорт в формате JSON"
+        },
+        "cancelBtn": "Отмена",
+        "copy": "Копировать в буфер"
       }
     }
   }

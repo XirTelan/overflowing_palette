@@ -145,7 +145,7 @@ export class Game extends Scene {
     const cellSize = ui.colorButtons.size;
     const isEditorMode = scene.gameStates.mode === GameMode.Editor;
 
-    scene.gameStates.availableColors.add(scene.gameStates.targetColor)
+    scene.gameStates.availableColors.add(scene.gameStates.targetColor);
 
     const colorsCount = isEditorMode
       ? 8
@@ -292,7 +292,7 @@ export class Game extends Scene {
       }
     );
 
-    new PrimaryBtn(150, 650, "Export", 300, 50, this, () => {
+    new PrimaryBtn(150, 650, local.game.ui.export, 300, 50, this, () => {
       this.exportBlock.show();
     });
 
@@ -313,7 +313,7 @@ export class Game extends Scene {
     scene.make.text({
       x: 60,
       y: 290,
-      text: "Tools:",
+      text: local.game.ui.tools,
       style: {
         color: "#fff",
         font: "22px OpenSans_Regular",
@@ -324,7 +324,7 @@ export class Game extends Scene {
       scene.make.text({
         x: 60,
         y: ui.tools.y + ui.tools.offset * index - 50,
-        text: data.text,
+        text: local.game.tools[data.textKey],
         style: {
           color: "#fff",
           font: "22px OpenSans_Regular",

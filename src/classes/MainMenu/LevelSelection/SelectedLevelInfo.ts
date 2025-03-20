@@ -2,8 +2,8 @@ import { Scene } from "phaser";
 import { ColorType, GameConfig, GameMode, LevelData } from "../../../types";
 import { PrimaryBtn } from "../../ui/PrimaryBtn";
 import { BaseBlock } from "../../common/BaseBlock";
-import { Record } from "../../ui/html/Record";
-import { normalizedRgbToColor } from "../../../utils";
+import { getLocal, normalizedRgbToColor } from "../../../utils";
+import { InfoBlock } from "./InfoBlock";
 
 export class SelectedLevelInfo extends BaseBlock {
   previewBlock: PreviewBlock;
@@ -27,6 +27,8 @@ export class SelectedLevelInfo extends BaseBlock {
     const { selectedLevelInfo } =
       scene.cache.json.get("config")["mainMenu"]["levelSelection"];
 
+    const { previewBlock } = getLocal(scene);
+
     this.container.add([
       scene.add.rectangle(0, 0, width, height, 0x000000, 0.7).setOrigin(0, 0),
       scene.add.rectangle(0, 0, width, 45, 0x000000, 0.6).setOrigin(0, 0),
@@ -34,7 +36,7 @@ export class SelectedLevelInfo extends BaseBlock {
         .text({
           x: width / 2,
           y: 0,
-          text: "Preview",
+          text: previewBlock.preview,
           style: {
             color: "#fff",
             font: "32px OpenSans_Bold",
@@ -143,131 +145,5 @@ class PreviewBlock extends BaseBlock {
         graphics.fillRect(j * 50, i * 50, 50, 50);
       }
     }
-  }
-}
-class InfoBlock {
-  scene: Scene;
-  container: Phaser.GameObjects.DOMElement;
-  turnsText: HTMLElement;
-  tartgetColorText: HTMLElement;
-  author: HTMLElement;
-  gridSize: HTMLElement;
-  clearedBlock: ClearedBlock;
-
-  constructor(x: number, y: number, scene: Scene) {
-    this.scene = scene;
-
-    const vieBox = scene.add
-      .dom(x, 380, "div", {
-        width: `420px`,
-        height: `500px`,
-        fontSize: "24px",
-        overflow: "auto",
-      })
-      .setOrigin(0);
-
-    this.container = vieBox;
-
-    const container = document.createElement("div");
-
-    container.classList.add("info-block");
-
-    vieBox.node.append(container);
-
-    this.tartgetColorText = this.addRecord("Target Color:", "red");
-    this.turnsText = this.addRecord("Moves:", "0");
-    this.author = this.addRecord("Author:", "");
-    this.gridSize = this.addRecord("Grid Size:", "");
-
-    this.clearedBlock = new ClearedBlock();
-    this.clearedBlock.hide();
-
-    container.appendChild(this.turnsText);
-    container.appendChild(this.tartgetColorText);
-    container.appendChild(this.author);
-    container.appendChild(this.gridSize);
-    container.appendChild(this.clearedBlock.container);
-  }
-  addRecord(text: string, value: string, overrideClass?: string) {
-    return new Record(
-      text,
-      value,
-      overrideClass ?? "preview-item",
-      "preview-item__label",
-      "preview-item__value"
-    ).container;
-  }
-
-  update(turns: string, levelData: LevelData, cleared?: ClearedData) {
-    const { colors } = this.scene.cache.json.get("config") as GameConfig;
-    this.tartgetColorText.childNodes[1].textContent = `${
-      colors[levelData.targetColor as ColorType].colorName
-    }`;
-    const { x, y, z } = colors[levelData.targetColor as ColorType].value;
-    const textElement = this.tartgetColorText.childNodes[1] as HTMLElement;
-    textElement.style.color = Phaser.Display.Color.RGBToString(
-      x * 255,
-      y * 255,
-      z * 255
-    );
-
-    this.turnsText.childNodes[1].textContent = turns;
-    this.gridSize.childNodes[1].textContent = `${levelData.board.length}x${levelData.board[0].length} `;
-
-    if (levelData.author) {
-      this.author.style.display = "flex";
-      this.author.childNodes[1].textContent = levelData.author;
-    } else {
-      this.author.style.display = "none";
-    }
-
-    if (cleared) {
-      this.clearedBlock.show();
-      this.clearedBlock.time.textContent = cleared.time;
-    } else {
-      this.clearedBlock.hide();
-    }
-  }
-  hide() {
-    this.container.setVisible(false);
-  }
-}
-
-type ClearedData = {
-  time: string;
-};
-
-class ClearedBlock {
-  container: HTMLElement;
-  time: HTMLElement;
-
-  constructor() {
-    const container = document.createElement("div");
-
-    const text = document.createElement("p");
-    text.classList.add("preview-item-cleared");
-    //[TASK][i18n]
-    text.textContent = "CLEARED";
-
-    const timeRecord = new Record(
-      "Time",
-      "A long time ago",
-      "preview-item",
-      "preview-item__label",
-      "preview-item__value"
-    );
-
-    container.appendChild(text);
-    container.appendChild(timeRecord.container);
-
-    this.time = timeRecord.value;
-    this.container = container;
-  }
-
-  hide() {
-    this.container.style.display = "none";
-  }
-  show() {
-    this.container.style.display = "block";
   }
 }

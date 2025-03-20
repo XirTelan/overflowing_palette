@@ -1,11 +1,11 @@
 import Cell from "./Cell";
 import { Game } from "../scenes/Game";
 import {
+  ColorConfig,
   ColorType,
   GameConfig,
   GameMode,
   GameStatus,
-  GridOptions,
   Tools,
   Vector2,
 } from "../types";
@@ -122,109 +122,28 @@ export default class Grid {
     const { colors } = this.scene.cache.json.get("config") as GameConfig;
 
     this.pendingCalls++;
-    const cell = this.board[x][y];
-    const currentTile = this.board[x][y].tile;
+    const currentCell = this.board[x][y];
 
-    seen.add(cell);
+    seen.add(currentCell);
 
-    const animate = cell.transitionTile;
+    const transitionTile = currentCell.transitionTile;
 
-    const minDelay = this.transitionSpeedMinimum;
     const animationDelay = Math.max(
       this.transitionSpeed * Math.pow(0.8, level),
-      minDelay
+      this.transitionSpeedMinimum
     );
 
-    this.scene.tweens.chain({
-      targets: null,
-      tweens: [
-        {
-          targets: currentTile,
-          x: {
-            value: () => currentTile.x + Phaser.Math.Between(-5, 5),
-            duration: animationDelay * 0.1,
-            repeat: 1,
-          },
-          y: {
-            value: () => currentTile.y + Phaser.Math.Between(-5, 5),
-            duration: animationDelay * 0.1,
-            repeat: 1,
-          },
-          onComplete: () => {
-            animate.setVisible(true).setDepth(10);
-          },
-          repeat: 0,
-          yoyo: true,
-          ease: "Sine.easeInOut",
-        },
-        {
-          targets: animate,
-          alpha: 0.8,
-          duration: animationDelay / 2 - 10,
-          repeat: 0,
-          scale: 1.2,
-          ease: "Linear",
-        },
-        {
-          targets: animate,
-          alpha: 0,
-          scale: 1.4,
-          duration: animationDelay / 2 - 10,
-          repeat: 0,
-          ease: "Linear",
-        },
-      ],
-      onComplete: () => {
-        animate.setVisible(false);
-        animate.scale = 1;
-      },
-      delay: 0,
-      loop: 0,
-    });
-
-    this.scene.tweens.addCounter({
-      from: 0,
-      to: 1,
-      delay: animationDelay * 0.1,
-      duration: animationDelay,
-      ease: "Cubic.InOut",
-      repeat: 0,
-      onStart: () => {
-        this.scene.sound.play("tileFlip", {
-          detune: Math.min(50 * level, 600),
-          volume: level ? Math.min(0.4, 1 - 0.9 + level * 0.1) : 1,
-        });
-        this.board[x][y].tile.setUniform(
-          "colorToTransform.value",
-          colors[newColor].value
-        );
-        this.board[x][y].tile.setUniform("curPoint.value", { x, y });
-        this.board[x][y].tile.setUniform("startPoint.value", startPoint);
-      },
-      onUpdate: (tween) => {
-        this.board[x][y].tile.setUniform("transition.value", tween.getValue());
-      },
-      onComplete: () => {
-        this.board[x][y].tile.scale = 1;
-        this.board[x][y].tile.depth = 1;
-        this.board[x][y].tile.setUniform("transition.value", 0.0);
-        this.board[x][y].tile.setUniform("color.value", colors[newColor].value);
-
-        if (this.board[x][y].color === this.scene.gameStates.targetColor) {
-          this.scene.gameStates.remains++;
-        }
-
-        this.board[x][y].color = Number(newColor);
-
-        if (this.board[x][y].color === this.scene.gameStates.targetColor) {
-          this.scene.gameStates.remains -= 1;
-        }
-        this.pendingCalls--;
-        if (this.pendingCalls === 0) {
-          this.scene.changeGameState(GameStatus.Active);
-        }
-      },
-    });
+    this.startTransitionAnimation(
+      x,
+      y,
+      startPoint,
+      currentCell,
+      transitionTile,
+      level,
+      newColor,
+      colors,
+      animationDelay
+    );
 
     for (const [dx, dy] of DIRECTIONS) {
       this.scene.time.delayedCall(animationDelay, () => {
@@ -310,5 +229,108 @@ export default class Grid {
         this.board[i][j].setColor(data[i][j]);
       }
     }
+  }
+
+  startTransitionAnimation(
+    x: number,
+    y: number,
+    startPoint: Vector2,
+    currentCell: Cell,
+    transitionTile: Phaser.GameObjects.Shader,
+    level: number,
+    newColor: ColorType,
+    colors: ColorConfig,
+    animationDelay: number
+  ) {
+    this.scene.tweens.chain({
+      targets: null,
+      tweens: [
+        {
+          targets: currentCell.tile,
+          x: {
+            value: () => currentCell.tile.x + Phaser.Math.Between(-5, 5),
+            duration: animationDelay * 0.1,
+            repeat: 1,
+          },
+          y: {
+            value: () => currentCell.tile.y + Phaser.Math.Between(-5, 5),
+            duration: animationDelay * 0.1,
+            repeat: 1,
+          },
+          onComplete: () => {
+            transitionTile.setVisible(true).setDepth(10);
+          },
+          repeat: 0,
+          yoyo: true,
+          ease: "Sine.easeInOut",
+        },
+        {
+          targets: transitionTile,
+          alpha: 0.8,
+          duration: animationDelay / 2 - 10,
+          repeat: 0,
+          scale: 1.2,
+          ease: "Linear",
+        },
+        {
+          targets: transitionTile,
+          alpha: 0,
+          scale: 1.4,
+          duration: animationDelay / 2 - 10,
+          repeat: 0,
+          ease: "Linear",
+        },
+      ],
+      onComplete: () => {
+        transitionTile.setVisible(false);
+        transitionTile.scale = 1;
+      },
+      delay: 0,
+      loop: 0,
+    });
+
+    this.scene.tweens.addCounter({
+      from: 0,
+      to: 1,
+      delay: animationDelay * 0.1,
+      duration: animationDelay,
+      ease: "Cubic.InOut",
+      repeat: 0,
+      onStart: () => {
+        this.scene.sound.play("tileFlip", {
+          detune: Math.min(50 * level, 600),
+          volume: level ? Math.min(0.4, 1 - 0.9 + level * 0.1) : 1,
+        });
+        currentCell.tile.setUniform(
+          "colorToTransform.value",
+          colors[newColor].value
+        );
+        currentCell.tile.setUniform("curPoint.value", { x, y });
+        currentCell.tile.setUniform("startPoint.value", startPoint);
+      },
+      onUpdate: (tween) => {
+        this.board[x][y].tile.setUniform("transition.value", tween.getValue());
+      },
+      onComplete: () => {
+        currentCell.tile.scale = 1;
+        currentCell.tile.depth = 1;
+        currentCell.tile.setUniform("transition.value", 0.0);
+        currentCell.tile.setUniform("color.value", colors[newColor].value);
+
+        if (currentCell.color === this.scene.gameStates.targetColor) {
+          this.scene.gameStates.remains++;
+        }
+
+        currentCell.color = Number(newColor);
+
+        if (currentCell.color === this.scene.gameStates.targetColor) {
+          this.scene.gameStates.remains -= 1;
+        }
+        this.pendingCalls--;
+        if (this.pendingCalls === 0) {
+          this.scene.changeGameState(GameStatus.Active);
+        }
+      },
+    });
   }
 }

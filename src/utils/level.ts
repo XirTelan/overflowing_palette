@@ -45,7 +45,7 @@ export function generateBoard(
       if (!isValid(nr, nc)) return;
 
       if (
-        currColorCount < max / 2 &&
+        currColorCount < max * 0.6 &&
         board[nr][nc] === null &&
         Math.random() < spreadChance
       ) {

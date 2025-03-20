@@ -40,6 +40,8 @@ export type LevelData = {
   tools?: [number, number, number];
 };
 
+export type LevelDifficulty = keyof typeof RATES;
+
 export type LevelsJson = LevelFolder[];
 
 export type LevelFolder = {
@@ -58,7 +60,7 @@ export type EndlessOptions = {
   rows: number;
   columns: number;
   colorsCount: number;
-  difficulty: string;
+  difficulty: LevelDifficulty
 };
 
 export type LanguageConfig = {

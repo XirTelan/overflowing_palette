@@ -1,5 +1,10 @@
 import { MenuTab } from "./MenuTab";
-import { ColorType, GameMode, MenuTabProps } from "../../types";
+import {
+  ColorType,
+  GameMode,
+  LevelDifficulty,
+  MenuTabProps,
+} from "../../types";
 
 import { OptionFolder } from "../ui/html/OptionFolder";
 import { ValueSelector } from "../ui/html/ValueSelector";
@@ -10,7 +15,7 @@ export class EndlessZen extends MenuTab {
   selectedFillColor: ColorType = 0;
   rows: number = 8;
   columns: number = 10;
-  difficulty = 1;
+  difficulty: LevelDifficulty = 1;
   colorsCount: number = 4;
 
   constructor(props: MenuTabProps) {
@@ -76,7 +81,7 @@ export class EndlessZen extends MenuTab {
       diffOptions,
       false,
       (selectedIndex) => {
-        this.difficulty = selectedIndex;
+        this.difficulty = selectedIndex as LevelDifficulty;
       }
     );
 

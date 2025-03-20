@@ -6,10 +6,10 @@ export const DIRECTIONS = [
 ];
 
 export const RATES = {
-  Easy: 0.7,
-  Medium: 0.5,
-  Hard: 0.3,
-  Mess: 0.1,
+  0: 0.7,
+  1: 0.5,
+  2: 0.3,
+  3: 0.1,
 };
 
 export const loadingShaderInitConfig = {

@@ -2,8 +2,8 @@ import { Scene } from "phaser";
 import { ColorType, GameConfig, GameMode, LevelData } from "../../../types";
 import { PrimaryBtn } from "../../ui/PrimaryBtn";
 import { BaseBlock } from "../../common/BaseBlock";
-import { Record } from "../../ui/html/Record";
-import { normalizedRgbToColor } from "../../../utils";
+import { getLocal, normalizedRgbToColor } from "../../../utils";
+import { InfoBlock } from "./InfoBlock";
 
 export class SelectedLevelInfo extends BaseBlock {
   previewBlock: PreviewBlock;
@@ -27,6 +27,8 @@ export class SelectedLevelInfo extends BaseBlock {
     const { selectedLevelInfo } =
       scene.cache.json.get("config")["mainMenu"]["levelSelection"];
 
+    const { previewBlock } = getLocal(scene);
+
     this.container.add([
       scene.add.rectangle(0, 0, width, height, 0x000000, 0.7).setOrigin(0, 0),
       scene.add.rectangle(0, 0, width, 45, 0x000000, 0.6).setOrigin(0, 0),
@@ -34,7 +36,7 @@ export class SelectedLevelInfo extends BaseBlock {
         .text({
           x: width / 2,
           y: 0,
-          text: "Preview",
+          text: previewBlock.preview,
           style: {
             color: "#fff",
             font: "32px OpenSans_Bold",

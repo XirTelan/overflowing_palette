@@ -24,21 +24,21 @@ export const loadingShaderInitConfig = {
 export const availableTools = {
   1: {
     textureKey: "swapAll",
-    text: "All way swap",
+    textKey: "allwaySwap",
     hotkey: "Q",
     props: {},
   },
   2: {
     textureKey: "swapLine",
     hotkey: "W",
-    text: "Vertical swap",
+    textKey: "verticalSwap",
     props: {
       rotation: 1.5708,
     },
   },
   3: {
     textureKey: "swapLine",
-    text: "Horizontal swap",
+    textKey: "horizontalSwap",
     hotkey: "E",
     props: {},
   },

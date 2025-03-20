@@ -64,7 +64,19 @@ export type EndlessOptions = {
 };
 
 export type LanguageConfig = {
+  previewBlock: {
+    preview: string;
+    author: string;
+    moves: string;
+    gridSize: string;
+    targetColor: string;
+    cleared: string;
+    time: string;
+    timeDefault: string;
+  };
   mainMenu: {
+    startBtn: string;
+    backBtn: string;
     selectLevel: string;
     endlessZen: string;
     createLevel: string;
@@ -88,7 +100,16 @@ export type LanguageConfig = {
       targetColorEditor: string;
       movesCount: string;
       resetBtn: string;
+      export: string;
+      tools: string;
     };
+    tools: Record<string, string>;
+  };
+  levelEditor: {
+    folderName: string;
+    gridColumns: string;
+    gridRows: string;
+    gridColor: string;
   };
   resultScreen: {
     win: string;

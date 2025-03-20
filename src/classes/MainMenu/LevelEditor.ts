@@ -1,6 +1,6 @@
 import { MenuTab } from "./MenuTab";
 import { ColorType, GameConfig, GameMode, MenuTabProps } from "../../types";
-import { cycleThroughColors, getColorName } from "../../utils";
+import { cycleThroughColors, getColorName, getLocal } from "../../utils";
 import { OptionFolder } from "../ui/html/OptionFolder";
 import { ValueSelector } from "../ui/html/ValueSelector";
 
@@ -14,6 +14,7 @@ export class LevelEditor extends MenuTab {
     const { scene, width, height } = props;
 
     const { colors } = scene.cache.json.get("config") as GameConfig;
+    const { levelEditor } = getLocal(scene);
 
     const viewBox = scene.add
       .dom(0, 0, "div", {
@@ -22,11 +23,11 @@ export class LevelEditor extends MenuTab {
       })
       .setOrigin(0);
 
-    const folder = new OptionFolder("Grid Options");
+    const folder = new OptionFolder(levelEditor.folderName);
     viewBox.node.appendChild(folder.container);
 
     const columns = new ValueSelector(
-      "Columns",
+      levelEditor.gridColumns,
       this.columns,
       () => {
         this.columns = Phaser.Math.Clamp(this.columns - 1, 2, 100);
@@ -39,7 +40,7 @@ export class LevelEditor extends MenuTab {
     );
 
     const rows = new ValueSelector<number>(
-      "Rows",
+      levelEditor.gridRows,
       this.rows,
       () => {
         this.rows = Phaser.Math.Clamp(this.rows - 1, 2, 100);
@@ -52,7 +53,7 @@ export class LevelEditor extends MenuTab {
     );
 
     const fillColorSelector = new ValueSelector<string>(
-      "Fill Color",
+      levelEditor.gridColor,
       getColorName(this.selectedFillColor, colors),
       () => {
         return this.changeTargetColor(-1);

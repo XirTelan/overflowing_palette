@@ -9,6 +9,16 @@
   },
   "langs": {
     "en": {
+      "previewBlock": {
+        "preview": "Preview",
+        "author": "Author",
+        "moves": "Moves",
+        "gridSize": "Grid size",
+        "targetColor": "Target Color",
+        "cleared": "CLEARED",
+        "time": "Time",
+        "timeDefault": "A long time ago"
+      },
       "endlessZen": {
         "folderName": "Grid Options",
         "columnsCount": "Columns",
@@ -18,6 +28,8 @@
         "difficulties": ["Easy", "Medium", "Hard", "Mess"]
       },
       "mainMenu": {
+        "startBtn": "Start",
+        "backBtn": "Back",
         "selectLevel": "Select Level",
         "endlessZen": "Endless Zen",
         "createLevel": "Create Level",
@@ -32,8 +44,21 @@
           "targetColor": "Turn all the blocks into",
           "targetColorEditor": "Target color:",
           "movesCount": "Moves count:",
-          "resetBtn": "Reset"
+          "resetBtn": "Reset",
+          "export": "Экспорт",
+          "tools": "Tools"
+        },
+        "tools": {
+          "verticalSwap": "Vertical Swap",
+          "horizontalSwap": "Horizontal Swap",
+          "allwaySwap": "All Way Swap"
         }
+      },
+      "levelEditor": {
+        "folderName": "Grid Options",
+        "gridColumns": "Columns:",
+        "gridRows": "Rows:",
+        "gridColor": "Fill Color"
       },
       "resultScreen": {
         "win": "Level Complete",

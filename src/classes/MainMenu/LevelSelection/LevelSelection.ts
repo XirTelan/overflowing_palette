@@ -9,7 +9,7 @@ import {
 import { SelectedLevelInfo } from "./SelectedLevelInfo";
 import { PrimaryBtn } from "../../ui/PrimaryBtn";
 import { ImportLevel } from "./Import";
-import { getUserLevelsCleared } from "../../../utils";
+import { getLocal, getUserLevelsCleared } from "../../../utils";
 
 export class LevelSelection extends MenuTab {
   selectedLevelData: LevelData;
@@ -47,11 +47,13 @@ export class LevelSelection extends MenuTab {
     this.importBlock = new ImportLevel(this.scene);
     this.importBlock.hide();
 
+    const { mainMenu } = getLocal(scene);
+
     this.selectedLevelInfo.container.add(
       new PrimaryBtn(
         80,
         this.actionBtn.container.y,
-        "Back",
+        mainMenu.backBtn,
         200,
         0,
         scene,

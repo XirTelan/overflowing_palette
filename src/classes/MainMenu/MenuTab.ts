@@ -1,6 +1,7 @@
 import { MenuTabProps, Vector2 } from "../../types";
 import { PrimaryBtn } from "../ui/PrimaryBtn";
 import { BaseBlock } from "../common/BaseBlock";
+import { getLocal } from "../../utils";
 
 export class MenuTab extends BaseBlock {
   key: string;
@@ -18,6 +19,8 @@ export class MenuTab extends BaseBlock {
     this.defaultPos = { x, y };
     this.width = width;
     this.height = height;
+
+    const { mainMenu } = getLocal(scene);
 
     this.viewBox = scene.add
       .dom(0, 0, "div", {
@@ -48,13 +51,12 @@ export class MenuTab extends BaseBlock {
     this.actionBtn = new PrimaryBtn(
       width - 180,
       height - 200,
-      "Start",
+      mainMenu.startBtn,
       350,
       0,
       scene
     );
     this.actionBtn.container;
-    // this.actionBtn.container.setScale(1.5);
     this.container.add([this.viewBox, this.actionBtn.container]);
   }
   show() {

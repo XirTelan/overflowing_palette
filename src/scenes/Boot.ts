@@ -185,6 +185,7 @@ export class Boot extends Scene {
     assetText.setOrigin(0.5, 0.5);
 
     loadingScreen.bgShader.setUniform("transition.value", -0.1);
+    loadingScreen.bgShader.setUniform("color.value", { x: 1, y: 1, z: 1 });
     loadingScreen.textShader.setUniform("transition.value", -0.1);
 
     load.on("progress", function (value: number) {

@@ -8,6 +8,8 @@ export class MenuBtn extends BaseBlock {
   text: Phaser.GameObjects.Text;
   key: string;
 
+  tweenAnimation: Phaser.Tweens.Tween;
+
   constructor(
     scene: Scene,
     x: number,
@@ -57,7 +59,7 @@ export class MenuBtn extends BaseBlock {
     this.btn.on("pointerover", this.onEnter, this);
     this.btn.on("pointerout", this.onLeave, this);
 
-    this.scene.tweens.add({
+    this.tweenAnimation = this.scene.tweens.add({
       targets: activeCircle,
       angle: 360,
       repeat: -1,
@@ -81,9 +83,11 @@ export class MenuBtn extends BaseBlock {
     if (isActive) {
       this.active.setVisible(true);
       this.text.setTintFill(0x000000);
+      this.tweenAnimation.resume();
     } else {
       this.active.setVisible(false);
       this.text.clearTint();
+      this.tweenAnimation.pause();
     }
   }
 

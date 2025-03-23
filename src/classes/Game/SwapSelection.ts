@@ -98,7 +98,7 @@ export class SwapSelection {
     transitionTile.setUniform("active.value", 1.0);
     transitionTile.setUniform("transparent.value", 1.0);
     transitionTile.setInteractive();
-    transitionTile.on("pointerdown", () => {
+    transitionTile.on("pointerup", () => {
       this.applySwap(x, y);
     });
 

@@ -55,7 +55,7 @@ export class MenuBtn extends BaseBlock {
     this.overlay.setVisible(false);
 
     this.btn.setInteractive();
-    this.btn.on("pointerdown", onClick, this);
+    this.btn.on("pointerup", onClick, this);
     this.btn.on("pointerover", this.onEnter, this);
     this.btn.on("pointerout", this.onLeave, this);
 

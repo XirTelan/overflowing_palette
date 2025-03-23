@@ -68,7 +68,7 @@ export class ValueSelector<T> {
     overlay.setVisible(false);
 
     btn.setInteractive();
-    btn.on("pointerdown", () => {
+    btn.on("pointerup", () => {
       this.text.setText(String(action()));
     });
     btn.on("pointerover", () => {

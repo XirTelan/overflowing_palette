@@ -91,7 +91,7 @@ export class EndlessZen extends MenuTab {
     folder.add(difficulty.container);
 
     this.actionBtn.btn.setInteractive();
-    this.actionBtn.btn.on("pointerdown", this.loadGame, this);
+    this.actionBtn.btn.on("pointerup", this.loadGame, this);
 
     this.container.add([viewBox]);
   }

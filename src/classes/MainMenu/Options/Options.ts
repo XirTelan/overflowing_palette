@@ -26,7 +26,7 @@ export class Options extends MenuTab {
     const { options } = getLocal(scene);
 
     this.actionBtn.text.setText(options.btnSave);
-    this.actionBtn.btn.on("pointerdown", this.saveUserConfig, this);
+    this.actionBtn.btn.on("pointerup", this.saveUserConfig, this);
 
     const reset = new PrimaryBtn(
       980,

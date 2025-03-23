@@ -68,7 +68,7 @@ export class LevelEditor extends MenuTab {
     folder.add(fillColorSelector.container);
 
     this.actionBtn.btn.setInteractive();
-    this.actionBtn.btn.on("pointerdown", () => {
+    this.actionBtn.btn.on("pointerup", () => {
       this.scene.scene.start("LoadingGame", {
         mode: GameMode.Editor,
         levelData: {

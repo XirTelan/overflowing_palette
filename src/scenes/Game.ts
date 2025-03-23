@@ -524,7 +524,7 @@ function createResetButton(scene: Game) {
   if (keyObj) keyObj.on("down", scene.resetGame, scene);
 
   resetImage.setInteractive();
-  resetImage.on("pointerdown", () => {
+  resetImage.on("pointerup", () => {
     if (scene.gameStates.state === GameStatus.Waiting) return;
     scene.resetGame();
   });
@@ -552,7 +552,7 @@ function createCloseButton(scene: Game) {
 
   closeBtn.setInteractive();
 
-  closeBtn.on("pointerdown", () => {
+  closeBtn.on("pointerup", () => {
     scene.cameras.main.fadeOut(FADE_DELAY, 0, 0, 0);
     scene.time.delayedCall(FADE_DELAY, () => {
       scene.scene.start("MainMenu");

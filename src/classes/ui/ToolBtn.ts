@@ -85,7 +85,7 @@ export class ToolBtn {
     if (keyObj) keyObj.on("down", this.onClick, this);
 
     btnImage.setInteractive();
-    btnImage.on("pointerdown", this.onClick, this);
+    btnImage.on("pointerup", this.onClick, this);
     btnImage.on("pointerover", () => {
       if (this.currentCount == 0) return;
       btnOverlay.setVisible(true);

@@ -95,7 +95,7 @@ export class SelectedLevelInfo extends BaseBlock {
     this.previewBlock.updatePreview(levelData.board);
     this.previewBlock.container.setVisible(true);
 
-    this.actionBtn.btn.on("pointerdown", () => {
+    this.actionBtn.btn.on("pointerup", () => {
       this.scene.scene.start("LoadingGame", {
         mode: GameMode.Play,
         levelKey,

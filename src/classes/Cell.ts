@@ -35,7 +35,7 @@ export default class Cell {
       .setOrigin(0, 0);
     this.tile.setUniform("color.value", colors[color].value);
     this.tile.setInteractive();
-    this.tile.on("pointerdown", this.onClick, this);
+    this.tile.on("pointerup", this.onClick, this);
     this.tile.on("pointerover", this.onEnter, this);
     this.tile.on("pointerout", this.onLeave, this);
 

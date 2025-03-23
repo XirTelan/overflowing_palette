@@ -141,7 +141,7 @@ export class MainMenu extends Scene {
       "Git"
     );
 
-    git.btn.on("pointerdown", () => {
+    git.btn.on("pointerup", () => {
       window.open(
         "https://github.com/XirTelan/overflowing_palette",
         "GitHubProject"

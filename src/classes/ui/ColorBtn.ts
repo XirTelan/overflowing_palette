@@ -82,7 +82,7 @@ export default class ColorBtn {
     btn.setChannel0("celltexture");
 
     btn.setInteractive();
-    btn.on("pointerdown", this.onClick, this);
+    btn.on("pointerup", this.onClick, this);
     btn.on("pointerover", this.onEnter, this);
     btn.on("pointerout", this.onLeave, this);
 

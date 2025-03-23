@@ -29,6 +29,14 @@
   --clr-slider: #d0c374;
 }
 
+*:not(input, textarea) {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 body {
   color-scheme: dark;
   margin: 0;
@@ -36,7 +44,9 @@ body {
   color: rgba(255, 255, 255, 0.87);
   background-color: var(--clr-bg);
   font-family: "OpenSans_Regular";
+  touch-action: manipulation;
 }
+
 p {
   margin: 0;
 }
@@ -47,6 +57,11 @@ button {
 
   border: 0;
 
+  &:not(:disabled) {
+    cursor: pointer;
+  }
+}
+select {
   &:not(:disabled) {
     cursor: pointer;
   }
@@ -159,27 +174,27 @@ button {
     height: 30px;
     width: 30px;
   }
+}
 
-  input[type="color"] {
-    -webkit-appearance: none;
-    appearance: none;
-    border: none;
-    padding: 0;
-    width: 120px;
-    height: 60px;
-    background: transparent;
-    overflow: hidden;
-    cursor: pointer;
-    border: 1px solid white;
-    border-radius: 5px;
-  }
+input[type="color"] {
+  -webkit-appearance: none;
+  appearance: none;
+  border: none;
+  padding: 0;
+  width: 120px;
+  height: 60px;
+  background: transparent;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid white;
+  border-radius: 5px;
+}
 
-  input[type="color"]::-webkit-color-swatch-wrapper {
-    padding: 0;
-  }
-  input[type="color"]::-webkit-color-swatch {
-    border: none;
-  }
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+input[type="color"]::-webkit-color-swatch {
+  border: none;
 }
 
 .option-tab__button {
@@ -242,12 +257,6 @@ button {
       outline: 3px solid var(--clr-border-3);
       outline-offset: 4px;
 
-      span {
-        z-index: 1;
-        color: var(--clr-text-invers);
-        font: 24px "OpenSans_Bold";
-      }
-
       &::before {
         content: "";
         width: 100%;
@@ -276,6 +285,12 @@ button {
   }
 }
 
+.selector__index span {
+  z-index: 1;
+  color: var(--clr-text-invers);
+  font: 24px "OpenSans_Bold";
+}
+
 .primary-btn {
   max-height: 100px;
   max-width: 650px;
@@ -297,6 +312,35 @@ button {
   display: flex;
   min-width: 300px;
 }
+.select select {
+  appearance: none;
+  flex: 1;
+  padding: 1rem;
+  text-align: center;
+  border-radius: var(--border-radius);
+  font-size: 20px;
+  color: #ebe5d7;
+  min-width: 200px;
+  font-family: "OpenSans_Regular";
+
+  &:active {
+    color: var(--clr-text-invers);
+    background: #d8d8d8;
+  }
+}
+
+.select .icon {
+  position: absolute;
+  mask: no-repeat
+    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg>');
+  height: 20px;
+  width: 20px;
+  background: #fce395;
+  right: 14px;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
 
 .select {
   position: relative;
@@ -306,35 +350,6 @@ button {
 
   .select__label {
     font: 32px OpenSans_Bold;
-  }
-
-  select {
-    appearance: none;
-    flex: 1;
-    padding: 1rem;
-    text-align: center;
-    border-radius: var(--border-radius);
-    font-size: 20px;
-    color: #ebe5d7;
-    min-width: 200px;
-    font-family: "OpenSans_Regular";
-
-    &:active {
-      color: var(--clr-text-invers);
-      background: #d8d8d8;
-    }
-  }
-  .icon {
-    position: absolute;
-    mask: no-repeat
-      url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg>');
-    height: 20px;
-    width: 20px;
-    background: #fce395;
-    right: 14px;
-    top: 0;
-    bottom: 0;
-    margin: auto;
   }
 }
 
@@ -371,6 +386,33 @@ button {
     rgba(255, 255, 255, 1) 80%,
     rgba(0, 0, 0, 0) 100%
   );
+}
+.folder-title {
+  position: relative;
+}
+.folder-title__text {
+  width: fit-content;
+
+  margin: 0;
+}
+
+.folder-title__text:has(+ .folder-title__icon) {
+  margin-left: 3rem;
+}
+
+.folder-title__icon {
+  position: absolute;
+  left: 0;
+  height: 32px;
+  width: 32px;
+  top: 0;
+  bottom: 0;
+  margin: auto 1rem;
+}
+
+.folder-title__icon[icon="lang"] {
+  background: no-repeat url("./assets/textures/icons/www.png");
+  background-size: contain;
 }
 
 .block-title {

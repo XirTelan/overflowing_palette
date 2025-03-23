@@ -198,6 +198,11 @@ void main(void) {
     if(alpha != 0.0 && active)
         overAlpha = mix(vec3(0.0), vec3(1.0), smoothstep(activeOffset.x, activeOffset.y, d)).x;
 
+    if(transparent) {
+        gl_FragColor = vec4(color * overAlpha * 2.0, overAlpha);
+        return;
+    }
+
     vec2 uv2 = gl_FragCoord.xy / vec2(screenResolution);
     uv2 = uv2 * textureResolution / screenResolution;
 
@@ -212,10 +217,6 @@ void main(void) {
         finalColor = getColorDuringTransition(uv);
     }
 
-    if(transparent) {
-        gl_FragColor = vec4(color * overAlpha * 2.0, overAlpha);
-        return;
-    }
     vec4 textureColor = texture2D(iChannel0, vec2(distortedUV.x + timeFactor, distortedUV.y));
     gl_FragColor = vec4(finalColor * alpha * lighten(textureColor.xyz) + overAlpha, alpha);
 

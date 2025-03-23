@@ -91,7 +91,13 @@ export class EndlessZen extends MenuTab {
     folder.add(difficulty.container);
 
     this.actionBtn.btn.setInteractive();
-    this.actionBtn.btn.on("pointerdown", () => {
+    this.actionBtn.btn.on("pointerdown", this.loadGame, this);
+
+    this.container.add([viewBox]);
+  }
+
+  loadGame() {
+    this.scene.time.delayedCall(100, () => {
       this.scene.scene.start("LoadingGame", {
         mode: GameMode.Endless,
         endlessOptions: {
@@ -108,7 +114,5 @@ export class EndlessZen extends MenuTab {
         ),
       });
     });
-
-    this.container.add([viewBox]);
   }
 }

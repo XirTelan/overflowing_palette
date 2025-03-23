@@ -31,7 +31,7 @@ export class PrimaryBtn extends BaseBlock {
     this.overlay.setVisible(false);
     this.btn.setInteractive();
 
-    if (onClick) this.btn.on("pointerdown", onClick, context);
+    if (onClick) this.btn.on("pointerup", onClick, context);
 
     this.btn.on("pointerover", this.onEnter, this);
     this.btn.on("pointerout", this.onLeave, this);

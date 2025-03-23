@@ -142,13 +142,16 @@ export class Options extends MenuTab {
     });
   }
   resetUserConfig() {
-    Object.keys(localStorage).forEach((key) => {
-      if (key === "levels.cleared") return;
-      localStorage.removeItem(key);
-    });
+    const levelsCleared = localStorage.getItem("levels.cleared");
+    localStorage.clear();
+    if (levelsCleared) {
+      localStorage.setItem("levels.cleared", levelsCleared);
+    }
     this.hide();
     this.scene.cache.json.remove("config");
-    this.scene.scene.start("Boot");
+    this.scene.time.delayedCall(100, () => {
+      this.scene.scene.start("Boot");
+    });
   }
   saveUserConfig() {
     const colorsData = this.colorTab.getValues();
@@ -160,6 +163,8 @@ export class Options extends MenuTab {
     localStorage.setItem("gameplay", JSON.stringify(gameplayTab));
     localStorage.setItem("lang", generalData.lang);
     this.hide();
-    this.scene.scene.start("Boot");
+    this.scene.time.delayedCall(100, () => {
+      this.scene.scene.start("Boot");
+    });
   }
 }

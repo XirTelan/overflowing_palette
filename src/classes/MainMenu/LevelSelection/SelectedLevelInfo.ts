@@ -96,10 +96,12 @@ export class SelectedLevelInfo extends BaseBlock {
     this.previewBlock.container.setVisible(true);
 
     this.actionBtn.btn.on("pointerup", () => {
-      this.scene.scene.start("LoadingGame", {
-        mode: GameMode.Play,
-        levelKey,
-        levelData,
+      this.scene.time.delayedCall(100, () => {
+        this.scene.scene.start("LoadingGame", {
+          mode: GameMode.Play,
+          levelKey,
+          levelData,
+        });
       });
     });
     this.emptyBlock.setVisible(false);

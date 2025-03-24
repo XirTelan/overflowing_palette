@@ -1,4 +1,5 @@
 import { Scene } from "phaser";
+import { getLocal } from "../../utils";
 
 export class LoadingScreen {
   bgShader;
@@ -6,6 +7,8 @@ export class LoadingScreen {
   constructor(scene: Scene) {
     const width = scene.cameras.main.width;
     const height = scene.cameras.main.height;
+
+    const local = getLocal(scene);
 
     const bgShader = scene.add
       .shader("loading", 0, 0, width, height, ["celltexture", "cellnoise"])
@@ -19,7 +22,7 @@ export class LoadingScreen {
     const props = {
       x: width / 2,
       y: height / 2,
-      text: "LOADING",
+      text: local.loading,
     };
 
     scene.make

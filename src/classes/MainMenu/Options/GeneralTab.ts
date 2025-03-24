@@ -2,7 +2,7 @@ import { Scene } from "phaser";
 import { OptionTab } from "./OptionTab";
 import { Select } from "../../ui/html/Select";
 import { OptionFolder } from "../../ui/html/OptionFolder";
-import { getLocal } from "../../../utils";
+import { getLangCode, getLocal } from "../../../utils";
 import {
   BackgroundConfig,
   GameConfig,
@@ -56,7 +56,7 @@ export class GeneralTab extends OptionTab {
     const config = scene.cache.json.get("config") as GameConfig;
 
     this.currentConfig.background = config.background;
-    this.currentConfig.lang = localStorage.getItem("lang") ?? "en";
+    this.currentConfig.lang = getLangCode();
 
     this.createTextSection();
     this.createBackgroundSection();
@@ -82,22 +82,25 @@ export class GeneralTab extends OptionTab {
       meta.langsAvailable.map((obj) => obj.key)
     );
 
-    const languageBlock = new OptionFolder(generalTab.languageBlock);
+    const languageBlock = new OptionFolder(generalTab.languageBlock, "lang");
     languageBlock.add(select.container);
     this.tab.appendChild(languageBlock.container);
   }
   private createBackgroundSection() {
-    const { generalTab, defaultToggle } = getLocal(this.scene)["options"];
+    const {
+      options: { generalTab, defaultToggle },
+      backgounds,
+    } = getLocal(this.scene);
 
     const bgImage = new Select(
       generalTab.image,
       this.currentConfig.background.current.key,
-      this.currentConfig.background.options.map((obj) => obj.name),
+      this.currentConfig.background.options.map((key) => backgounds[key]),
       (e) => {
         const target = e.target as HTMLSelectElement;
         this.currentConfig.background.current.key = target?.value;
       },
-      this.currentConfig.background.options.map((obj) => obj.key)
+      this.currentConfig.background.options
     );
 
     const distortion = new OptionSelector(

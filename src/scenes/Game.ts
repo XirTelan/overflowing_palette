@@ -53,6 +53,9 @@ export class Game extends Scene {
 
   create({ mode, levelKey, levelData, endlessOptions }: GameSceneData) {
     const { colors, gameplay } = this.cache.json.get("config") as GameConfig;
+    const {
+      game: { ui },
+    } = getLocal(this);
     this.colors = colors;
 
     new Background(this);
@@ -64,7 +67,7 @@ export class Game extends Scene {
     }
     if (mode == GameMode.Endless) {
       this.gameStates.endlessOptions = endlessOptions;
-      new PrimaryBtn(1250, 990, "Skip Level", 350, 50, this, () => {
+      new PrimaryBtn(1250, 990, ui.skipBtn, 350, 50, this, () => {
         this.scene.start("LoadingGame", {
           mode,
           levelKey,
@@ -202,17 +205,24 @@ export class Game extends Scene {
     this.notification?.destroy();
 
     if (tool !== Tools.none) {
+      const {
+        game: { ui },
+      } = getLocal(this);
       const { width } = this.cameras.main;
       const container = this.add.container(width / 2, 100);
       this.notification = container;
-      this.notification.add(this.add.rectangle(0, 0, 300, 60, 0x000000, 0.4));
-      this.notification.add(
-        this.add
-          .text(0, 0, "Swap tool  is Selected ", {
-            font: "24px OpenSans_Bold",
-          })
-          .setOrigin(0.5)
-      );
+      const textBg = this.add.rectangle(0, 0, 300, 60, 0x000000, 0.4);
+
+      const textBlock = this.add
+        .text(0, 0, ui.toolSelected, {
+          font: "24px OpenSans_Bold",
+        })
+        .setOrigin(0.5);
+
+      this.notification.add(textBg);
+      this.notification.add(textBlock);
+
+      textBg.displayWidth = textBlock.width + 30;
     }
     this.gameStates.selectedTool = tool;
     this.toolsButtons.forEach((btn) => btn.update());
@@ -387,7 +397,7 @@ export class Game extends Scene {
       },
     });
 
-    scene.add
+    const textBg = scene.add
       .rectangle(
         ui.targetUI.x - 100,
         ui.targetUI.y - 10,
@@ -410,7 +420,7 @@ export class Game extends Scene {
 
     const targetColor = colors[scene.gameStates.targetColor].colorName;
 
-    scene.make.text({
+    const colorNameText = scene.make.text({
       x: targetColorText.x + targetColorText.width + 5,
       y: ui.targetUI.y,
       text: `${targetColor[0].toUpperCase()}${targetColor.slice(1)}`,
@@ -421,6 +431,8 @@ export class Game extends Scene {
         font: "30px OpenSans_Regular",
       },
     });
+
+    textBg.displayWidth = targetColorText.width + colorNameText.width + 120;
   }
 
   private createTitle(scene: Game, mode: string) {

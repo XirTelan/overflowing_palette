@@ -52,8 +52,6 @@ export class RangeSlider {
 
   update(newValue: number) {
     this.text.textContent = String(newValue);
-    console.log();
-
     this.input.style.background = `linear-gradient(to right, var( --clr-slider) ${newValue}%, #e0e0e0 ${newValue}%)`;
   }
 }

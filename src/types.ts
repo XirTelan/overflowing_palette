@@ -19,9 +19,7 @@ export type Vector2 = {
   y: number;
 };
 
-export type Vector3 = {
-  x: number;
-  y: number;
+export type Vector3 = Vector2 & {
   z: number;
 };
 
@@ -60,10 +58,14 @@ export type EndlessOptions = {
   rows: number;
   columns: number;
   colorsCount: number;
-  difficulty: LevelDifficulty
+  difficulty: LevelDifficulty;
 };
 
 export type LanguageConfig = {
+  loading: string;
+  colors: string[];
+  levels: Record<string, string>;
+  backgounds: Record<string, string>;
   previewBlock: {
     preview: string;
     author: string;
@@ -82,6 +84,7 @@ export type LanguageConfig = {
     createLevel: string;
     options: string;
     gitHub: string;
+    importBtn: string;
   };
   endlessZen: {
     folderName: string;
@@ -93,6 +96,7 @@ export type LanguageConfig = {
   };
   game: {
     ui: {
+      skipBtn: string;
       mode: string;
       movesRemain: string;
       movesUsed: string;
@@ -102,6 +106,8 @@ export type LanguageConfig = {
       resetBtn: string;
       export: string;
       tools: string;
+      toolUses: string;
+      toolSelected: string;
     };
     tools: Record<string, string>;
   };
@@ -153,7 +159,12 @@ export type LanguageConfig = {
     };
     defaultToggle: [string, string];
   };
-  import: string;
+  importBlock: {
+    startBtn: string;
+    folderName: string;
+    loadBtn: string;
+    cancelBtn: string;
+  };
   exportBlock: {
     title: string;
     copyJson: string;
@@ -196,10 +207,7 @@ export type BackgroundConfig = {
     distortion: number;
     overlay: number;
   };
-  options: {
-    key: string;
-    name: string;
-  }[];
+  options: string[];
 };
 
 export type GameConfig = {

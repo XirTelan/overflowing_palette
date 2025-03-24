@@ -1,6 +1,6 @@
 import { Game } from "../../scenes/Game";
 import { Tools } from "../../types";
-import { availableTools } from "../../utils";
+import { availableTools, getLocal } from "../../utils";
 
 export class ToolBtn {
   scene: Game;
@@ -17,6 +17,8 @@ export class ToolBtn {
   isSelected: boolean = false;
   toolKey: Tools;
 
+  localText: string;
+
   constructor(
     scene: Game,
     x: number,
@@ -25,6 +27,11 @@ export class ToolBtn {
     hotkey: string,
     toolKey: Tools
   ) {
+    const {
+      game: { ui },
+    } = getLocal(scene);
+    this.localText = ui.toolUses;
+
     this.scene = scene;
     this.toolKey = toolKey;
 
@@ -74,7 +81,7 @@ export class ToolBtn {
       .text({
         x: 0,
         y: -65,
-        text: `Uses: ${this.currentCount}`,
+        text: `${this.localText}: ${this.currentCount}`,
         style: {
           font: `24px OpenSans_ExtraBold`,
         },
@@ -140,7 +147,7 @@ export class ToolBtn {
       this.icon.clearTint();
       this.btnOverlay.setVisible(false);
     }
-    this.currentCountText.setText(`Uses: ${this.currentCount}`);
+    this.currentCountText.setText(`${this.localText}: ${this.currentCount}`);
   }
   reset() {
     this.currentCount = this.initialCount;

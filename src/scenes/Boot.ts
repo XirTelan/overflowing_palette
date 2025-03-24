@@ -1,7 +1,7 @@
 import { Scene } from "phaser";
 import { ColorConfig, GameConfig, Vector2 } from "../types";
 import { LoadingScreen } from "../classes/ui/LoadingScreen";
-import { loadingShaderInitConfig } from "../utils";
+import { getLocal, loadingShaderInitConfig } from "../utils";
 
 export class Boot extends Scene {
   constructor() {
@@ -28,6 +28,11 @@ export class Boot extends Scene {
             type: "image",
             key: "cellnoise",
             url: "assets/textures/shaders/cellnoise.webp",
+          },
+          {
+            type: "json",
+            key: "localization",
+            url: "assets/data/localization.json",
           },
         ],
       },
@@ -56,10 +61,11 @@ export class Boot extends Scene {
     const width = this.cameras.main.width;
     const height = this.cameras.main.height;
 
+    this.loadDefaultLocalColors();
+
     this.loadUserConfig("colors", isValidColors);
     this.loadUserConfig("background");
     this.loadUserConfig("gameplay");
-    this.checkOldSavedData();
 
     this.initShaderConfig({ x: width, y: height });
 
@@ -82,32 +88,23 @@ export class Boot extends Scene {
       this.scene.start("MainMenu");
     });
   }
-  checkOldSavedData() {
-    const data = localStorage.getItem("clearedLevels");
-    if (!data) return;
-    let parsed;
-    try {
-      parsed = JSON.parse(data);
-    } catch {
-      localStorage.removeItem("clearedLevels");
-      parsed = undefined;
-    }
 
-    if (!parsed) return;
+  private loadDefaultLocalColors() {
+    const config = this.cache.json.get("config") as GameConfig;
+    const local = getLocal(this);
 
-    const oldLevels = Array.from(parsed);
-    const newLevels = new Map();
-    oldLevels.forEach((lvl) => {
-      newLevels.set(lvl, {
-        time: "",
-      });
-    });
-    localStorage.setItem(
-      "levels.cleared",
-      JSON.stringify(Array.from(newLevels))
-    );
-    localStorage.removeItem("clearedLevels");
+
+    config.colors = Object.fromEntries(
+      Object.entries(config.colors).map(([key, color]) => [
+        key,
+        {
+          ...color,
+          colorName: local.colors[Number(key)],
+        },
+      ])
+    ) as ColorConfig;
   }
+
   initShaderConfig(resolution: Vector2) {
     const cache = this.cache;
     const baseShader = cache.shader.get("base");
@@ -185,7 +182,6 @@ export class Boot extends Scene {
     assetText.setOrigin(0.5, 0.5);
 
     loadingScreen.bgShader.setUniform("transition.value", -0.1);
-    loadingScreen.bgShader.setUniform("color.value", { x: 1, y: 1, z: 1 });
     loadingScreen.textShader.setUniform("transition.value", -0.1);
 
     load.on("progress", function (value: number) {

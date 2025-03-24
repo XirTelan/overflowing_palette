@@ -1,9 +1,9 @@
 [
   {
-    "folderName": "Default",
+    "folderName": "default",
     "categories": [
       {
-        "categoryName": "Riccioli Islands",
+        "categoryName": "default1",
         "levels": [
           {
             "board": [
@@ -79,7 +79,7 @@
         ]
       },
       {
-        "categoryName": "Whisperwind Haven",
+        "categoryName": "default2",
         "levels": [
           {
             "board": [
@@ -140,7 +140,7 @@
         ]
       },
       {
-        "categoryName": "Numbus Sanctum",
+        "categoryName": "default3",
         "levels": [
           {
             "targetColor": 3,
@@ -187,7 +187,7 @@
         ]
       },
       {
-        "categoryName": "Thessaleo Falls",
+        "categoryName": "default4",
         "levels": [
           {
             "targetColor": 3,
@@ -262,7 +262,7 @@
         ]
       },
       {
-        "categoryName": "Averardo Vault",
+        "categoryName": "default5",
         "levels": [
           {
             "targetColor": 1,
@@ -337,7 +337,7 @@
         ]
       },
       {
-        "categoryName": "Fagaceae Peninsula",
+        "categoryName": "default6",
         "levels": [
           {
             "targetColor": 0,
@@ -398,7 +398,7 @@
         ]
       },
       {
-        "categoryName": "Penitent's End",
+        "categoryName": "default7",
         "levels": [
           {
             "targetColor": 2,
@@ -459,7 +459,7 @@
         ]
       },
       {
-        "categoryName": "Hallowed Reach",
+        "categoryName": "default8",
         "levels": [
           {
             "targetColor": 2,
@@ -508,10 +508,10 @@
     ]
   },
   {
-    "folderName": "Advanced",
+    "folderName": "advanced",
     "categories": [
       {
-        "categoryName": "Easy: Intro to Tools",
+        "categoryName": "advanced1",
         "levels": [
           {
             "targetColor": 0,
@@ -561,7 +561,7 @@
         ]
       },
       {
-        "categoryName": "Normal",
+        "categoryName": "advanced2",
         "levels": [
           {
             "targetColor": 2,
@@ -646,7 +646,7 @@
         ]
       },
       {
-        "categoryName": "Hard",
+        "categoryName": "advanced3",
         "levels": [
           {
             "targetColor": 0,
@@ -670,10 +670,10 @@
     ]
   },
   {
-    "folderName": "Custom",
+    "folderName": "custom",
     "categories": [
       {
-        "categoryName": "Pack1",
+        "categoryName": "custom1",
         "levels": [
           {
             "targetColor": 3,
@@ -687,20 +687,6 @@
               [2, 2, 2, 2, 3, 3, 0, 0, 0, 0],
               [3, 2, 3, 2, 3, 3, 0, 3, 0, 3],
               [2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
-            ]
-          },
-          {
-            "targetColor": 1,
-            "turns": 2,
-            "board": [
-              [5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
-              [5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
-              [5, 1, 1, 1, 2, 2, 5, 5, 5, 5],
-              [5, 1, 1, 1, 2, 2, 1, 1, 1, 5],
-              [5, 1, 1, 1, 2, 2, 1, 1, 1, 5],
-              [5, 2, 2, 2, 2, 5, 1, 1, 1, 5],
-              [5, 2, 2, 2, 2, 5, 5, 5, 5, 5],
-              [5, 2, 2, 2, 2, 5, 5, 5, 5, 5]
             ]
           },
           {
@@ -850,7 +836,7 @@
         ]
       },
       {
-        "categoryName": "Pack 2",
+        "categoryName": "custom2",
         "levels": [
           {
             "targetColor": 1,
@@ -927,8 +913,7 @@
         ]
       },
       {
-        "categoryName": "ByRedditUsers",
-
+        "categoryName": "cusom3",
         "levels": [
           {
             "targetColor": 0,
@@ -963,7 +948,7 @@
         ]
       },
       {
-        "categoryName": "WTF",
+        "categoryName": "custom4",
         "levels": [
           {
             "board": [

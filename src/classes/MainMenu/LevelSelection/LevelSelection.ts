@@ -1,5 +1,6 @@
 import { MenuTab } from "../MenuTab";
 import {
+  LanguageConfig,
   LevelCategory,
   LevelData,
   LevelFolder,
@@ -16,6 +17,9 @@ export class LevelSelection extends MenuTab {
   selectedFolder: string;
   selectedLevelInfo: SelectedLevelInfo;
   levelsList: Phaser.GameObjects.DOMElement;
+
+  localCache: LanguageConfig;
+
   clearedLevels: Map<any, any>;
   importBlock: ImportLevel;
 
@@ -46,14 +50,14 @@ export class LevelSelection extends MenuTab {
     );
     this.importBlock = new ImportLevel(this.scene);
     this.importBlock.hide();
-
-    const { mainMenu } = getLocal(scene);
+    const local = getLocal(scene);
+    this.localCache = local;
 
     this.selectedLevelInfo.container.add(
       new PrimaryBtn(
         80,
         this.actionBtn.container.y,
-        mainMenu.backBtn,
+        local.mainMenu.backBtn,
         200,
         0,
         scene,
@@ -103,14 +107,16 @@ export class LevelSelection extends MenuTab {
     const levelContainer = document.createElement("div");
     levelContainer.classList.add("level-container");
 
+    const local = getLocal(this.scene);
+
     this.levelsList.node.appendChild(levelContainer);
 
     for (const folder of levels) {
       levelContainer.appendChild(
-        this.createFolderBtn(folder.folderName, folder)
+        this.createFolderBtn(local.levels[folder.folderName], folder)
       );
     }
-    const importBtn = this.createBtn("Import");
+    const importBtn = this.createBtn(this.localCache.mainMenu.importBtn);
     importBtn.addEventListener("click", () => {
       this.importBlock.show();
     });
@@ -153,7 +159,7 @@ export class LevelSelection extends MenuTab {
     const folderName = document.createElement("h3");
 
     folderName.classList.add("folder-text");
-    folderName.innerText = category.categoryName;
+    folderName.innerText = this.localCache.levels[category.categoryName];
     folderContainer.append(folderName);
 
     const levels = document.createElement("div");

@@ -1,11 +1,16 @@
 import { Scene } from "phaser";
 import { LanguageConfig } from "../types";
 
+const DEFAULT_LANG = "en";
+
 export const getLocal = (scene: Scene): LanguageConfig => {
-  const defaultLang = "en";
   const jsonData = scene.cache.json.get("localization");
-  const savedLang = localStorage.getItem("lang") ?? defaultLang;
+  const savedLang = getLangCode();
   return jsonData.langs[savedLang];
+};
+
+export const getLangCode = () => {
+  return localStorage.getItem("lang") ?? DEFAULT_LANG;
 };
 
 export const getUserLevelsCleared = (): Map<string, object> => {

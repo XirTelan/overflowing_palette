@@ -7,11 +7,7 @@
         "key": "config",
         "url": "config.json"
       },
-      {
-        "type": "json",
-        "key": "localization",
-        "url": "localization.json"
-      },
+
       {
         "type": "json",
         "key": "levels",
@@ -121,6 +117,7 @@
         "key": "btnRoundOver",
         "url": "btnRoundOver.png"
       },
+
       {
         "type": "image",
         "key": "MainBtnActiveCircle",
@@ -151,6 +148,17 @@
         "type": "image",
         "key": "bg4",
         "url": "bg4.webp"
+      }
+    ]
+  },
+  {
+    "path": "assets/textures/icons",
+
+    "files": [
+      {
+        "type": "image",
+        "key": "cog",
+        "url": "cog.png"
       }
     ]
   }

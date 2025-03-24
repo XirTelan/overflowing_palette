@@ -3,6 +3,7 @@ import { PrimaryBtn } from "../../ui/PrimaryBtn";
 import { BaseBlock } from "../../common/BaseBlock";
 import { SelectedLevelInfo } from "./SelectedLevelInfo";
 import { OptionFolder } from "../../ui/html/OptionFolder";
+import { getLocal } from "../../../utils";
 
 export class ImportLevel extends BaseBlock {
   viewBox: Phaser.GameObjects.DOMElement;
@@ -13,6 +14,8 @@ export class ImportLevel extends BaseBlock {
   constructor(scene: Scene) {
     super(0, 0, scene);
     const height = scene.cameras.main.height;
+
+    const { importBlock } = getLocal(scene);
 
     this.viewBox = scene.add
       .dom(500, 0, "div", {
@@ -37,21 +40,21 @@ export class ImportLevel extends BaseBlock {
     this.applyBtn = new PrimaryBtn(
       scene.cameras.main.width / 2,
       scene.cameras.main.height / 2 + 50,
-      "Start",
+      importBlock.startBtn,
       350,
       50,
       scene
     );
     this.container.add([this.applyBtn.container, this.viewBox]);
 
-    const folder = new OptionFolder("Import level");
+    const folder = new OptionFolder(importBlock.folderName);
     folder.add(textArea);
 
     const buttonBlock = document.createElement("div");
     buttonBlock.classList.add("import-block__btns");
     const btn = document.createElement("button");
     btn.classList.add("primary-btn");
-    btn.textContent = "Load";
+    btn.textContent = importBlock.loadBtn;
     btn.addEventListener("click", () => {
       const levelData = this.parseString(textArea.value);
       if (!levelData) return;
@@ -61,7 +64,7 @@ export class ImportLevel extends BaseBlock {
 
     const btnClose = document.createElement("button");
     btnClose.classList.add("primary-btn");
-    btnClose.textContent = "Cancel";
+    btnClose.textContent = importBlock.cancelBtn;
     btnClose.addEventListener("click", () => {
       textArea.value = "";
       this.hide();

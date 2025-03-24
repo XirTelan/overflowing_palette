@@ -13,6 +13,43 @@
   },
   "langs": {
     "en": {
+      "loading": "Loading",
+      "backgounds": {
+        "bg1": "Thessaleo Fells",
+        "bg2": "Overflowing Palette",
+        "bg3": "Riccioli Islands",
+        "bg4": "Mt. Firmament"
+      },
+      "colors": [
+        "Red",
+        "Green",
+        "Blue",
+        "Yellow",
+        "Orange",
+        "Pruple",
+        "Pink",
+        "Cyan"
+      ],
+      "levels": {
+        "default": "Default",
+        "default1": "Riccioli Islands",
+        "default2": "Whisperwind Haven",
+        "default3": "Numbus Sanctum",
+        "default4": "Thessaleo Fells",
+        "default5": "Averardo Vault",
+        "default6": "Fagaceae Peninsula",
+        "default7": "Penitent's End",
+        "default8": "Hallowed Reach",
+        "advanced": "Advanced",
+        "advanced1": "Easy: Intro to Tools",
+        "advanced2": "Normal",
+        "advanced3": "Hard",
+        "custom": "Custom",
+        "custom1": "Pack 1",
+        "custom2": "Pack 2",
+        "custom3": "By Reddit",
+        "custom4": "Chaos"
+      },
       "previewBlock": {
         "preview": "Preview",
         "author": "Author",
@@ -38,7 +75,8 @@
         "endlessZen": "Endless Zen",
         "createLevel": "Create Level",
         "options": "Options",
-        "gitHub": "Open Docs\n (GitHub)"
+        "gitHub": "Open Docs\n (GitHub)",
+        "importBtn": "Import"
       },
       "game": {
         "ui": {
@@ -50,7 +88,10 @@
           "movesCount": "Moves count:",
           "resetBtn": "Reset",
           "export": "Export",
-          "tools": "Tools"
+          "tools": "Tools",
+          "toolSelected": "Swap tool is selected",
+          "toolUses": "Uses",
+          "skipBtn": "Skip Level"
         },
         "tools": {
           "verticalSwap": "Vertical Swap",
@@ -84,8 +125,8 @@
           "folderName": "Colors customization"
         },
         "generalTab": {
-          "languageBlock": "Text Language",
-          "languageSelection": "Language Selection",
+          "languageBlock": "Language",
+          "languageSelection": "Selected language",
           "background": "Background",
           "image": "Image",
           "distortion": "Distortion",
@@ -106,7 +147,12 @@
         },
         "defaultToggle": ["Off", "On"]
       },
-      "import": "Import",
+      "importBlock": {
+        "startBtn": "Start",
+        "folderName": "Import Level",
+        "loadBtn": "Load",
+        "cancelBtn": "Cancel"
+      },
       "exportBlock": {
         "title": "EXPORT LEVEL",
         "switch": {
@@ -123,6 +169,44 @@
     },
 
     "ru": {
+      "loading": "Загрузка",
+      "backgounds": {
+        "bg1": "Холмы Фессалео",
+        "bg2": "Переполненная палитра",
+        "bg3": "Острова Риччиоли",
+        "bg4": "Гора Фирмамент"
+      },
+      "colors": [
+        "Красный",
+        "Зелёный",
+        "Синий",
+        "Жёлтый",
+        "Оранжевый",
+        "Фиолетовый",
+        "Розовый",
+        "Бирюзовый"
+      ],
+      "levels": {
+        "default": "Основные",
+        "default1": "Острова Риччиоли",
+        "default2": "Гавань Шёпота",
+        "default3": "Святилище Нимбуса",
+        "default4": "Холмы Фессалео",
+        "default5": "Хранилище Аверадо",
+        "default6": "Полуостров Фагацеи",
+        "default7": "Конец Кающегося",
+        "default8": "Священный предел",
+        "advanced": "Продвинутый",
+        "advanced1": "Лёгкий: Знакомство с инструментами",
+        "advanced2": "Обычный",
+        "advanced3": "Сложный",
+        "custom": "Дополнительные",
+        "custom1": "Пак 1",
+        "custom2": "Пак 2",
+        "custom3": "От игроков",
+        "custom4": "Хаос"
+      },
+
       "previewBlock": {
         "preview": "Предпросмотр",
         "author": "Автор",
@@ -143,24 +227,27 @@
       },
       "mainMenu": {
         "startBtn": "Начать",
-        "backBtn": "Back",
+        "backBtn": "Назад",
         "selectLevel": "Выбрать уровень",
         "endlessZen": "Бесконечный дзен",
         "createLevel": "Создать уровень",
         "options": "Настройки",
-        "gitHub": "Открыть документацию\n (GitHub)"
+        "importBtn": "Импорт"
       },
       "game": {
         "ui": {
           "mode": "Режим:Редактор",
           "movesRemain": "Оставшиеся ходы:",
-          "movesUsed": "Использованные ходы:",
+          "movesUsed": "Затрачено ходов",
           "targetColor": "Преобразуйте все блоки в",
           "targetColorEditor": "Целевой цвет:",
           "movesCount": "Количество ходов:",
           "resetBtn": "Сброс",
           "export": "Экспорт",
-          "tools": "Устройства"
+          "tools": "Устройства",
+          "toolSelected": "Устройство обмена активно",
+          "toolUses": "Осталось",
+          "skipBtn": "Пропустить"
         },
         "tools": {
           "verticalSwap": "Обмен:Вертикальный",
@@ -194,8 +281,8 @@
           "folderName": "Настройка цветов"
         },
         "generalTab": {
-          "languageBlock": "Язык текста",
-          "languageSelection": "Выбор языка",
+          "languageBlock": "Язык",
+          "languageSelection": "Текущий язык",
           "background": "Фон",
           "image": "Изображение",
           "distortion": "Искажение",
@@ -216,7 +303,12 @@
         },
         "defaultToggle": ["Выкл", "Вкл"]
       },
-      "import": "Импорт",
+      "importBlock": {
+        "startBtn": "Начать",
+        "folderName": "Импорт уровня",
+        "loadBtn": "Загрузить",
+        "cancelBtn": "Отмена"
+      },
       "exportBlock": {
         "title": "ЭКСПОРТ УРОВНЯ",
         "switch": {

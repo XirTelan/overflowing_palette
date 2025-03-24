@@ -1,4 +1,4 @@
-import { MenuTabProps } from "../../../types";
+import { GameConfig, MenuTabProps } from "../../../types";
 import { getLocal } from "../../../utils";
 import { PrimaryBtn } from "../../ui/PrimaryBtn";
 import { MenuTab } from "../MenuTab";
@@ -141,12 +141,15 @@ export class Options extends MenuTab {
       input.value = color;
     });
   }
+
   resetUserConfig() {
     const levelsCleared = localStorage.getItem("levels.cleared");
     localStorage.clear();
+
     if (levelsCleared) {
       localStorage.setItem("levels.cleared", levelsCleared);
     }
+
     this.hide();
     this.scene.cache.json.remove("config");
     this.scene.time.delayedCall(100, () => {
@@ -157,14 +160,27 @@ export class Options extends MenuTab {
     const colorsData = this.colorTab.getValues();
     const generalData = this.generalTab.getValues();
     const gameplayTab = this.gameplayTab.getValues();
-
-    localStorage.setItem("colors", JSON.stringify(colorsData));
+    const savedColors = this.scene.cache.json.get("config") as GameConfig;
+    if (this.colorTab.isDirty && !deepEqual(savedColors.colors, colorsData)) {
+      localStorage.setItem("colors", JSON.stringify(colorsData));
+    }
     localStorage.setItem("background", JSON.stringify(generalData.background));
     localStorage.setItem("gameplay", JSON.stringify(gameplayTab));
     localStorage.setItem("lang", generalData.lang);
     this.hide();
+    //ios safari without delay can messup phaser input system
     this.scene.time.delayedCall(100, () => {
       this.scene.scene.start("Boot");
     });
   }
+}
+
+function deepEqual(x: any, y: any): boolean {
+  const ok = Object.keys,
+    tx = typeof x,
+    ty = typeof y;
+  return x && y && tx === "object" && tx === ty
+    ? ok(x).length === ok(y).length &&
+        ok(x).every((key) => deepEqual(x[key], y[key]))
+    : x === y;
 }

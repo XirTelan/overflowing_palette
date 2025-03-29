@@ -4,6 +4,9 @@
 ### Alt live: https://xirtelan.itch.io/overflowing-palette
 showcase: https://youtu.be/9FPFLpCEiQI
 
+> [!Note]
+> Work on update 2.0 is in progress, but slowly due to a lack of free time. Plans: a new mechanic (from patch 2.2 + a new one), new levels ofc, performance mode (for big grid or weak devices), some UI improvements, and possibly a desktop version?
+
 - [General](#introduction)
 - [Usage](#usage)
   - [Level Selection](#level-selection)

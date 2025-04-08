@@ -1,7 +1,7 @@
 # <img style="width:25px;height:25px;" src="./public/favicon.png"></img> Overflowing Palette
 
-### Live: https://xirtelan.github.io/overflowing_palette/
-### Alt live: https://xirtelan.itch.io/overflowing-palette
+### Live ![Itch.io](https://img.shields.io/badge/itch.io-%23FF0B34.svg?logo=Itch.io&logoColor=white) : https://xirtelan.github.io/overflowing_palette/
+### Alt live ![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-121013?logo=github&logoColor=white): https://xirtelan.itch.io/overflowing-palette
 showcase: https://youtu.be/9FPFLpCEiQI
 
 > [!Note]

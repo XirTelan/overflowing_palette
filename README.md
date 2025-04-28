@@ -5,8 +5,9 @@
 showcase: https://youtu.be/9FPFLpCEiQI
 
 > [!Note]
-> [14.04.25] ON HOLD \
-> I am trying to participate in [GameDev.js Jam](https://itch.io/jam/gamedevjs-2025) April 13th 2025  to April 26th 2025.  So the work on the update is on hold until then
+> [28.04.25] Update 2.0 Work in progress \
+> <s>[14.04.25] ON HOLD \
+> I am trying to participate in [GameDev.js Jam](https://itch.io/jam/gamedevjs-2025) April 13th 2025  to April 26th 2025.  So the work on the update is on hold until then </s>
 
 > [!Note]
 > Work on update 2.0 is in progress, but slowly due to a lack of free time. Plans: a new mechanic (from patch 2.2 + a new one), new levels ofc, performance mode (for big grid or weak devices), some UI improvements, and possibly a desktop version?

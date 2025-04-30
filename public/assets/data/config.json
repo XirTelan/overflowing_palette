@@ -4,6 +4,7 @@
     "highlightIntensity": 0,
     "fluidColors": 1,
     "sound": 50,
+    "performanceMode": false,
     "transitionDefault": 500,
     "transitionMinimum": 50,
     "transitionMax": 850

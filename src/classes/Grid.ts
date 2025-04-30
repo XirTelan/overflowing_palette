@@ -1,7 +1,6 @@
 import Cell from "./Cell";
 import { Game } from "../scenes/Game";
 import {
-  ColorConfig,
   ColorType,
   GameConfig,
   GameMode,
@@ -11,12 +10,16 @@ import {
 } from "../types";
 import { DIRECTIONS } from "../utils";
 import { SwapSelection } from "./Game/SwapSelection";
+import SimpleCell from "./SimpleCell";
+import ShaderCell from "./ShaderCell";
 
 export default class Grid {
   scene: Game;
   container: Phaser.GameObjects.Container;
 
   activeSwap?: SwapSelection;
+
+  isPerformanceMode: boolean = false;
 
   transitionSpeed = 800;
   transitionSpeedMinimum = 50;
@@ -42,6 +45,7 @@ export default class Grid {
 
     this.transitionSpeed = gameplay.transitionDefault;
     this.transitionSpeedMinimum = gameplay.transitionMinimum;
+    this.isPerformanceMode = gameplay.performanceMode;
 
     const cellSize = Math.min(
       (gridOptions.height - gridOptions.gap * (rows - 1)) / rows,
@@ -79,7 +83,29 @@ export default class Grid {
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < columns; j++) {
         this.scene.gameStates.availableColors.add(levelData[i][j]);
-        const newCell = new Cell(this, i, j, levelData[i][j], gridOptions.gap);
+        let newCell: Cell;
+        if (this.isPerformanceMode) {
+          newCell = new SimpleCell(
+            this.scene,
+            i,
+            j,
+            levelData[i][j],
+            gridOptions.gap,
+            cellSize,
+            this.cellAction.bind(this)
+          );
+        } else {
+          newCell = new ShaderCell(
+            this.scene,
+            i,
+            j,
+            levelData[i][j],
+            gridOptions.gap,
+            cellSize,
+            this.cellAction.bind(this)
+          );
+        }
+
         tiles.push(newCell.tile);
         tiles.push(newCell.transitionTile);
 
@@ -119,14 +145,10 @@ export default class Grid {
     )
       return;
 
-    const { colors } = this.scene.cache.json.get("config") as GameConfig;
-
     this.pendingCalls++;
     const currentCell = this.board[x][y];
 
     seen.add(currentCell);
-
-    const transitionTile = currentCell.transitionTile;
 
     const animationDelay = Math.max(
       this.transitionSpeed * Math.pow(0.8, level),
@@ -134,14 +156,10 @@ export default class Grid {
     );
 
     this.startTransitionAnimation(
-      x,
-      y,
       startPoint,
       currentCell,
-      transitionTile,
       level,
       newColor,
-      colors,
       animationDelay
     );
 
@@ -178,7 +196,7 @@ export default class Grid {
     const { mode, state, selectedTool } = this.scene.gameStates;
 
     if (mode == GameMode.Editor) {
-      this.changeColor(x, y);
+      this.board[x][y].setColor(colorToChange);
       return;
     }
     if (state === GameStatus.Waiting && this.activeSwap) {
@@ -202,15 +220,6 @@ export default class Grid {
     this.activeSwap = undefined;
   }
 
-  private changeColor(x: number, y: number) {
-    const { colors } = this.scene.cache.json.get("config") as GameConfig;
-
-    this.board[x][y].tile.setUniform(
-      "color.value",
-      colors[this.scene.gameStates.selectedColor].value
-    );
-    this.board[x][y].color = Number(this.scene.gameStates.selectedColor);
-  }
   private getColor() {
     const { colors } = this.scene.cache.json.get("config") as GameConfig;
     const { x, y, z } = colors[this.scene.gameStates.targetColor].value;
@@ -232,17 +241,15 @@ export default class Grid {
   }
 
   startTransitionAnimation(
-    x: number,
-    y: number,
     startPoint: Vector2,
     currentCell: Cell,
-    transitionTile: Phaser.GameObjects.Image,
     level: number,
     newColor: ColorType,
-    colors: ColorConfig,
     animationDelay: number
   ) {
+    const transitionTile = currentCell.transitionTile;
     const defaultScale = transitionTile.scale;
+
     this.scene.tweens.chain({
       targets: null,
       tweens: [
@@ -284,6 +291,7 @@ export default class Grid {
       ],
       onComplete: () => {
         transitionTile.setVisible(false);
+        transitionTile.alpha = 1;
         transitionTile.scale = defaultScale;
       },
       delay: 0,
@@ -302,21 +310,13 @@ export default class Grid {
           detune: Math.min(50 * level, 600),
           volume: level ? Math.min(0.4, 1 - 0.9 + level * 0.1) : 1,
         });
-        currentCell.tile.setUniform(
-          "colorToTransform.value",
-          colors[newColor].value
-        );
-        currentCell.tile.setUniform("curPoint.value", { x, y });
-        currentCell.tile.setUniform("startPoint.value", startPoint);
+        currentCell.transitionStart(newColor, startPoint);
       },
       onUpdate: (tween) => {
-        this.board[x][y].tile.setUniform("transition.value", tween.getValue());
+        currentCell.transitionUpdate(tween.getValue());
       },
       onComplete: () => {
-        currentCell.tile.scale = 1;
-        currentCell.tile.depth = 1;
-        currentCell.tile.setUniform("transition.value", 0.0);
-        currentCell.tile.setUniform("color.value", colors[newColor].value);
+        currentCell.transitionEnd();
 
         if (currentCell.color === this.scene.gameStates.targetColor) {
           this.scene.gameStates.remains++;

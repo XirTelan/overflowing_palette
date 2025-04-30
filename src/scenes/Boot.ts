@@ -93,7 +93,6 @@ export class Boot extends Scene {
     const config = this.cache.json.get("config") as GameConfig;
     const local = getLocal(this);
 
-
     config.colors = Object.fromEntries(
       Object.entries(config.colors).map(([key, color]) => [
         key,

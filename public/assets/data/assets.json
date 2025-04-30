@@ -125,6 +125,11 @@
       },
       {
         "type": "image",
+        "key": "tile",
+        "url": "tile.png"
+      },
+      {
+        "type": "image",
         "key": "transitionTile",
         "url": "transitionTile.png"
       }

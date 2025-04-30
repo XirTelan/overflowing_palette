@@ -139,6 +139,10 @@
             "text": "Highlight Intensity",
             "options": ["Normal", "Strong"]
           },
+          "performanceMode": {
+            "text": "Performance Mode",
+            "options": ["Off", "On"]
+          },
           "fluidColors": {
             "text": "Fluid Colors",
             "options": ["Off", "On"]

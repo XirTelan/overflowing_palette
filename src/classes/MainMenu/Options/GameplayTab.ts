@@ -47,6 +47,15 @@ export class GameplayTab extends OptionTab {
         this.currentConfig.fluidColors = val;
       }
     );
+    const performanceMode = new OptionSelector(
+      gameplayTab.performanceMode.text,
+      Number(this.currentConfig.performanceMode),
+      gameplayTab.performanceMode.options,
+      false,
+      (val) => {
+        this.currentConfig.performanceMode = !!val;
+      }
+    );
     const highlightIntensity = new OptionSelector(
       gameplayTab.highlightIntensity.text,
       this.currentConfig.highlightIntensity,
@@ -91,6 +100,7 @@ export class GameplayTab extends OptionTab {
     folder.add(highlightIntensity.container);
     folder.add(transitionSpeed.container);
     folder.add(soundLevel.container);
+    folder.add(performanceMode.container);
 
     this.tab.appendChild(folder.container);
   }

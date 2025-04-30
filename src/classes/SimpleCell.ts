@@ -20,7 +20,6 @@ export default class SimpleCell extends Cell {
     action: CellAction
   ) {
     super(scene, x, y, color, cellSize, action);
-    console.log(vector3ToHexNumber(this.colors[color].value));
     this.tile = scene.add
       .image(y * (cellSize + gap), x * (cellSize + gap), "tile")
       .setOrigin(0, 0)

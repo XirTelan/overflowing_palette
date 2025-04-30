@@ -146,6 +146,10 @@ export type LanguageConfig = {
     };
     gameplayTab: {
       animationSpeed: string;
+      performanceMode: {
+        text: string;
+        options: [string, string];
+      };
       folderName: string;
       highlightIntensity: {
         text: string;
@@ -212,6 +216,7 @@ export type BackgroundConfig = {
 
 export type GameConfig = {
   gameplay: {
+    performanceMode: boolean;
     highlightIntensity: number;
     fluidColors: number;
     sound: number;
@@ -348,6 +353,8 @@ export type GameStates = {
   endlessOptions?: EndlessOptions;
   mode: GameMode;
 };
+
+export type CellAction = (x: number, y: number, color: ColorType) => void;
 
 export type LoadingConfig = {
   width: number;

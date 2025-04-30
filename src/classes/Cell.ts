@@ -1,75 +1,72 @@
-import Grid from "./Grid";
-import { ColorType, GameConfig } from "../types";
+import { ColorConfig, ColorType, GameConfig } from "../types";
 import { BlendModes } from "phaser";
+import { Game } from "../scenes/Game";
 
-export default class Cell {
-  tile;
+const TILE_BASE_SIZE = 64;
+
+export default abstract class Cell {
+  scene: Game;
+  cellSize: number;
+  tileScale: number;
+
+  tile: Phaser.GameObjects.Image | Phaser.GameObjects.Shader;
   transitionTile: Phaser.GameObjects.Image;
   color: ColorType;
-  colors;
-  grid;
+  colors: ColorConfig;
+  action: (x: number, y: number, color: ColorType) => void;
 
   pos: { x: number; y: number };
   constructor(
-    grid: Grid,
+    scene: Game,
     x: number,
     y: number,
     color: ColorType,
-    gap: number = 0
+    cellSize: number,
+    action: (x: number, y: number, color: ColorType) => void
   ) {
+    this.scene = scene;
     this.color = color;
-    this.grid = grid;
-    const { cellSize, scene } = grid;
+    this.cellSize = cellSize;
+    this.tileScale = this.cellSize / TILE_BASE_SIZE;
+
+    this.action = action;
 
     const { colors } = scene.cache.json.get("config") as GameConfig;
     this.colors = colors;
 
-    this.tile = scene.add
-      .shader(
-        "base",
-        y * (cellSize + gap),
-        x * (cellSize + gap),
-        cellSize,
-        cellSize,
-        ["celltexture", "cellnoise", "cellnoise_d", "cellnoise_center"]
-      )
-      .setOrigin(0, 0);
-    this.tile.setUniform("color.value", colors[color].value);
-    this.tile.setInteractive();
-    this.tile.on("pointerup", this.onClick, this);
-    this.tile.on("pointerover", this.onEnter, this);
-    this.tile.on("pointerout", this.onLeave, this);
-
     this.pos = { x, y };
-    console.log("sizes", cellSize, cellSize / 64);
-    const tileScale = cellSize / 64;
+  }
 
-    const transitionTile = scene.add
+  createTransitionTile() {
+    const transitionTile = this.scene.add
       .image(
-        this.tile.x + cellSize / 2,
-        this.tile.y + cellSize / 2,
+        this.tile.x + this.cellSize / 2,
+        this.tile.y + this.cellSize / 2,
         "transitionTile"
       )
-      .setScale(tileScale)
+      .setScale(this.tileScale)
       .setBlendMode(BlendModes.ADD);
-
 
     transitionTile.setVisible(false);
 
     this.transitionTile = transitionTile;
   }
-  onEnter() {
-    this.tile.setUniform("active.value", 1.0);
-  }
-  onLeave() {
-    this.tile.setUniform("active.value", 0.0);
-  }
-  onClick() {
-    this.grid.cellAction(this.pos.x, this.pos.y, this.color);
-  }
-  setColor(color: ColorType) {
-    this.color = color;
 
-    this.tile.setUniform("color.value", this.colors[color].value);
+  abstract onEnter(): void;
+  abstract onLeave(): void;
+  onClick() {
+    this.action(this.pos.x, this.pos.y, this.color);
   }
+
+  setTileInteractions() {
+    this.tile.setInteractive();
+    this.tile.on("pointerup", this.onClick, this);
+    this.tile.on("pointerover", this.onEnter, this);
+    this.tile.on("pointerout", this.onLeave, this);
+  }
+
+  abstract setColor(color: ColorType): void;
+  abstract transitionStart(...args: any[]): void;
+  abstract transitionEnd(): void;
+  abstract transitionUpdate(progress: number): void;
 }

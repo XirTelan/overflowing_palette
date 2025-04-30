@@ -122,6 +122,11 @@
         "type": "image",
         "key": "MainBtnActiveCircle",
         "url": "MainBtnActiveCircle.png"
+      },
+      {
+        "type": "image",
+        "key": "transitionTile",
+        "url": "transitionTile.png"
       }
     ]
   },

@@ -236,12 +236,13 @@ export default class Grid {
     y: number,
     startPoint: Vector2,
     currentCell: Cell,
-    transitionTile: Phaser.GameObjects.Shader,
+    transitionTile: Phaser.GameObjects.Image,
     level: number,
     newColor: ColorType,
     colors: ColorConfig,
     animationDelay: number
   ) {
+    const defaultScale = transitionTile.scale;
     this.scene.tweens.chain({
       targets: null,
       tweens: [
@@ -266,16 +267,16 @@ export default class Grid {
         },
         {
           targets: transitionTile,
-          alpha: 0.8,
+          alpha: 1,
           duration: animationDelay / 2 - 10,
           repeat: 0,
-          scale: 1.2,
+          scale: defaultScale + defaultScale * 0.2,
           ease: "Linear",
         },
         {
           targets: transitionTile,
           alpha: 0,
-          scale: 1.4,
+          scale: defaultScale + defaultScale * 0.4,
           duration: animationDelay / 2 - 10,
           repeat: 0,
           ease: "Linear",
@@ -283,7 +284,7 @@ export default class Grid {
       ],
       onComplete: () => {
         transitionTile.setVisible(false);
-        transitionTile.scale = 1;
+        transitionTile.scale = defaultScale;
       },
       delay: 0,
       loop: 0,

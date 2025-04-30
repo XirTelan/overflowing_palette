@@ -1,9 +1,10 @@
 import Grid from "./Grid";
 import { ColorType, GameConfig } from "../types";
+import { BlendModes } from "phaser";
 
 export default class Cell {
   tile;
-  transitionTile;
+  transitionTile: Phaser.GameObjects.Image;
   color: ColorType;
   colors;
   grid;
@@ -40,18 +41,18 @@ export default class Cell {
     this.tile.on("pointerout", this.onLeave, this);
 
     this.pos = { x, y };
+    console.log("sizes", cellSize, cellSize / 64);
+    const tileScale = cellSize / 64;
 
-    const transitionTile = scene.add.shader(
-      "base",
-      this.tile.x + cellSize / 2,
-      this.tile.y + cellSize / 2,
-      cellSize,
-      cellSize
-    );
+    const transitionTile = scene.add
+      .image(
+        this.tile.x + cellSize / 2,
+        this.tile.y + cellSize / 2,
+        "transitionTile"
+      )
+      .setScale(tileScale)
+      .setBlendMode(BlendModes.ADD);
 
-    transitionTile.setUniform("color.value", { x: 0.949, y: 0.953, z: 0.827 });
-    transitionTile.setUniform("active.value", 1.0);
-    transitionTile.setUniform("transparent.value", 1.0);
 
     transitionTile.setVisible(false);
 

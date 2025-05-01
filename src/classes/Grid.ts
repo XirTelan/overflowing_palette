@@ -16,11 +16,9 @@ import ShaderCell from "./ShaderCell";
 export default class Grid {
   scene: Game;
   container: Phaser.GameObjects.Container;
-
   activeSwap?: SwapSelection;
 
-  isPerformanceMode: boolean = false;
-
+  isPerformanceMode = false;
   transitionSpeed = 800;
   transitionSpeedMinimum = 50;
 
@@ -28,102 +26,137 @@ export default class Grid {
   board: Cell[][] = [];
   cellSize: number;
   defaultValues: number[][];
-  history: [];
+  history: { x: number; y: number; color: ColorType }[] = [];
   border: Phaser.GameObjects.NineSlice;
+
+  private gridOptions: GameConfig["game"]["gridOptions"];
 
   constructor(scene: Game, levelData: number[][]) {
     this.scene = scene;
     this.defaultValues = levelData;
-    const rows = levelData.length;
-    const columns = levelData[0].length;
-    const tiles = [];
+    const config = this.scene.cache.json.get("config") as GameConfig;
+    this.gridOptions = config.game.gridOptions;
 
+    this.loadConfig();
+    this.calculateCellSize();
+    this.createBorder();
+    this.createBoard(levelData);
+    this.createContainer();
+  }
+
+  private loadConfig() {
     const {
       game: { gridOptions },
       gameplay,
-    } = scene.cache.json.get("config") as GameConfig;
+    } = this.scene.cache.json.get("config") as GameConfig;
+    this.gridOptions = gridOptions;
 
     this.transitionSpeed = gameplay.transitionDefault;
     this.transitionSpeedMinimum = gameplay.transitionMinimum;
     this.isPerformanceMode = gameplay.performanceMode;
+  }
 
-    const cellSize = Math.min(
-      (gridOptions.height - gridOptions.gap * (rows - 1)) / rows,
-      (gridOptions.width - gridOptions.gap * (columns - 1)) / columns
+  private calculateCellSize() {
+    const { height, width, gap } = this.gridOptions;
+    const rows = this.defaultValues.length;
+    const columns = this.defaultValues[0].length;
+
+    this.cellSize = Math.min(
+      (height - gap * (rows - 1)) / rows,
+      (width - gap * (columns - 1)) / columns
     );
+  }
 
-    this.cellSize = cellSize;
+  private createBorder() {
+    const rows = this.defaultValues.length;
+    const columns = this.defaultValues[0].length;
 
-    const correctionX =
-      gridOptions.width -
-      gridOptions.borderPadding -
-      columns * (cellSize + gridOptions.gap);
+    const { height, width, gap, borderPadding, borderOffset } =
+      this.gridOptions;
 
-    const correctionY =
-      gridOptions.height -
-      gridOptions.borderPadding -
-      rows * (cellSize + gridOptions.gap);
+    const correctionX = width - borderPadding - columns * (this.cellSize + gap);
 
-    this.border = scene.add
+    const correctionY = height - borderPadding - rows * (this.cellSize + gap);
+
+    this.border = this.scene.add
       .nineslice(
-        gridOptions.borderOffset.left,
-        gridOptions.borderOffset.top,
+        borderOffset.left,
+        borderOffset.top,
         "grid_border",
         undefined,
-        gridOptions.width - gridOptions.borderOffset.right - correctionX,
-        gridOptions.height - gridOptions.borderOffset.bottom - correctionY,
+        width - borderOffset.right - correctionX,
+        height - borderOffset.bottom - correctionY,
         270,
         128,
-        gridOptions.height / 2.56,
-        gridOptions.height / 3
+        height / 2.56,
+        height / 3
       )
       .setOrigin(0, 0)
       .setTint(this.getColor());
+  }
+
+  private createBoard(levelData: number[][]) {
+    const rows = levelData.length;
+    const columns = levelData[0].length;
+    const { gap } = this.gridOptions;
 
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < columns; j++) {
-        this.scene.gameStates.availableColors.add(levelData[i][j]);
-        let newCell: Cell;
-        if (this.isPerformanceMode) {
-          newCell = new SimpleCell(
-            this.scene,
-            i,
-            j,
-            levelData[i][j],
-            gridOptions.gap,
-            cellSize,
-            this.cellAction.bind(this)
-          );
-        } else {
-          newCell = new ShaderCell(
-            this.scene,
-            i,
-            j,
-            levelData[i][j],
-            gridOptions.gap,
-            cellSize,
-            this.cellAction.bind(this)
-          );
-        }
+        const value = levelData[i][j];
+        this.scene.gameStates.availableColors.add(value);
 
-        tiles.push(newCell.tile);
-        tiles.push(newCell.transitionTile);
-
+        const cell = this.createCell(i, j, value, gap);
         this.board[i] ??= [];
-        this.board[i][j] = newCell;
+        this.board[i][j] = cell;
 
-        if (levelData[i][j] !== this.scene.gameStates.targetColor) {
+        if (value !== this.scene.gameStates.targetColor) {
           this.scene.gameStates.remains++;
           this.scene.gameStates.initialState.remains++;
         }
       }
     }
+  }
+
+  private createCell(i: number, j: number, value: number, gap: number): Cell {
+    const args = [
+      this.scene,
+      i,
+      j,
+      value,
+      gap,
+      this.cellSize,
+      this.cellAction.bind(this),
+    ] as const;
+
+
+    if (this.isPerformanceMode) return new SimpleCell(...args);
+    return new ShaderCell(...args);
+  }
+
+  private createContainer() {
+    const { width, offset } = this.gridOptions;
+    const tiles = this.board.flat().map((cell) => cell.container);
+
     this.container = this.scene.add.container(
-      this.scene.cameras.main.width / 2 -
-        gridOptions.width / 2 -
-        gridOptions.offset.x,
-      gridOptions.offset.y,
+      this.scene.cameras.main.width / 2 - width / 2 - offset.x,
+      offset.y,
       [this.border, ...tiles]
+    );
+  }
+
+  private shouldSkipCell(
+    x: number,
+    y: number,
+    colorToChange: ColorType,
+    newColor: ColorType,
+    seen: Set<Cell>
+  ): boolean {
+    const cell = this.board[x]?.[y];
+    return (
+      !cell ||
+      cell.color === newColor ||
+      cell.color !== colorToChange ||
+      seen.has(cell)
     );
   }
 
@@ -136,21 +169,13 @@ export default class Grid {
     level: number,
     startPoint: Vector2
   ) {
-    if (
-      !this.board[x] ||
-      !this.board[x][y] ||
-      this.board[x][y].color == newColor ||
-      this.board[x][y].color != colorToChange ||
-      seen.has(this.board[x][y])
-    )
-      return;
+    if (this.shouldSkipCell(x, y, colorToChange, newColor, seen)) return;
 
-    this.pendingCalls++;
     const currentCell = this.board[x][y];
-
     seen.add(currentCell);
+    this.pendingCalls++;
 
-    const animationDelay = Math.max(
+    const delay = Math.max(
       this.transitionSpeed * Math.pow(0.8, level),
       this.transitionSpeedMinimum
     );
@@ -160,11 +185,11 @@ export default class Grid {
       currentCell,
       level,
       newColor,
-      animationDelay
+      delay
     );
 
     for (const [dx, dy] of DIRECTIONS) {
-      this.scene.time.delayedCall(animationDelay, () => {
+      this.scene.time.delayedCall(delay, () => {
         this.bfs(
           x + dx,
           y + dy,
@@ -177,11 +202,11 @@ export default class Grid {
       });
     }
   }
+
   private flip(x: number, y: number, colorToChange: ColorType) {
-    if (colorToChange == this.scene.gameStates.selectedColor) return;
+    if (colorToChange === this.scene.gameStates.selectedColor) return;
 
     this.scene.changeGameState(GameStatus.Waiting);
-
     this.bfs(
       x,
       y,
@@ -192,23 +217,28 @@ export default class Grid {
       { x, y }
     );
   }
+
   cellAction(x: number, y: number, colorToChange: ColorType) {
     const { mode, state, selectedTool } = this.scene.gameStates;
 
-    if (mode == GameMode.Editor) {
+    if (mode === GameMode.Editor) {
       this.board[x][y].setColor(colorToChange);
       return;
     }
-    if (state === GameStatus.Waiting && this.activeSwap) {
-      this.activeSwap.cancelSwapSelection();
-      this.activeSwap = undefined;
+
+    if (state === GameStatus.Waiting) {
+      if (this.activeSwap) {
+        this.activeSwap.cancelSwapSelection();
+        this.activeSwap = undefined;
+      }
+      return;
     }
-    if (state === GameStatus.Waiting) return;
 
     if (selectedTool !== Tools.none) {
       this.swapSelection(x, y);
       return;
     }
+
     this.flip(x, y, colorToChange);
   }
 
@@ -225,17 +255,16 @@ export default class Grid {
     const { x, y, z } = colors[this.scene.gameStates.targetColor].value;
     return Phaser.Display.Color.GetColor(x * 255, y * 255, z * 255);
   }
+
   updateBorderTint() {
     this.border.clearTint();
     this.border.setTint(this.getColor());
   }
+
   resetBoard() {
-    const data = this.defaultValues;
-    const rows = data.length;
-    const columns = data[0].length;
-    for (let i = 0; i < rows; i++) {
-      for (let j = 0; j < columns; j++) {
-        this.board[i][j].setColor(data[i][j]);
+    for (let i = 0; i < this.defaultValues.length; i++) {
+      for (let j = 0; j < this.defaultValues[0].length; j++) {
+        this.board[i][j].setColor(this.defaultValues[i][j]);
       }
     }
   }
@@ -247,6 +276,7 @@ export default class Grid {
     newColor: ColorType,
     animationDelay: number
   ) {
+    const tile = currentCell.tile;
     const transitionTile = currentCell.transitionTile;
     const defaultScale = transitionTile.scale;
 
@@ -254,30 +284,26 @@ export default class Grid {
       targets: null,
       tweens: [
         {
-          targets: currentCell.tile,
+          targets: tile,
           x: {
-            value: () => currentCell.tile.x + Phaser.Math.Between(-5, 5),
+            value: () => tile.x + Phaser.Math.Between(-5, 5),
             duration: animationDelay * 0.1,
             repeat: 1,
           },
           y: {
-            value: () => currentCell.tile.y + Phaser.Math.Between(-5, 5),
+            value: () => tile.y + Phaser.Math.Between(-5, 5),
             duration: animationDelay * 0.1,
             repeat: 1,
           },
-          onComplete: () => {
-            transitionTile.setVisible(true).setDepth(10);
-          },
-          repeat: 0,
+          onComplete: () => transitionTile.setVisible(true).setDepth(10),
           yoyo: true,
           ease: "Sine.easeInOut",
         },
         {
           targets: transitionTile,
           alpha: 1,
-          duration: animationDelay / 2 - 10,
-          repeat: 0,
           scale: defaultScale + defaultScale * 0.2,
+          duration: animationDelay / 2 - 10,
           ease: "Linear",
         },
         {
@@ -285,7 +311,6 @@ export default class Grid {
           alpha: 0,
           scale: defaultScale + defaultScale * 0.4,
           duration: animationDelay / 2 - 10,
-          repeat: 0,
           ease: "Linear",
         },
       ],
@@ -294,8 +319,6 @@ export default class Grid {
         transitionTile.alpha = 1;
         transitionTile.scale = defaultScale;
       },
-      delay: 0,
-      loop: 0,
     });
 
     this.scene.tweens.addCounter({
@@ -304,7 +327,6 @@ export default class Grid {
       delay: animationDelay * 0.1,
       duration: animationDelay,
       ease: "Cubic.InOut",
-      repeat: 0,
       onStart: () => {
         this.scene.sound.play("tileFlip", {
           detune: Math.min(50 * level, 600),
@@ -312,9 +334,7 @@ export default class Grid {
         });
         currentCell.transitionStart(newColor, startPoint);
       },
-      onUpdate: (tween) => {
-        currentCell.transitionUpdate(tween.getValue());
-      },
+      onUpdate: (tween) => currentCell.transitionUpdate(tween.getValue()),
       onComplete: () => {
         currentCell.transitionEnd();
 
@@ -325,8 +345,9 @@ export default class Grid {
         currentCell.color = Number(newColor);
 
         if (currentCell.color === this.scene.gameStates.targetColor) {
-          this.scene.gameStates.remains -= 1;
+          this.scene.gameStates.remains--;
         }
+
         this.pendingCalls--;
         if (this.pendingCalls === 0) {
           this.scene.changeGameState(GameStatus.Active);

@@ -15,16 +15,17 @@ export default class SimpleCell extends Cell {
     x: number,
     y: number,
     color: ColorType,
-    gap: number = 0,
+    gap: number,
     cellSize: number,
     action: CellAction
   ) {
-    super(scene, x, y, color, cellSize, action);
+    super(scene, x, y, color, gap, cellSize, action);
     this.tile = scene.add
-      .image(y * (cellSize + gap), x * (cellSize + gap), "tile")
+      .image(0, 0, "tile")
       .setOrigin(0, 0)
       .setScale(this.tileScale)
       .setTintFill(vector3ToHexNumber(this.colors[color].value));
+    this.container.add(this.tile);
     this.createTransitionTile();
     this.setTileInteractions();
   }

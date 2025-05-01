@@ -31,20 +31,19 @@ export default class ShaderCell extends Cell {
     cellSize: number,
     action: CellAction
   ) {
-    super(scene, x, y, color, cellSize, action);
+    super(scene, x, y, color, gap, cellSize, action);
 
     this.tile = scene.add
-      .shader(
-        "base",
-        y * (cellSize + gap),
-        x * (cellSize + gap),
-        cellSize,
-        cellSize,
-        ["celltexture", "cellnoise", "cellnoise_d", "cellnoise_center"]
-      )
+      .shader("base", 0, 0, cellSize, cellSize, [
+        "celltexture",
+        "cellnoise",
+        "cellnoise_d",
+        "cellnoise_center",
+      ])
       .setOrigin(0, 0);
     this.tile.setUniform("color.value", this.colors[color].value);
     this.tile.setUniform("curPoint.value", { x, y });
+    this.container.add(this.tile);
     this.createTransitionTile();
     this.setTileInteractions();
   }

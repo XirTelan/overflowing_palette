@@ -1,9 +1,10 @@
 import { Scene } from "phaser";
-import { ColorType, GameConfig, GameMode, LevelData } from "../../../types";
-import { PrimaryBtn } from "../../ui/PrimaryBtn";
+import { GameMode, LevelData } from "../../../types";
 import { BaseBlock } from "../../common/BaseBlock";
-import { getLocal, normalizedRgbToColor } from "../../../utils";
+import { getLocal } from "../../../utils";
 import { InfoBlock } from "./InfoBlock";
+import { PreviewBlock } from "./PreviewBlock";
+import { PrimaryBtn } from "@/classes/ui/buttons/PrimaryBtn";
 
 export class SelectedLevelInfo extends BaseBlock {
   previewBlock: PreviewBlock;
@@ -53,7 +54,7 @@ export class SelectedLevelInfo extends BaseBlock {
       .setOrigin(0.5, 0);
 
     this.previewBlock = new PreviewBlock(10, 60, scene);
-    this.levelInfo = new InfoBlock(0, 40, scene);
+    this.levelInfo = new InfoBlock(0, 380, scene);
 
     this.container.add([
       this.emptyBlock,
@@ -105,47 +106,5 @@ export class SelectedLevelInfo extends BaseBlock {
       });
     });
     this.emptyBlock.setVisible(false);
-  }
-}
-
-class PreviewBlock extends BaseBlock {
-  graphics: Phaser.GameObjects.Graphics;
-  constructor(x: number, y: number, scene: Scene) {
-    super(x, y, scene);
-
-    this.graphics = scene.add.graphics();
-    this.container.add(this.graphics);
-  }
-  updatePreview(level: LevelData["board"]) {
-    const { selectedLevelInfo } =
-      this.scene.cache.json.get("config")["mainMenu"]["levelSelection"];
-
-    const { colors } = this.scene.cache.json.get("config") as GameConfig;
-
-    const rows = level.length;
-    const cols = level[0].length;
-
-    const originalWidth = cols * selectedLevelInfo.previewBlock.cellSize;
-    const originalHeight = rows * selectedLevelInfo.previewBlock.cellSize;
-
-    const scaleX = selectedLevelInfo.previewBlock.width / originalWidth;
-    const scaleY = selectedLevelInfo.previewBlock.height / originalHeight;
-    const finalScale = Math.min(scaleX, scaleY);
-
-    const graphics = this.graphics;
-    graphics.setScale(finalScale);
-    this.container.setPosition(
-      (selectedLevelInfo.previewBlock.width - originalWidth * finalScale) / 2,
-      this.container.y
-    );
-
-    graphics.clear();
-    for (let i = 0; i < rows; i++) {
-      for (let j = 0; j < cols; j++) {
-        const color = colors[level[i][j] as ColorType].value;
-        graphics.fillStyle(normalizedRgbToColor(color));
-        graphics.fillRect(j * 50, i * 50, 50, 50);
-      }
-    }
   }
 }

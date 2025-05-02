@@ -1,6 +1,6 @@
-import { GameConfig, MenuTabProps } from "../../../types";
-import { getLocal } from "../../../utils";
-import { PrimaryBtn } from "../../ui/PrimaryBtn";
+import { PrimaryBtn } from "@/classes/ui/buttons/PrimaryBtn";
+import { MenuTabProps, GameConfig } from "@/types";
+import { getLocal } from "@/utils";
 import { MenuTab } from "../MenuTab";
 import { ColorsTab } from "./ColorsTab";
 import { GameplayTab } from "./GameplayTab";
@@ -51,7 +51,6 @@ export class Options extends MenuTab {
       "general",
       true,
       options.tabs.general,
-      800,
       tabBtns,
       tabs,
       this.updateActiveTab,
@@ -63,7 +62,6 @@ export class Options extends MenuTab {
       "colors",
       false,
       options.tabs.colors,
-      800,
       tabBtns,
       tabs,
       this.updateActiveTab,
@@ -75,7 +73,6 @@ export class Options extends MenuTab {
       "gameplay",
       false,
       options.tabs.gameplay,
-      800,
       tabBtns,
       tabs,
       this.updateActiveTab,

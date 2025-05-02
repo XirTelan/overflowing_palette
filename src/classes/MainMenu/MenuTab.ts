@@ -1,7 +1,7 @@
 import { MenuTabProps, Vector2 } from "../../types";
-import { PrimaryBtn } from "../ui/PrimaryBtn";
 import { BaseBlock } from "../common/BaseBlock";
 import { getLocal } from "../../utils";
+import { PrimaryBtn } from "../ui/buttons/PrimaryBtn";
 
 export class MenuTab extends BaseBlock {
   key: string;

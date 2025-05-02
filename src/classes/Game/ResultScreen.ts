@@ -1,15 +1,10 @@
+import { Game } from "@/scenes/Game";
+import { GameSceneData, LanguageConfig, GameStatus, GameMode, LevelsJson } from "@/types";
+import { getLocal, generateLevel, getUserLevelsCleared } from "@/utils";
 import { BaseBlock } from "../common/BaseBlock";
-import { Game } from "../../scenes/Game";
-import {
-  GameMode,
-  GameSceneData,
-  GameStatus,
-  LanguageConfig,
-  LevelsJson,
-} from "../../types";
-import { PrimaryBtn } from "../ui/PrimaryBtn";
+import { PrimaryBtn } from "../ui/buttons/PrimaryBtn";
 import { Record } from "../ui/html/Record";
-import { generateLevel, getLocal, getUserLevelsCleared } from "../../utils";
+
 
 export class ResultScreen extends BaseBlock {
   scene: Game;

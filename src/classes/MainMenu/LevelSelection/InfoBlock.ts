@@ -18,7 +18,7 @@ export class InfoBlock {
     const { previewBlock } = getLocal(scene);
 
     const vieBox = scene.add
-      .dom(x, 380, "div", {
+      .dom(x, y, "div", {
         width: `420px`,
         height: `500px`,
         fontSize: "24px",

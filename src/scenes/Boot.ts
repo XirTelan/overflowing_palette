@@ -74,7 +74,7 @@ export class Boot extends Scene {
       const debugConfig = localStorage.getItem("debug");
       if (debugConfig) {
         const data = JSON.parse(debugConfig);
-        if (data.mode != "none") {
+        if (data.mode != -1) {
           this.scene.start("LoadingGame", {
             ...data,
           });

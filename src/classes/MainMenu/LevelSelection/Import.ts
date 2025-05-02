@@ -1,9 +1,10 @@
+import { BaseBlock } from "@/classes/common/BaseBlock";
+import { PrimaryBtn } from "@/classes/ui/buttons/PrimaryBtn";
+import { OptionFolder } from "@/classes/ui/html/OptionFolder";
+import { getLocal } from "@/utils";
 import { Scene } from "phaser";
-import { PrimaryBtn } from "../../ui/PrimaryBtn";
-import { BaseBlock } from "../../common/BaseBlock";
 import { SelectedLevelInfo } from "./SelectedLevelInfo";
-import { OptionFolder } from "../../ui/html/OptionFolder";
-import { getLocal } from "../../../utils";
+
 
 export class ImportLevel extends BaseBlock {
   viewBox: Phaser.GameObjects.DOMElement;

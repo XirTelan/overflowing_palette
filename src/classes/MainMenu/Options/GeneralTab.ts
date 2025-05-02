@@ -36,7 +36,6 @@ export class GeneralTab extends OptionTab {
     key: string,
     isActive: boolean,
     btnText: string,
-    width: number,
     btnContainer: HTMLDivElement,
     tabsContainer: HTMLDivElement,
     callback: (key: string) => void,

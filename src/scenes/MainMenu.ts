@@ -1,13 +1,14 @@
+import { EndlessZen } from "@/classes/MainMenu/EndlessZen";
+import { LevelEditor } from "@/classes/MainMenu/LevelEditor";
+import { LevelSelection } from "@/classes/MainMenu/LevelSelection/LevelSelection";
+import { MenuTab } from "@/classes/MainMenu/MenuTab";
+import { Options } from "@/classes/MainMenu/Options/Options";
+import { Background } from "@/classes/ui/Background";
+import { MenuBtn } from "@/classes/ui/buttons/MenuBtn";
+import { GameConfig, LanguageConfig } from "@/types";
+import { getLocal } from "@/utils";
 import { Scene } from "phaser";
-import { GameConfig, LanguageConfig } from "../types";
-import { MenuBtn } from "../classes/ui/MenuBtn";
-import { LevelSelection } from "../classes/MainMenu/LevelSelection/LevelSelection";
-import { MenuTab } from "../classes/MainMenu/MenuTab";
-import { LevelEditor } from "../classes/MainMenu/LevelEditor";
-import { Options } from "../classes/MainMenu/Options/Options";
-import { Background } from "../classes/ui/Background";
-import { EndlessZen } from "../classes/MainMenu/EndlessZen";
-import { getLocal } from "../utils";
+
 
 type TabConfig = {
   key: string;

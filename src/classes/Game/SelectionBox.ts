@@ -1,13 +1,15 @@
-
 import Grid from "../Grid";
 import Cell from "../Cell";
 import { Game } from "../../scenes/Game";
 
+const MIN_DRAG_DISTANCE = 50;
+
 export class SelectionBox {
   scene: Game;
+  board: Grid["board"];
   graphics: Phaser.GameObjects.Graphics;
   selectionBox: Phaser.Geom.Rectangle;
-  selectedObjects = [];
+  selectedObjects: Cell[] = [];
   isSelecting = false;
   startX: number;
   startY: number;
@@ -15,14 +17,16 @@ export class SelectionBox {
 
   constructor(board: Grid["board"], scene: Game) {
     this.scene = scene;
+    this.board = board;
+
     const { selectionBox } = scene.cache.json.get("config")["game"];
     this.graphics = scene.add.graphics(selectionBox);
-    this.objectList = board.flat();
 
     scene.input.on("pointerdown", this.onPointerDown, this);
     scene.input.on("pointermove", this.onPointerMove, this);
     scene.input.on("pointerup", this.onPointerUp, this);
   }
+
   onPointerDown(pointer: Phaser.Input.Pointer) {
     this.isSelecting = true;
     this.startX = pointer.x;
@@ -34,49 +38,68 @@ export class SelectionBox {
       0
     );
   }
+
   onPointerMove(pointer: Phaser.Input.Pointer) {
-    if (this.isSelecting) {
-      this.selectionBox.width = pointer.x - this.startX;
-      this.selectionBox.height = pointer.y - this.startY;
-      this.redrawSelectionBox();
-    }
+    if (!this.isSelecting) return;
+
+    this.selectionBox.width = pointer.x - this.startX;
+    this.selectionBox.height = pointer.y - this.startY;
+
+    this.redrawSelectionBox();
   }
+
   onPointerUp() {
+    if (!this.selectionBox) return;
+
     this.isSelecting = false;
     this.graphics.clear();
 
-    this.selectedObjects = [];
+    this.selectionBox = this.normalizeRect(this.selectionBox);
 
-    const selectionBox = this.selectionBox;
-    if (!selectionBox) return;
-
-    selectionBox.x = Math.min(
-      selectionBox.x,
-      selectionBox.x + selectionBox.width
-    );
-    selectionBox.width = Math.abs(selectionBox.width);
-    selectionBox.y = Math.min(
-      selectionBox.y,
-      selectionBox.y + selectionBox.height
-    );
-    selectionBox.height = Math.abs(selectionBox.height);
+    if (
+      this.selectionBox.width < MIN_DRAG_DISTANCE ||
+      this.selectionBox.height < MIN_DRAG_DISTANCE
+    ) {
+      return;
+    }
 
     const cellSize = this.scene.grid.cellSize / 2;
-    this.objectList.forEach((cell) => {
-      const { x, y } = cell.tile.getWorldPoint();
+    const selected: Cell[] = [];
 
-      if (
-        x + cellSize > selectionBox.x &&
-        x + cellSize < selectionBox.x + selectionBox.width &&
-        y + cellSize > selectionBox.y &&
-        y + cellSize < selectionBox.y + selectionBox.height
-      ) {
+    for (const cell of this.board.flat()) {
+      const { x, y } = cell.tile.getWorldPoint();
+      const centerPoint = new Phaser.Geom.Point(x + cellSize, y + cellSize);
+
+      if (Phaser.Geom.Rectangle.ContainsPoint(this.selectionBox, centerPoint)) {
         cell.onClick();
+        selected.push(cell);
       }
-    });
+    }
+
+    this.selectedObjects = selected;
   }
 
   redrawSelectionBox() {
-    this.graphics.clear().fillRectShape(this.selectionBox);
+    this.graphics.clear();
+    this.graphics
+      .fillStyle(0x000000, 0.4)
+      .fillRectShape(this.selectionBox)
+      .lineStyle(2, 0xffffff)
+      .strokeRectShape(this.selectionBox);
+  }
+
+  normalizeRect(rect: Phaser.Geom.Rectangle): Phaser.Geom.Rectangle {
+    const x = Math.min(rect.x, rect.x + rect.width);
+    const y = Math.min(rect.y, rect.y + rect.height);
+    const width = Math.abs(rect.width);
+    const height = Math.abs(rect.height);
+    return new Phaser.Geom.Rectangle(x, y, width, height);
+  }
+
+  destroy() {
+    this.scene.input.off("pointerdown", this.onPointerDown, this);
+    this.scene.input.off("pointermove", this.onPointerMove, this);
+    this.scene.input.off("pointerup", this.onPointerUp, this);
+    this.graphics.destroy();
   }
 }

@@ -8,9 +8,9 @@ import {
   MenuTabProps,
 } from "../../../types";
 import { SelectedLevelInfo } from "./SelectedLevelInfo";
-import { PrimaryBtn } from "../../ui/PrimaryBtn";
 import { ImportLevel } from "./Import";
 import { getLocal, getUserLevelsCleared } from "../../../utils";
+import { PrimaryBtn } from "@/classes/ui/buttons/PrimaryBtn";
 
 export class LevelSelection extends MenuTab {
   selectedLevelData: LevelData;
@@ -186,7 +186,7 @@ export class LevelSelection extends MenuTab {
     super.show();
     this.showFolders();
   }
-  hide(isForce?: boolean): void {
+  hide(): void {
     super.hide();
     this.selectedLevelInfo.hide();
     this.selectedLevelInfo.updateInfo(undefined);

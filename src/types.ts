@@ -1,6 +1,7 @@
 import { RATES } from "./utils";
 
 export enum ColorType {
+  "block" = -1,
   "red",
   "green",
   "blue",
@@ -354,7 +355,7 @@ export type GameStates = {
   mode: GameMode;
 };
 
-export type CellAction = (x: number, y: number, color: ColorType) => void;
+export type CellAction = (x: number, y: number) => void;
 
 export type LoadingConfig = {
   width: number;

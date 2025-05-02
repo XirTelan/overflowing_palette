@@ -12,7 +12,6 @@ import {
   UiOptions,
 } from "../types";
 import Grid from "../classes/Grid";
-import ColorBtn from "../classes/ui/ColorBtn";
 import { ValueSelector } from "../classes/ui/ValueSelector";
 import { Export } from "../classes/Game/Export";
 import { SelectionBox } from "../classes/Game/SelectionBox";
@@ -25,10 +24,12 @@ import {
   getColorName,
   getLocal,
 } from "../utils";
-import { PrimaryBtn } from "../classes/ui/PrimaryBtn";
-import { ToolBtn } from "../classes/ui/ToolBtn";
+import { ColorBtn } from "@/classes/ui/buttons/ColorBtn";
+import { PrimaryBtn } from "@/classes/ui/buttons/PrimaryBtn";
+import { ToolBtn } from "@/classes/ui/buttons/ToolBtn";
+import { BaseBtn } from "@/classes/ui/buttons/BaseBtn";
 
-const FADE_DELAY = 500;
+const FADE_DELAY = 300;
 
 export class Game extends Scene {
   grid: Grid;
@@ -57,7 +58,6 @@ export class Game extends Scene {
       game: { ui },
     } = getLocal(this);
     this.colors = colors;
-
     new Background(this);
 
     initGame(this, mode, levelData, levelKey ?? "");
@@ -160,7 +160,6 @@ export class Game extends Scene {
     );
     availableColors.forEach(([colorType, colorValue], index) => {
       const colorId = Number(colorType);
-
       const offsetX =
         colorsCount > 4 && index >= 4 ? cellSize + ui.colorButtons.gap * 2 : 0;
       const adjustedIndex = (index + 4) % 4;
@@ -177,6 +176,24 @@ export class Game extends Scene {
       );
       scene.colorSelectionButtons.push(newBtn);
     });
+
+    if (this.gameStates.mode === GameMode.Editor) {
+      const blockedTileBtn = new BaseBtn(
+        scene,
+        0,
+        500,
+        "blockedTile",
+        "blockedTileOver"
+      );
+      blockedTileBtn.setHotkey("0", ["NUMPAD_ZERO", "ZERO"]);
+      blockedTileBtn.setInteractive(() => {
+        this.changeSelectedColor(-1);
+        this.sound.play("colorSelect");
+      });
+      blockedTileBtn.container.setScale(1.3);
+
+      scene.btnContainer.add(blockedTileBtn.container);
+    }
 
     scene.btnContainer.y -= (scene.colorSelectionButtons.length * cellSize) / 4;
   }
@@ -330,7 +347,7 @@ export class Game extends Scene {
       },
     });
 
-    Object.entries(availableTools).forEach(([key, data], index) => {
+    Object.entries(availableTools).forEach(([_key, data], index) => {
       scene.make.text({
         x: 60,
         y: ui.tools.y + ui.tools.offset * index - 50,

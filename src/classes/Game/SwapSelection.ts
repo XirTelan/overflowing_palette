@@ -42,7 +42,7 @@ export class SwapSelection {
       const columns = this.grid.board[0].length - 1;
       if (dx < 0 || dy < 0 || dx > rows || dy > columns) return;
       const cell = grid.board[dx][dy];
-      if (cell.color === color) return;
+      if (cell.color === color || cell.color === -1) return;
       this.activeCells.push(this.createSwapPos(dx, dy));
     });
 

@@ -12,6 +12,7 @@ import { DIRECTIONS } from "../utils";
 import { SwapSelection } from "./Game/SwapSelection";
 import SimpleCell from "./SimpleCell";
 import ShaderCell from "./ShaderCell";
+import { BlockedCell } from "./BlockedCell";
 
 export default class Grid {
   scene: Game;
@@ -99,6 +100,8 @@ export default class Grid {
     const rows = levelData.length;
     const columns = levelData[0].length;
     const { gap } = this.gridOptions;
+    this.scene.gameStates.remains = rows * columns;
+    this.scene.gameStates.initialState.remains = rows * columns;
 
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < columns; j++) {
@@ -109,9 +112,9 @@ export default class Grid {
         this.board[i] ??= [];
         this.board[i][j] = cell;
 
-        if (value !== this.scene.gameStates.targetColor) {
-          this.scene.gameStates.remains++;
-          this.scene.gameStates.initialState.remains++;
+        if (value == -1 || value === this.scene.gameStates.targetColor) {
+          this.scene.gameStates.remains--;
+          this.scene.gameStates.initialState.remains--;
         }
       }
     }
@@ -128,7 +131,7 @@ export default class Grid {
       this.cellAction.bind(this),
     ] as const;
 
-
+    if (value === -1) return new BlockedCell(...args);
     if (this.isPerformanceMode) return new SimpleCell(...args);
     return new ShaderCell(...args);
   }
@@ -218,13 +221,29 @@ export default class Grid {
     );
   }
 
-  cellAction(x: number, y: number, colorToChange: ColorType) {
+  cellAction(x: number, y: number) {
     const { mode, state, selectedTool } = this.scene.gameStates;
-
+    const currentCell = this.board[x][y];
     if (mode === GameMode.Editor) {
+      const colorToChange = this.scene.gameStates.selectedColor;
+      const { gap } = this.gridOptions;
+      if (colorToChange === -1) {
+        currentCell.container.destroy();
+        this.board[x][y] = this.createCell(x, y, -1, gap);
+        this.container.add(this.board[x][y].container);
+        return;
+      }
+      if (currentCell.color === -1) {
+        currentCell.container.destroy();
+        this.board[x][y] = this.createCell(x, y, colorToChange, gap);
+        this.container.add(this.board[x][y].container);
+        return;
+      }
       this.board[x][y].setColor(colorToChange);
       return;
     }
+
+    if (currentCell.color === -1) return;
 
     if (state === GameStatus.Waiting) {
       if (this.activeSwap) {
@@ -239,7 +258,7 @@ export default class Grid {
       return;
     }
 
-    this.flip(x, y, colorToChange);
+    this.flip(x, y, currentCell.color);
   }
 
   swapSelection(x: number, y: number) {
@@ -277,6 +296,8 @@ export default class Grid {
     animationDelay: number
   ) {
     const tile = currentCell.tile;
+    const startColor = currentCell.color;
+
     const transitionTile = currentCell.transitionTile;
     const defaultScale = transitionTile.scale;
 
@@ -336,15 +357,13 @@ export default class Grid {
       },
       onUpdate: (tween) => currentCell.transitionUpdate(tween.getValue()),
       onComplete: () => {
+        const targetColor = this.scene.gameStates.targetColor;
+
+        if (startColor === targetColor) this.scene.gameStates.remains++;
+
         currentCell.transitionEnd();
 
-        if (currentCell.color === this.scene.gameStates.targetColor) {
-          this.scene.gameStates.remains++;
-        }
-
-        currentCell.color = Number(newColor);
-
-        if (currentCell.color === this.scene.gameStates.targetColor) {
+        if (currentCell.color === targetColor) {
           this.scene.gameStates.remains--;
         }
 

@@ -4,6 +4,7 @@ import { Game } from "../scenes/Game";
 
 export default class SimpleCell extends Cell {
   transitionStart(newColor: ColorType): void {
+    this._color = Number(newColor);
     this.tile.setTintFill(vector3ToHexNumber(this.colors[newColor].value));
   }
   transitionEnd(): void {}
@@ -37,7 +38,7 @@ export default class SimpleCell extends Cell {
   }
 
   setColor(color: ColorType) {
-    this.color = color;
+    this._color = color;
     this.tile.setTintFill(vector3ToHexNumber(this.colors[color].value));
   }
 }

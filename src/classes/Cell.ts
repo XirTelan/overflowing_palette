@@ -1,11 +1,11 @@
-import { ColorConfig, ColorType, GameConfig } from "../types";
+import { CellAction, ColorConfig, ColorType, GameConfig } from "../types";
 import { BlendModes } from "phaser";
 import { Game } from "../scenes/Game";
 
 const TILE_BASE_SIZE = 64;
 
 export default abstract class Cell {
-  scene: Game;
+  protected scene: Game;
   cellSize: number;
   tileScale: number;
 
@@ -13,9 +13,13 @@ export default abstract class Cell {
 
   tile: Phaser.GameObjects.Image | Phaser.GameObjects.Shader;
   transitionTile: Phaser.GameObjects.Image;
-  color: ColorType;
-  colors: ColorConfig;
-  action: (x: number, y: number, color: ColorType) => void;
+  protected _color: ColorType;
+  get color() {
+    return this._color;
+  }
+
+  protected colors: ColorConfig;
+  action: CellAction;
 
   pos: { x: number; y: number };
   constructor(
@@ -25,10 +29,10 @@ export default abstract class Cell {
     color: ColorType,
     gap: number,
     cellSize: number,
-    action: (x: number, y: number, color: ColorType) => void
+    action: (x: number, y: number) => void
   ) {
     this.scene = scene;
-    this.color = color;
+    this._color = color;
     this.cellSize = cellSize;
     this.tileScale = this.cellSize / TILE_BASE_SIZE;
 
@@ -64,7 +68,7 @@ export default abstract class Cell {
   abstract onEnter(): void;
   abstract onLeave(): void;
   onClick() {
-    this.action(this.pos.x, this.pos.y, this.color);
+    this.action(this.pos.x, this.pos.y);
   }
 
   setTileInteractions() {

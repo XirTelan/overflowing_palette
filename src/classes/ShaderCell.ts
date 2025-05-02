@@ -12,6 +12,7 @@ export default class ShaderCell extends Cell {
   }
 
   transitionEnd(): void {
+    this._color = this.newColor
     this.tile.scale = 1;
     this.tile.depth = 1;
     this.tile.setUniform("transition.value", 0.0);
@@ -55,7 +56,7 @@ export default class ShaderCell extends Cell {
   }
 
   setColor(color: ColorType) {
-    this.color = color;
+    this._color = color;
 
     this.tile.setUniform("color.value", this.colors[color].value);
   }

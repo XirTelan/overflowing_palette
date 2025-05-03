@@ -16,7 +16,6 @@ const keysMap = {
 };
 
 export class ColorBtn extends BaseBtn {
-  gameObject: Phaser.GameObjects.Shader;
   color: [ColorType, Vector3];
   pointer: Phaser.GameObjects.Triangle;
 
@@ -58,10 +57,11 @@ export class ColorBtn extends BaseBtn {
     this.container.add([activeCircle, shaderBtn, pointer]);
 
     const hotkeyStr = keysMap[hotkey as keyof typeof keysMap];
-    this.setHotkey(hotkey.toString(), hotkeyStr.split(","));
+    this.setHotkey(hotkey.toString(), hotkeyStr.split(","), () =>
+      shaderBtn.emit("pointerup")
+    );
 
     this.color = color;
-    this.gameObject = shaderBtn;
     this.pointer = pointer;
 
     shaderBtn.setInteractive();
@@ -89,10 +89,7 @@ export class ColorBtn extends BaseBtn {
   }
 
   onLeave() {
-    if (
-      Number((this.scene as Game).gameStates.selectedColor) !==
-      Number(this.color[0])
-    ) {
+    if ((this.scene as Game).gameStates.selectedColor !== this.color[0]) {
       this.btnOverlay.setVisible(false);
     }
   }
@@ -104,8 +101,7 @@ export class ColorBtn extends BaseBtn {
 
   update() {
     const isSelected =
-      Number((this.scene as Game).gameStates.selectedColor) ===
-      Number(this.color[0]);
+      (this.scene as Game).gameStates.selectedColor === this.color[0];
     this.btnOverlay.setVisible(isSelected);
     this.pointer.setVisible(isSelected);
   }

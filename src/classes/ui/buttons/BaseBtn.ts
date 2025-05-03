@@ -5,6 +5,7 @@ export class BaseBtn {
     Phaser.GameObjects.Components.Visible;
 
   container: Phaser.GameObjects.Container;
+  private registeredKeys: Phaser.Input.Keyboard.Key[] = [];
 
   constructor(
     scene: Phaser.Scene,
@@ -40,7 +41,7 @@ export class BaseBtn {
     });
   }
 
-  setHotkey(label: string, keys: string | string[]) {
+  setHotkey(label: string, keys: string | string[], action?: () => void) {
     const hotkeyBg = this.scene.make.image({
       x: 0,
       y: this.btnImage.y + this.btnImage.height / 2,
@@ -64,15 +65,31 @@ export class BaseBtn {
     const keyList = Array.isArray(keys) ? keys : [keys];
     keyList.forEach((key) => {
       const keyObj = this.scene.input.keyboard?.addKey(key);
-      keyObj?.on("down", () => this.btnImage.emit("pointerup"), this);
+      const handler = action || (() => this.btnImage.emit("pointerup"));
+
+      if (keyObj) {
+        keyObj.on("down", handler, this);
+        this.registeredKeys.push(keyObj);
+      }
     });
 
     this.container.add([hotkeyBg, hotkeyText]);
+
+    this.container.once(Phaser.GameObjects.Events.DESTROY, () =>
+      this.cleanupKeys()
+    );
+  }
+  
+  private cleanupKeys(): void {
+    this.registeredKeys.forEach((key) => {
+      this.scene.input?.keyboard?.removeKey(key, true, true);
+    });
+    this.registeredKeys = [];
   }
 
   setSelected(selected: boolean, tint?: number) {
     this.btnOverlay.setVisible(selected);
-    if (tint !== undefined) {
+    if (!tint) {
       selected ? this.btnImage.setTintFill(tint) : this.btnImage.clearTint();
     }
   }

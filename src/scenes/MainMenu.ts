@@ -1,3 +1,4 @@
+import { DebugMenu } from "@/classes/common/DebugMenu";
 import { EndlessZen } from "@/classes/MainMenu/EndlessZen";
 import { LevelEditor } from "@/classes/MainMenu/LevelEditor";
 import { LevelSelection } from "@/classes/MainMenu/LevelSelection/LevelSelection";
@@ -8,7 +9,6 @@ import { MenuBtn } from "@/classes/ui/buttons/MenuBtn";
 import { GameConfig, LanguageConfig } from "@/types";
 import { getLocal } from "@/utils";
 import { Scene } from "phaser";
-
 
 type TabConfig = {
   key: string;
@@ -54,6 +54,11 @@ export class MainMenu extends Scene {
 
     this.createBackground();
     this.makeMenuBtns();
+
+    const isProduction = import.meta.env.PROD;
+    if (!isProduction) {
+      new DebugMenu(600, 200, this).init();
+    }
 
     TABS.forEach((tab) => {
       const newTab = new tab.type({

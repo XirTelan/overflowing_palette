@@ -1,5 +1,5 @@
+import { getLocal } from "@/utils";
 import { Scene } from "phaser";
-import { getLocal } from "../../utils";
 
 export class LoadingScreen {
   bgShader;
@@ -22,14 +22,14 @@ export class LoadingScreen {
     const props = {
       x: width / 2,
       y: height / 2,
-      text: local.loading,
+      text: local?.loading ?? "LOADING",
     };
 
     scene.make
       .text({
         ...props,
         style: {
-          font: "bold 20rem Cinzel",
+          font: "bold 16rem Cinzel",
           stroke: "#000000",
           strokeThickness: 10,
         },
@@ -40,7 +40,7 @@ export class LoadingScreen {
       .text({
         ...props,
         style: {
-          font: "bold 20rem Cinzel",
+          font: "bold 16rem Cinzel",
           color: "#ffffff",
         },
       })

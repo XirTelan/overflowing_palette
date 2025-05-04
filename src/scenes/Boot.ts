@@ -1,7 +1,7 @@
 import { Scene } from "phaser";
 import { ColorConfig, GameConfig, Vector2 } from "../types";
 import { LoadingScreen } from "../classes/ui/LoadingScreen";
-import { getLocal, loadingShaderInitConfig } from "../utils";
+import { getLangCode, getLocal, loadingShaderInitConfig } from "../utils";
 
 export class Boot extends Scene {
   constructor() {
@@ -31,8 +31,8 @@ export class Boot extends Scene {
           },
           {
             type: "json",
-            key: "localization",
-            url: "assets/data/localization.json",
+            key: "langs",
+            url: "assets/data/langs.json",
           },
         ],
       },
@@ -47,6 +47,7 @@ export class Boot extends Scene {
       ...loadingShaderInitConfig,
       screenResolution: { type: "2f", value: { x: width, y: height } },
     };
+    this.loadLocalization();
 
     this.showLoading();
 
@@ -71,7 +72,7 @@ export class Boot extends Scene {
 
     const isProduction = import.meta.env.PROD;
     if (!isProduction) {
-      const debugConfig = localStorage.getItem("debug");
+      const debugConfig = localStorage.getItem("overflowingPalette_debug");
       if (debugConfig) {
         const data = JSON.parse(debugConfig);
         if (data.mode != -1) {
@@ -87,6 +88,14 @@ export class Boot extends Scene {
     this.time.delayedCall(300, () => {
       this.scene.start("MainMenu");
     });
+  }
+
+  private loadLocalization() {
+    this.cache.json.remove("localization");
+    const langs = this.cache.json.get("langs");
+
+    const lang = getLangCode()
+    this.load.json("localization", langs[lang].path);
   }
 
   private loadDefaultLocalColors() {

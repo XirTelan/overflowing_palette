@@ -188,14 +188,10 @@ export type LanguageConfig = {
 };
 
 export type LocalizationConfig = {
-  meta: {
-    langsAvailable: {
-      key: string;
-      name: string;
-    }[];
-  };
-  langs: {
-    [key: string]: LanguageConfig;
+  [key: string]: {
+    key: string;
+    name: string;
+    path: string;
   };
 };
 

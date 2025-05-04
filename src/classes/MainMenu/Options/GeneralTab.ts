@@ -62,10 +62,9 @@ export class GeneralTab extends OptionTab {
   }
 
   private createTextSection() {
-    const { meta } = this.scene.cache.json.get(
-      "localization"
-    ) as LocalizationConfig;
-
+    const langs = Object.entries(
+      this.scene.cache.json.get("langs") as LocalizationConfig
+    );
     const { generalTab } = getLocal(this.scene)[
       "options"
     ] as LanguageConfig["options"];
@@ -73,12 +72,12 @@ export class GeneralTab extends OptionTab {
     const select = new Select(
       generalTab.languageSelection,
       this.currentConfig.lang,
-      meta.langsAvailable.map((obj) => obj.name),
+      langs.map(([_, data]) => data.name),
       (e) => {
         const target = e.target as HTMLSelectElement;
         this.currentConfig.lang = target?.value;
       },
-      meta.langsAvailable.map((obj) => obj.key)
+      langs.map(([_, data]) => data.key)
     );
 
     const languageBlock = new OptionFolder(generalTab.languageBlock, "lang");

@@ -1,0 +1,161 @@
+{
+  "loading": "Loading",
+  "backgounds": {
+    "bg1": "Thessaleo Fells",
+    "bg2": "Overflowing Palette",
+    "bg3": "Riccioli Islands",
+    "bg4": "Mt. Firmament"
+  },
+  "colors": [
+    "Red",
+    "Green",
+    "Blue",
+    "Yellow",
+    "Orange",
+    "Purple",
+    "Pink",
+    "Cyan"
+  ],
+  "levels": {
+    "default": "Default",
+    "default1": "Riccioli Islands",
+    "default2": "Whisperwind Haven",
+    "default3": "Numbus Sanctum",
+    "default4": "Thessaleo Fells",
+    "default5": "Averardo Vault",
+    "default6": "Fagaceae Peninsula",
+    "default7": "Penitent's End",
+    "default8": "Hallowed Reach",
+    "default9": "Avinoleum",
+    "default10": "Hallowed Reach",
+    "advanced": "Advanced",
+    "advanced1": "Easy: Intro to Tools",
+    "advanced2": "Normal",
+    "advanced3": "Hard",
+    "custom": "Custom",
+    "custom1": "Pack 1",
+    "custom2": "Pack 2",
+    "custom3": "By Reddit",
+    "custom4": "Chaos"
+  },
+  "previewBlock": {
+    "preview": "Preview",
+    "author": "Author",
+    "moves": "Moves",
+    "gridSize": "Grid size",
+    "targetColor": "Target Color",
+    "cleared": "CLEARED",
+    "time": "Time",
+    "timeDefault": "A long time ago"
+  },
+  "endlessZen": {
+    "folderName": "Grid Options",
+    "columnsCount": "Columns",
+    "rowsCount": "Rows",
+    "colorsCount": "Colors count",
+    "difficulty": "Difficulty",
+    "difficulties": ["Easy", "Medium", "Hard", "Mess"]
+  },
+  "mainMenu": {
+    "startBtn": "Start",
+    "backBtn": "Back",
+    "selectLevel": "Select Level",
+    "endlessZen": "Endless Zen",
+    "createLevel": "Create Level",
+    "options": "Options",
+    "gitHub": "Open Docs\n (GitHub)",
+    "importBtn": "Import"
+  },
+  "game": {
+    "ui": {
+      "mode": "Mode:Editor",
+      "movesRemain": "Remaining Moves:",
+      "movesUsed": "Moves Used:",
+      "targetColor": "Turn all the blocks into",
+      "targetColorEditor": "Target color:",
+      "movesCount": "Moves count:",
+      "resetBtn": "Reset",
+      "export": "Export",
+      "tools": "Tools",
+      "toolSelected": "Swap tool is selected",
+      "toolUses": "Uses",
+      "skipBtn": "Skip Level"
+    },
+    "tools": {
+      "verticalSwap": "Vertical Swap",
+      "horizontalSwap": "Horizontal Swap",
+      "allwaySwap": "All Way Swap"
+    }
+  },
+  "levelEditor": {
+    "folderName": "Grid Options",
+    "gridColumns": "Columns:",
+    "gridRows": "Rows:",
+    "gridColor": "Fill Color"
+  },
+  "resultScreen": {
+    "win": "Level Complete",
+    "time": "Time:",
+    "btnMain": "Main Menu",
+    "btnNext": "Next Level",
+    "btnShare": "Share",
+    "movesUsed": "Moves used"
+  },
+  "options": {
+    "btnSave": "Save",
+    "btnReset": "Reset",
+    "tabs": {
+      "general": "General",
+      "colors": "Colors",
+      "gameplay": "Gameplay"
+    },
+    "colorsTab": {
+      "folderName": "Colors customization"
+    },
+    "generalTab": {
+      "languageBlock": "Language",
+      "languageSelection": "Selected language",
+      "background": "Background",
+      "image": "Image",
+      "distortion": "Distortion",
+      "overlay": "Overlay"
+    },
+    "gameplayTab": {
+      "animationSpeed": "Animation Speed",
+      "folderName": "Grid Options",
+      "highlightIntensity": {
+        "text": "Highlight Intensity",
+        "options": ["Normal", "Strong"]
+      },
+      "performanceMode": {
+        "text": "Performance Mode",
+        "options": ["Off", "On"]
+      },
+      "fluidColors": {
+        "text": "Fluid Colors",
+        "options": ["Off", "On"]
+      },
+      "soundVolume": "Sound volume"
+    },
+    "defaultToggle": ["Off", "On"]
+  },
+  "importBlock": {
+    "startBtn": "Start",
+    "folderName": "Import Level",
+    "loadBtn": "Load",
+    "cancelBtn": "Cancel"
+  },
+  "exportBlock": {
+    "title": "EXPORT LEVEL",
+    "switch": {
+      "string": "By string",
+      "json": "By JSON"
+    },
+    "folders": {
+      "string": "Export as string",
+      "json": "Export as JSON"
+    },
+    "cancelBtn": "Cancel",
+    "copy": "Copy to clipboard"
+  }
+}

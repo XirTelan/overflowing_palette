@@ -4,9 +4,7 @@ import { LanguageConfig } from "../types";
 const DEFAULT_LANG = "en";
 
 export const getLocal = (scene: Scene): LanguageConfig => {
-  const jsonData = scene.cache.json.get("localization");
-  const savedLang = getLangCode();
-  return jsonData.langs[savedLang];
+  return scene.cache.json.get("localization");
 };
 
 export const getLangCode = () => {

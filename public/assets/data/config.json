@@ -65,7 +65,7 @@
         },
         "radius": { "type": "1f", "value": 0.2 },
         "lightenFactor": { "type": "1f", "value": 0.2 },
-        "exposure": { "type": "1f", "value": 1.0 },
+        "exposure": { "type": "1f", "value": 1.2 },
         "transition": { "type": "1f", "value": 0.0 },
         "active": { "type": "1f", "value": 0.0 },
         "activeOffset": { "type": "2f", "value": { "x": 0.4, "y": 0.7 } },

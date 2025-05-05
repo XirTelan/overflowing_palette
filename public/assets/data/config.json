@@ -9,6 +9,11 @@
     "transitionMinimum": 50,
     "transitionMax": 850
   },
+  "sound": {
+    "master": 100,
+    "bgm": 100,
+    "sfx": 100
+  },
   "background": {
     "current": {
       "key": "bg4",

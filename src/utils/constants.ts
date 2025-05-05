@@ -12,6 +12,9 @@ export const RATES = {
   3: 0.1,
 };
 
+
+export const localStoragePrefix = "overflowingPalette_"
+
 export const loadingShaderInitConfig = {
   color: { type: "3f", value: { x: 0, y: 0, z: 0 } },
   colorToTransform: { type: "3f", value: { x: 1, y: 1, z: 1 } },

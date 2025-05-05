@@ -13,4 +13,7 @@ export class BaseBlock {
   show() {
     this.container.setVisible(true);
   }
+  setActive(value: boolean) {
+    value ? this.show() : this.hide();
+  }
 }

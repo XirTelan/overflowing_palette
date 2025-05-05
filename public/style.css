@@ -27,6 +27,7 @@
   --clr-border-2: #636e86;
   --clr-text-invers: #3f3f3f;
   --clr-slider: #d0c374;
+  --font-options-base: 1.5rem;
 }
 
 *:not(input, textarea) {
@@ -349,7 +350,7 @@ input[type="color"]::-webkit-color-swatch {
   align-items: center;
 
   .select__label {
-    font: 32px OpenSans_Bold;
+    font: var(--font-options-base) OpenSans_Bold;
   }
 }
 
@@ -363,7 +364,6 @@ input[type="color"]::-webkit-color-swatch {
 
   .folder-content__item {
     border-radius: var(--border-radius);
-    margin-top: 1rem;
     background: #000000a1;
     padding: 1rem;
     outline: 2px solid #16191a;
@@ -373,6 +373,11 @@ input[type="color"]::-webkit-color-swatch {
       outline-color: var(--clr-border-3);
     }
   }
+}
+.option-folder__content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
 }
 .block-title,
 .option-folder__title {
@@ -432,9 +437,10 @@ input[type="color"]::-webkit-color-swatch {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-size: var(--font-options-base);
 
   .value-selector__label {
-    font: 32px "OpenSans_Bold";
+    font-family: "OpenSans_Bold";
   }
 
   .value-selector__input-wrapper {
@@ -442,28 +448,27 @@ input[type="color"]::-webkit-color-swatch {
     align-items: center;
     background: #3c3c3c;
     border-radius: 100px;
-    min-width: 300px;
+    min-width: 200px;
 
     .value-selector__value {
       padding: 0 1rem;
       flex: 1;
       color: #fff;
       text-align: center;
-      font: 32px "OpenSans_Regular";
     }
 
     .value-selector__button {
       position: relative;
       background: white;
-      width: 60px;
-      height: 60px;
+      width: 40px;
+      height: 40px;
       border-radius: 100%;
       outline: 2px solid #d8d8d8;
       outline-offset: -6px;
 
       .icon {
-        height: 40px;
-        width: 40px;
+        height: 30px;
+        width: 30px;
         mask: no-repeat
           url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg>');
         background: #000;

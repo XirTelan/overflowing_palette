@@ -107,6 +107,7 @@
     "tabs": {
       "general": "General",
       "colors": "Colors",
+      "sound": "Sound",
       "gameplay": "Gameplay"
     },
     "colorsTab": {
@@ -119,6 +120,12 @@
       "image": "Image",
       "distortion": "Distortion",
       "overlay": "Overlay"
+    },
+    "soundTab": {
+      "folderName": "Volume",
+      "master": "Master",
+      "sfx": "Sound Effects",
+      "bgm": "Music"
     },
     "gameplayTab": {
       "animationSpeed": "Animation Speed",

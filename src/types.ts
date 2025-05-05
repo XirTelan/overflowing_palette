@@ -145,6 +145,12 @@ export type LanguageConfig = {
       distortion: string;
       overlay: string;
     };
+    soundTab: {
+      folderName: string;
+      master: string;
+      sfx: string;
+      bgm: string;
+    };
     gameplayTab: {
       animationSpeed: string;
       performanceMode: {
@@ -216,10 +222,14 @@ export type GameConfig = {
     performanceMode: boolean;
     highlightIntensity: number;
     fluidColors: number;
-    sound: number;
     transitionDefault: number;
     transitionMinimum: number;
     transitionMax: number;
+  };
+  sound: {
+    master: number;
+    bgm: number;
+    sfx: number;
   };
   background: BackgroundConfig;
   colors: ColorConfig;

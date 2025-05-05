@@ -86,19 +86,10 @@ export class GameplayTab extends OptionTab {
         );
       }
     );
-    const soundLevel = new RangeSlider(
-      gameplayTab.soundVolume,
-      this.currentConfig.sound,
-      0,
-      100,
-      (val) => {
-        this.currentConfig.sound = val;
-      }
-    );
+
     folder.add(fluidColors.container);
     folder.add(highlightIntensity.container);
     folder.add(transitionSpeed.container);
-    folder.add(soundLevel.container);
     folder.add(performanceMode.container);
 
     this.tab.appendChild(folder.container);

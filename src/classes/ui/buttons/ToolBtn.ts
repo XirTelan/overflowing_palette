@@ -102,7 +102,7 @@ export class ToolBtn extends BaseBtn {
   }
 
   select() {
-    this.scene.sound.play("colorSelect");
+    this.scene.audioManager.playSFX("colorSelect");
     this.scene.changeSelectedTool(this.toolKey);
     this.isSelected = true;
     this.icon.setTintFill(0xffcd3f);
@@ -110,7 +110,7 @@ export class ToolBtn extends BaseBtn {
   }
 
   deselect() {
-    this.scene.sound.play("colorSelect", { detune: 100 });
+    this.scene.audioManager.playSFX("colorSelect", { detune: 100 });
     this.scene.changeSelectedTool(Tools.none);
     this.isSelected = false;
     this.icon.clearTint();

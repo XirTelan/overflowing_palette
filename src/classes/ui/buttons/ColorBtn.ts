@@ -18,6 +18,7 @@ const keysMap = {
 export class ColorBtn extends BaseBtn {
   color: [ColorType, Vector3];
   pointer: Phaser.GameObjects.Triangle;
+  declare scene: Game;
 
   constructor(
     scene: Game,
@@ -84,24 +85,23 @@ export class ColorBtn extends BaseBtn {
   }
 
   onEnter() {
-    this.scene.sound.play("mouseOver");
+    this.scene.audioManager.playSFX("mouseOver");
     this.btnOverlay.setVisible(true);
   }
 
   onLeave() {
-    if ((this.scene as Game).gameStates.selectedColor !== this.color[0]) {
+    if (this.scene.gameStates.selectedColor !== this.color[0]) {
       this.btnOverlay.setVisible(false);
     }
   }
 
   onClick() {
-    (this.scene as Game).changeSelectedColor(this.color[0]);
-    this.scene.sound.play("colorSelect");
+    this.scene.changeSelectedColor(this.color[0]);
+    this.scene.audioManager.playSFX("colorSelect");
   }
 
   update() {
-    const isSelected =
-      (this.scene as Game).gameStates.selectedColor === this.color[0];
+    const isSelected = this.scene.gameStates.selectedColor === this.color[0];
     this.btnOverlay.setVisible(isSelected);
     this.pointer.setVisible(isSelected);
   }

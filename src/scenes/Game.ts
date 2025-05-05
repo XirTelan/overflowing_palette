@@ -28,6 +28,7 @@ import { ColorBtn } from "@/classes/ui/buttons/ColorBtn";
 import { PrimaryBtn } from "@/classes/ui/buttons/PrimaryBtn";
 import { ToolBtn } from "@/classes/ui/buttons/ToolBtn";
 import { BaseBtn } from "@/classes/ui/buttons/BaseBtn";
+import { AudioManager } from "@/classes/common/AudioManager";
 
 const FADE_DELAY = 300;
 
@@ -39,6 +40,8 @@ export class Game extends Scene {
   gameStates: GameStates;
   turnCounter: Phaser.GameObjects.Text;
   selectionBox: SelectionBox;
+
+  audioManager: AudioManager;
 
   notification: Phaser.GameObjects.Container;
 
@@ -53,7 +56,7 @@ export class Game extends Scene {
   preload() {}
 
   create({ mode, levelKey, levelData, endlessOptions }: GameSceneData) {
-    const { colors, gameplay } = this.cache.json.get("config") as GameConfig;
+    const { colors } = this.cache.json.get("config") as GameConfig;
     const {
       game: { ui },
     } = getLocal(this);
@@ -61,6 +64,12 @@ export class Game extends Scene {
     new Background(this);
 
     initGame(this, mode, levelData, levelKey ?? "");
+
+    if (!this.registry.has("audioManager")) {
+      const audioManager = new AudioManager(this);
+      this.registry.set("audioManager", audioManager);
+      this.audioManager = audioManager;
+    }
 
     if (mode === GameMode.Editor) {
       this.selectionBox = new SelectionBox(this.grid.board, this);
@@ -84,7 +93,6 @@ export class Game extends Scene {
     this.initTextUI(this);
     this.initButtons();
 
-    this.sound.setVolume((gameplay.sound ?? 50) / 100);
     this.exportBlock = new Export(this);
 
     this.startTime = this.time.now;

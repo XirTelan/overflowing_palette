@@ -37,6 +37,27 @@ export class DebugMenu extends BaseBlock {
     return input;
   }
 
+  private createPortalsInput(
+    value: { pair: [[number, number], [number, number]] }[],
+    onChange: (
+      newValue: { pair: [[number, number], [number, number]] }[]
+    ) => void
+  ): HTMLTextAreaElement {
+    const input = document.createElement("textarea");
+    input.value = JSON.stringify(value, null, 2);
+    input.style.padding = "4px";
+    input.oninput = (e) => {
+      try {
+        const parsed = JSON.parse((e.target as HTMLTextAreaElement).value);
+        if (!Array.isArray(parsed)) throw new Error("Expected an array");
+        onChange(parsed);
+      } catch (err) {
+        console.error("Invalid portals input:", err);
+      }
+    };
+    return input;
+  }
+
   private createButton(text: string, onClick: () => void): HTMLButtonElement {
     const btn = document.createElement("button");
     btn.textContent = text;
@@ -93,6 +114,7 @@ export class DebugMenu extends BaseBlock {
         turns: 100,
         board: [[0, -1, 0]],
         targetColor: 1,
+        portals: [],
       },
     };
 
@@ -124,6 +146,37 @@ export class DebugMenu extends BaseBlock {
       }
     );
 
+    const portalsInput = this.createPortalsInput(
+      this.objectToEdit.levelData.portals,
+      (newValue) => {
+        this.objectToEdit.levelData.portals = newValue;
+      }
+    );
+
+    const textareasRow = document.createElement("div");
+    Object.assign(textareasRow.style, {
+      display: "flex",
+      gap: "10px",
+      flexWrap: "nowrap",
+    });
+
+    Object.assign(boardInput.style, {
+      width: "100%",
+      minWidth: "0",
+      flex: "1",
+      minHeight: "120px",
+    });
+
+    Object.assign(portalsInput.style, {
+      width: "100%",
+      minWidth: "0",
+      flex: "1",
+      minHeight: "120px",
+    });
+
+    textareasRow.appendChild(boardInput);
+    textareasRow.appendChild(portalsInput);
+
     const list = this.createList();
 
     const setBtn = this.createButton("Set", () => {
@@ -152,6 +205,11 @@ export class DebugMenu extends BaseBlock {
         );
         targetColorInput.value =
           this.objectToEdit.levelData.targetColor.toString();
+        portalsInput.value = JSON.stringify(
+          this.objectToEdit.levelData.portals || [],
+          null,
+          2
+        );
       }
     });
 
@@ -159,8 +217,8 @@ export class DebugMenu extends BaseBlock {
     wrapper.appendChild(list);
     wrapper.appendChild(modeInput);
     wrapper.appendChild(turnsInput);
-    wrapper.appendChild(boardInput);
     wrapper.appendChild(targetColorInput);
+    wrapper.appendChild(textareasRow);
     wrapper.appendChild(setBtn);
     wrapper.appendChild(deleteBtn);
     wrapper.appendChild(updateBtn);

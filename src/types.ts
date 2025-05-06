@@ -30,6 +30,12 @@ export enum Tools {
   "Horizontal",
   "Vertical",
 }
+export type Position = [number, number];
+
+export type Portal = {
+  pair: [Position, Position];
+  // color?: string;
+};
 
 export type LevelData = {
   board: number[][];
@@ -37,6 +43,7 @@ export type LevelData = {
   turns: number;
   author?: string;
   tools?: [number, number, number];
+  portals?: Portal[];
 };
 
 export type LevelDifficulty = keyof typeof RATES;

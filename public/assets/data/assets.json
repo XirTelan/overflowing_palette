@@ -135,6 +135,11 @@
       },
       {
         "type": "image",
+        "key": "portalMask",
+        "url": "portalMask.png"
+      },
+      {
+        "type": "image",
         "key": "blockedTileOver",
         "url": "blockedTileOver.png"
       },

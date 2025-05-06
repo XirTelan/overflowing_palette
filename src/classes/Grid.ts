@@ -5,6 +5,7 @@ import {
   GameConfig,
   GameMode,
   GameStatus,
+  LevelData,
   Tools,
   Vector2,
 } from "../types";
@@ -27,14 +28,17 @@ export default class Grid {
   board: Cell[][] = [];
   cellSize: number;
   defaultValues: number[][];
+  portals: LevelData["portals"];
   history: { x: number; y: number; color: ColorType }[] = [];
   border: Phaser.GameObjects.NineSlice;
 
   private gridOptions: GameConfig["game"]["gridOptions"];
 
-  constructor(scene: Game, levelData: number[][]) {
+  constructor(scene: Game, levelData: LevelData) {
     this.scene = scene;
-    this.defaultValues = levelData;
+    this.defaultValues = levelData.board;
+    this.portals = levelData.portals;
+
     const config = this.scene.cache.json.get("config") as GameConfig;
     this.gridOptions = config.game.gridOptions;
 
@@ -96,16 +100,17 @@ export default class Grid {
       .setTint(this.getColor());
   }
 
-  private createBoard(levelData: number[][]) {
-    const rows = levelData.length;
-    const columns = levelData[0].length;
+  private createBoard(levelData: LevelData) {
+    const { board, portals } = levelData;
+    const rows = board.length;
+    const columns = board[0].length;
     const { gap } = this.gridOptions;
     this.scene.gameStates.remains = rows * columns;
     this.scene.gameStates.initialState.remains = rows * columns;
 
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < columns; j++) {
-        const value = levelData[i][j];
+        const value = board[i][j];
         this.scene.gameStates.availableColors.add(value);
 
         const cell = this.createCell(i, j, value, gap);
@@ -116,6 +121,17 @@ export default class Grid {
           this.scene.gameStates.remains--;
           this.scene.gameStates.initialState.remains--;
         }
+      }
+    }
+
+    for (const { pair } of portals ?? []) {
+      const [[x1, y1], [x2, y2]] = pair;
+      const cellA = this.board[x1][y1];
+      const cellB = this.board[x2][y2];
+
+      if (cellA && cellB) {
+        cellA.setLinkedCell(cellB);
+        cellB.setLinkedCell(cellA);
       }
     }
   }
@@ -196,6 +212,19 @@ export default class Grid {
         this.bfs(
           x + dx,
           y + dy,
+          colorToChange,
+          newColor,
+          seen,
+          level + 1,
+          startPoint
+        );
+      });
+    }
+    if (currentCell.linkendCell && !seen.has(currentCell.linkendCell)) {
+      this.scene.time.delayedCall(delay, () => {
+        this.bfs(
+          currentCell.linkendCell!.pos.x,
+          currentCell.linkendCell!.pos.y,
           colorToChange,
           newColor,
           seen,

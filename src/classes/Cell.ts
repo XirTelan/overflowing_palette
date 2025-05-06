@@ -13,6 +13,10 @@ export default abstract class Cell {
 
   tile: Phaser.GameObjects.Image | Phaser.GameObjects.Shader;
   transitionTile: Phaser.GameObjects.Image;
+  portal: Phaser.GameObjects.Rectangle;
+
+  linkendCell?: Cell;
+
   protected _color: ColorType;
   get color() {
     return this._color;
@@ -76,6 +80,22 @@ export default abstract class Cell {
     this.tile.on("pointerup", this.onClick, this);
     this.tile.on("pointerover", this.onEnter, this);
     this.tile.on("pointerout", this.onLeave, this);
+  }
+
+  setLinkedCell(cell: Cell) {
+    const mask = this.scene.add
+      .image(this.tile.x, this.tile.y, "portalMask")
+      .setOrigin(0)
+      .setScale(this.tileScale);
+    mask.name = "portalMask";
+    this.linkendCell = cell;
+    this.container.add(mask);
+  }
+
+  unlink() {
+    this.linkendCell = undefined;
+    const test = this.container.getByName("portalMask");
+    this.container.remove(test, true);
   }
 
   abstract setColor(color: ColorType): void;

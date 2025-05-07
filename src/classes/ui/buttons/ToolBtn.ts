@@ -1,6 +1,6 @@
 import { Game } from "@/scenes/Game";
-import { Tools } from "@/types";
-import { getLocal, availableTools } from "@/utils";
+import { GameConfig, Tools } from "@/types";
+import { getLocal } from "@/utils";
 import { BaseBtn } from "./BaseBtn";
 
 export class ToolBtn extends BaseBtn {
@@ -31,14 +31,18 @@ export class ToolBtn extends BaseBtn {
       game: { ui },
     } = getLocal(scene);
 
+    const {
+      game: {
+        ui: { tools },
+      },
+    } = scene.cache.json.get("config") as GameConfig;
+
     this.scene = scene;
     this.toolKey = toolKey;
     this.localText = ui.toolUses;
     this.initialCount = count;
     this.currentCount = count;
-
-    const { textureKey, props } =
-      availableTools[toolKey as keyof typeof availableTools];
+    const { textureKey, ...props } = tools.options[toolKey];
 
     this.icon = scene.make
       .image({ key: textureKey, ...props })
@@ -48,45 +52,27 @@ export class ToolBtn extends BaseBtn {
     this.currentCountText = scene.make
       .text({
         x: 0,
-        y: -65,
+        y: -80,
         text: `${this.localText}: ${this.currentCount}`,
         style: { font: "24px OpenSans_ExtraBold" },
       })
-      .setOrigin(0.5);
+      .setOrigin(0.5)
+      .setScale(1.2);
 
-    const hotkeyBtn = scene.make.image({
-      key: "uiatlas",
-      frame: "hotkey_btn",
-      scale: 0.3,
-      y: 50,
-    });
 
-    const hotkeyText = scene.make
-      .text({
-        text: hotkey,
-        x: hotkeyBtn.x,
-        y: hotkeyBtn.y,
-        style: {
-          color: "#3e3e3e",
-          font: "24px OpenSans_Bold",
-        },
-      })
-      .setOrigin(0.5);
 
     this.container.add([
       this.icon,
       this.currentCountText,
-      hotkeyBtn,
-      hotkeyText,
-    ]);
 
-    const keyObj = scene.input.keyboard?.addKey(hotkey);
-    if (keyObj) keyObj.on("down", this.onClick, this);
+    ]);
 
     this.setInteractive(
       () => this.onClick(),
       () => this.currentCount > 0
     );
+    this.container.setScale(0.8);
+    this.setHotkey(hotkey, hotkey);
   }
 
   onClick() {

@@ -5,6 +5,7 @@ export class BaseBtn {
     Phaser.GameObjects.Components.Visible;
 
   container: Phaser.GameObjects.Container;
+  hotkeyContainer: Phaser.GameObjects.Container;
   private registeredKeys: Phaser.Input.Keyboard.Key[] = [];
 
   constructor(
@@ -42,12 +43,16 @@ export class BaseBtn {
   }
 
   setHotkey(label: string, keys: string | string[], action?: () => void) {
+    const hotkeyContainer = this.scene.add.container(
+      0,
+      this.btnImage.y + this.btnImage.height / 2
+    );
     const hotkeyBg = this.scene.make.image({
       x: 0,
-      y: this.btnImage.y + this.btnImage.height / 2,
+      y: 0,
       key: "uiatlas",
       frame: "hotkey_btn",
-      scale: 0.25,
+      scale: 0.3,
     });
 
     const hotkeyText = this.scene.make
@@ -72,14 +77,16 @@ export class BaseBtn {
         this.registeredKeys.push(keyObj);
       }
     });
+    hotkeyContainer.add([hotkeyBg, hotkeyText]);
 
-    this.container.add([hotkeyBg, hotkeyText]);
+    this.hotkeyContainer = hotkeyContainer;
+    this.container.add(hotkeyContainer);
 
     this.container.once(Phaser.GameObjects.Events.DESTROY, () =>
       this.cleanupKeys()
     );
   }
-  
+
   private cleanupKeys(): void {
     this.registeredKeys.forEach((key) => {
       this.scene.input?.keyboard?.removeKey(key, true, true);

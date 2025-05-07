@@ -25,7 +25,7 @@ export type Vector3 = Vector2 & {
 };
 
 export enum Tools {
-  "none",
+  "none"=-1,
   "All",
   "Horizontal",
   "Vertical",
@@ -273,6 +273,12 @@ export type GridOptions = {
     bottom: number;
   };
 };
+export type ToolOption = {
+  textureKey: string;
+  textKey: string;
+  hotkey: string;
+  props: Record<string, any>;
+};
 
 export type UiOptions = {
   resetBtn: {
@@ -334,6 +340,7 @@ export type UiOptions = {
     x: number;
     y: number;
     offset: number;
+    options: ToolOption[];
   };
 };
 

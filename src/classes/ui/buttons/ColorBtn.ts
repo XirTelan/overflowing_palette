@@ -61,6 +61,7 @@ export class ColorBtn extends BaseBtn {
     this.setHotkey(hotkey.toString(), hotkeyStr.split(","), () =>
       shaderBtn.emit("pointerup")
     );
+    this.hotkeyContainer.y -= 15;
 
     this.color = color;
     this.pointer = pointer;

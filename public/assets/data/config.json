@@ -224,7 +224,29 @@
       "tools": {
         "x": 150,
         "y": 370,
-        "offset": 80
+        "offset": 80,
+        "options": [
+          {
+            "textureKey": "swapAll",
+            "textKey": "allwaySwap",
+            "hotkey": "Q",
+            "props": {}
+          },
+          {
+            "textureKey": "swapLine",
+            "hotkey": "W",
+            "textKey": "verticalSwap",
+            "props": {
+              "rotation": 1.5708
+            }
+          },
+          {
+            "textureKey": "swapLine",
+            "textKey": "horizontalSwap",
+            "hotkey": "E",
+            "props": {}
+          }
+        ]
       }
     }
   }

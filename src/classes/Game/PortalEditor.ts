@@ -44,7 +44,7 @@ export class PortalEditor {
   showEditor() {
     this.container.setVisible(!this.container.visible);
     if (this.container.visible) {
-       this.openBtnTexture.setTintFill(0xffffff);
+      this.openBtnTexture.setTintFill(0xffffff);
       this.openBtn.btnImage.setTintFill(0x000000);
     } else {
       this.openBtnTexture.setTintFill(0x000000);
@@ -148,6 +148,5 @@ export class PortalEditor {
   clearPortals() {
     this.portals = [];
     this.selected = [];
-    debugger;
   }
 }

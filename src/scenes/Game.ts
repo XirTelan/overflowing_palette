@@ -34,7 +34,7 @@ import { CommonUi } from "@/classes/Game/ui/CommonUi";
 export class Game extends Scene {
   grid: Grid;
   colorSelectionButtons: ColorBtn[];
-  toolsButtons: ToolBtn[] = [];
+  toolsButtons: ToolBtn[];
   btnContainer: Phaser.GameObjects.Container;
   gameStates: GameStates;
   turnCounter: Phaser.GameObjects.Text;
@@ -62,6 +62,7 @@ export class Game extends Scene {
       game: { ui },
     } = getLocal(this);
     this.colors = colors;
+    this.toolsButtons = [];
     new Background(this);
 
     this.initGame(mode, levelData, levelKey ?? "");

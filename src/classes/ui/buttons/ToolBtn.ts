@@ -59,13 +59,7 @@ export class ToolBtn extends BaseBtn {
       .setOrigin(0.5)
       .setScale(1.2);
 
-
-
-    this.container.add([
-      this.icon,
-      this.currentCountText,
-
-    ]);
+    this.container.add([this.icon, this.currentCountText]);
 
     this.setInteractive(
       () => this.onClick(),

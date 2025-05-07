@@ -94,10 +94,7 @@ export class BaseBtn {
     this.registeredKeys = [];
   }
 
-  setSelected(selected: boolean, tint?: number) {
+  setSelected(selected: boolean) {
     this.btnOverlay.setVisible(selected);
-    if (!tint) {
-      selected ? this.btnImage.setTintFill(tint) : this.btnImage.clearTint();
-    }
   }
 }

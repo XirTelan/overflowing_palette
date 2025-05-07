@@ -2,6 +2,7 @@ import { Game } from "@/scenes/Game";
 import { GameConfig, Tools } from "@/types";
 import { getLocal } from "@/utils";
 import { BaseBtn } from "./BaseBtn";
+import { TextBox } from "../textBox";
 
 export class ToolBtn extends BaseBtn {
   scene: Game;
@@ -16,6 +17,7 @@ export class ToolBtn extends BaseBtn {
   currentCount: number;
 
   isSelected: boolean = false;
+  declare btnOverlay: Phaser.GameObjects.Image;
 
   constructor(
     scene: Game,
@@ -43,23 +45,31 @@ export class ToolBtn extends BaseBtn {
     this.initialCount = count;
     this.currentCount = count;
     const { textureKey, ...props } = tools.options[toolKey];
-
+    this.btnImage.setTintFill(0x000000).setAlpha(0.3);
+    this.btnOverlay.setTintFill(0x000000).setAlpha(0.3);
     this.icon = scene.make
-      .image({ key: textureKey, ...props })
+      .image({ key: textureKey, ...props.props })
       .setScale(0.6)
+      .setTintFill(0xffffff)
       .setAlpha(0.8);
+    const currentCountText = new TextBox({
+      scene: this.scene,
+      x: 0,
+      y: -55,
+      padding: 10,
+      style: {
+        stroke: "#000000",
+        fontSize: "18px",
+        fontStyle: "900",
+        fontFamily: "Segoe UI, Arial, sans-serif",
+        strokeThickness: 2,
+      },
+      text: `${this.currentCount}/${this.initialCount}`,
+      backgroundColor: 0x747b7e,
+    });
+    this.currentCountText = currentCountText.label;
 
-    this.currentCountText = scene.make
-      .text({
-        x: 0,
-        y: -80,
-        text: `${this.localText}: ${this.currentCount}`,
-        style: { font: "24px OpenSans_ExtraBold" },
-      })
-      .setOrigin(0.5)
-      .setScale(1.2);
-
-    this.container.add([this.icon, this.currentCountText]);
+    this.container.add([this.icon, currentCountText.container]);
 
     this.setInteractive(
       () => this.onClick(),
@@ -93,16 +103,16 @@ export class ToolBtn extends BaseBtn {
     this.scene.audioManager.playSFX("colorSelect", { detune: 100 });
     this.scene.changeSelectedTool(Tools.none);
     this.isSelected = false;
-    this.icon.clearTint();
+    this.icon.setTintFill(0xffffff);
     this.setSelected(false);
   }
 
   update() {
     this.isSelected = this.scene.gameStates.selectedTool === this.toolKey;
     this.setSelected(this.isSelected);
-    if (!this.isSelected) this.icon.clearTint();
+    if (!this.isSelected) this.icon.setTintFill(0xffffff);
 
-    this.currentCountText.setText(`${this.localText}: ${this.currentCount}`);
+    this.currentCountText.setText(`${this.currentCount}/${this.initialCount}`);
   }
 
   reset() {

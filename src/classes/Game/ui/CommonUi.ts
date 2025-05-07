@@ -110,7 +110,7 @@ export class CommonUi {
         new ToolBtn(
           this.scene,
           150,
-          600 + count * 160,
+          600 + count * 140,
           toolCount,
           ui.tools.options[indx].hotkey,
           indx

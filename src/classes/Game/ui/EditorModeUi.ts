@@ -128,7 +128,6 @@ export class EditorModeUi {
     });
   }
 
-  private portalsBlock() {}
 
   private createBlockedTileButton() {
     const blockedTileBtn = new BaseBtn(

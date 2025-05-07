@@ -117,7 +117,6 @@ export class Export {
     this.container.add([bg, this.viewBox]);
     this.viewBox.depth = 10;
 
-    this.update();
     this.toggleFolders(this.selectedType);
     this.hide();
   }
@@ -151,7 +150,7 @@ export class Export {
       targetColor: this.scene.gameStates.targetColor,
       turns: this.scene.gameStates.turns,
       tools: this.scene.gameStates.availableTools,
-      portals: this.scene.editor.getPortals(),
+      portals: this.scene.editor?.getPortals(),
       board: data,
     };
 

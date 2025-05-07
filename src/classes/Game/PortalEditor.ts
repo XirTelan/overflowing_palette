@@ -11,6 +11,8 @@ export class PortalEditor {
   portals: Portal[];
   selected: Position[] = [];
   container: Phaser.GameObjects.Container;
+  openBtn: BaseBtn;
+  openBtnTexture: Phaser.GameObjects.Image;
 
   constructor(scene: Game) {
     this.scene = scene;
@@ -29,21 +31,25 @@ export class PortalEditor {
       this.scene.cameras.main.height - 140
     );
     btn.container.setScale(0.8);
-    const texture = this.scene.add
+    this.openBtnTexture = this.scene.add
       .image(0, 0, "portalMask")
       .setTintFill(0x000000)
       .setScale(1.4);
-    btn.container.add(texture);
-    btn.setInteractive(() => {
-      this.container.setVisible(!this.container.visible);
-      if (this.container.visible) {
-        texture.setTintFill(0xffffff);
-        btn.btnImage.setTintFill(0x000000);
-      } else {
-        texture.setTintFill(0x000000);
-        btn.btnImage.clearTint();
-      }
-    });
+    btn.container.add(this.openBtnTexture);
+    btn.setInteractive(this.showEditor.bind(this));
+    btn.setHotkey("P", "P");
+    this.openBtn = btn;
+  }
+
+  showEditor() {
+    this.container.setVisible(!this.container.visible);
+    if (this.container.visible) {
+       this.openBtnTexture.setTintFill(0xffffff);
+      this.openBtn.btnImage.setTintFill(0x000000);
+    } else {
+      this.openBtnTexture.setTintFill(0x000000);
+      this.openBtn.btnImage.clearTint();
+    }
   }
   private renderBoard() {
     const container = this.scene.add.container(

@@ -1,4 +1,4 @@
-import { LevelData, LevelDifficulty } from "../types";
+import { GameMode, LevelData, LevelDifficulty, LevelEntry } from "../types";
 import { DIRECTIONS, RATES } from "./constants";
 
 export function generateBoard(
@@ -78,4 +78,26 @@ export function generateLevel(
     targetColor: Math.floor(Math.random() * numColors),
     turns: 0,
   };
+}
+
+export function findNextLevel(id: string, levels: LevelEntry[]) {
+
+  if (!id || !levels?.length) return undefined;
+
+  const currentIndex = levels.findIndex((lvl) => lvl.id === id);
+  if (currentIndex === -1) return undefined;
+
+  const nextIndex = currentIndex + 1;
+  if (nextIndex >= levels.length) return undefined;
+
+  const nextLevel = levels[nextIndex];
+  if (!nextLevel) return undefined;
+
+  const nextLevelData = {
+    mode: GameMode.Play,
+    levelKey: nextLevel.id,
+    levelData: nextLevel.levelData,
+  };
+
+  return nextLevelData;
 }

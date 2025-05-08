@@ -4,6 +4,8 @@ import { DIRECTIONS } from "../../utils";
 import Cell from "../Cell";
 import Grid from "../Grid";
 
+const SWAP_DURATION = 50;
+
 export class SwapSelection {
   scene: Game;
   grid: Grid;
@@ -106,34 +108,32 @@ export class SwapSelection {
   }
   applySwap(x: number, y: number) {
     const swapCell = this.grid.board[x][y];
+    const { x: swapX, y: swapY } = swapCell.tile.getWorldPoint();
+    const { x: cellX, y: cellY } = this.cell.tile.getWorldPoint();
 
-    const [dx, dy] = [
-      swapCell.tile.x - this.cell.tile.x,
-      swapCell.tile.y - this.cell.tile.y,
-    ];
+    const [dx, dy] = [swapX - cellX, swapY - cellY];
     const usedTool = this.scene.gameStates.selectedTool;
     this.cancelSwapSelection();
 
-    this.scene.time.delayedCall(150, () => {
+    this.scene.time.delayedCall(SWAP_DURATION, () => {
       const temp = swapCell.color;
       swapCell.setColor(this.cell.color);
       this.cell.setColor(temp);
       this.scene.useTool(usedTool);
     });
-
     this.scene.tweens.add({
       targets: swapCell.tile,
       x: `-=${dx / 2}`,
       y: `-=${dy / 2}`,
       yoyo: true,
-      duration: 150,
+      duration: SWAP_DURATION,
     });
     this.scene.tweens.add({
       targets: this.cell.tile,
       x: `+=${dx / 2}`,
       y: `+=${dy / 2}`,
       yoyo: true,
-      duration: 150,
+      duration: SWAP_DURATION,
     });
   }
 }

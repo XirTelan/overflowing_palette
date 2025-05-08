@@ -25,7 +25,7 @@ export type Vector3 = Vector2 & {
 };
 
 export enum Tools {
-  "none"=-1,
+  "none" = -1,
   "All",
   "Horizontal",
   "Vertical",
@@ -46,16 +46,16 @@ export type LevelData = {
   portals?: Portal[];
 };
 
-export type LevelDifficulty = keyof typeof RATES;
-
-export type LevelsJson = LevelFolder[];
-
-export type LevelFolder = {
+export type LevelEntry = {
+  id: string;
   folderName: string;
-  categories: LevelCategory[];
+  categoryName: string;
+  levelData: LevelData;
 };
 
-export type LevelCategory = { categoryName: string; levels: LevelData[] };
+export type LevelsJson = LevelEntry[];
+
+export type LevelDifficulty = keyof typeof RATES;
 
 export enum GameStatus {
   "Waiting",

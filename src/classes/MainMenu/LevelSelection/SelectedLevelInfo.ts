@@ -31,8 +31,6 @@ export class SelectedLevelInfo extends BaseBlock {
     const { previewBlock } = getLocal(scene);
 
     this.container.add([
-      scene.add.rectangle(0, 0, width, height, 0x000000, 0.7).setOrigin(0, 0),
-      scene.add.rectangle(0, 0, width, 45, 0x000000, 0.6).setOrigin(0, 0),
       scene.make
         .text({
           x: width / 2,
@@ -72,8 +70,14 @@ export class SelectedLevelInfo extends BaseBlock {
 
       actionBtn.hide();
     }
+    this.emptyBlock.setVisible(true);
     this.previewBlock.hide();
     this.levelInfo.hide();
+  }
+  hide(): void {
+    super.hide();
+    this.container.setVisible(false);
+    this.updateInfo(undefined);
   }
   updateInfo(
     levelData: LevelData | undefined,
@@ -105,6 +109,5 @@ export class SelectedLevelInfo extends BaseBlock {
         });
       });
     });
-    this.emptyBlock.setVisible(false);
   }
 }

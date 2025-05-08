@@ -1,194 +1,241 @@
 import { MenuTab } from "../MenuTab";
-import {
-  LanguageConfig,
-  LevelCategory,
-  LevelData,
-  LevelFolder,
-  LevelsJson,
-  MenuTabProps,
-} from "../../../types";
 import { SelectedLevelInfo } from "./SelectedLevelInfo";
 import { ImportLevel } from "./Import";
 import { getLocal, getUserLevelsCleared } from "../../../utils";
 import { PrimaryBtn } from "@/classes/ui/buttons/PrimaryBtn";
+import { LevelData, LanguageConfig, LevelEntry, MenuTabProps } from "@/types";
+
+const PREVIEW_POS = 1000;
 
 export class LevelSelection extends MenuTab {
   selectedLevelData: LevelData;
   selectedFolder: string;
   selectedLevelInfo: SelectedLevelInfo;
-  levelsList: Phaser.GameObjects.DOMElement;
-
+  levelsContainer: Phaser.GameObjects.DOMElement;
   localCache: LanguageConfig;
-
-  clearedLevels: Map<any, any>;
+  clearedLevels: Map<string, any>;
   importBlock: ImportLevel;
+  levels: LevelEntry[];
+  groupedLevels: Map<string, Map<string, LevelEntry[]>>;
 
   constructor(props: MenuTabProps) {
     super(props);
     const { x, y, scene, width, height } = props;
-    this.levelsList = scene.add
+
+    this.levels = scene.cache.json.get("levels") || [];
+    this.groupedLevels = this.groupLevels(this.levels);
+    this.localCache = getLocal(scene);
+
+    this.levelsContainer = scene.add
       .dom(0, 0, "div", {
         width: `${width}px`,
         height: `${height}px`,
         fontSize: "24px",
-        overflow: "auto",
+        overflow: "hidden",
       })
       .setOrigin(0, 0);
-    this.levelsList.node.id = "boxid";
-
-    this.container.add(this.levelsList);
-
-    const contentContainer = document.createElement("div");
+    this.levelsContainer.node.id = "level-scroll-container";
+    this.container.add(this.levelsContainer);
 
     this.selectedLevelInfo = new SelectedLevelInfo(
-      x + width,
-      y,
-      scene.cameras.main.width - x - width,
+      1500,
+      0,
+      420,
       height,
       this.actionBtn,
       scene
     );
-    this.importBlock = new ImportLevel(this.scene);
+
+    this.importBlock = new ImportLevel(scene, this.selectedLevelInfo);
     this.importBlock.hide();
-    const local = getLocal(scene);
-    this.localCache = local;
 
-    this.selectedLevelInfo.container.add(
-      new PrimaryBtn(
-        80,
-        this.actionBtn.container.y,
-        local.mainMenu.backBtn,
-        200,
-        0,
-        scene,
-        () => {
-          this.showFolders();
-          this.selectedLevelInfo.hide();
-        }
-      ).container
-    );
-
-    this.levelsList.node.append(contentContainer);
-
-    this.levelsList.node.id = "boxid";
+    this.addBackButton();
     this.selectedLevelInfo.hide();
-    this.showFolders();
-  }
-
-  showSelectedFolder(folder: LevelFolder) {
-    const levels: LevelsJson | undefined = this.scene.cache.json.get("levels");
-    if (!levels) return;
-
-    this.levelsList.node.replaceChildren();
-
-    const levelContainer = document.createElement("div");
-    levelContainer.classList.add("folder-container");
-
-    this.levelsList.node.appendChild(levelContainer);
-
-    this.selectedFolder = folder.folderName;
-    this.selectedLevelInfo.show();
-
-    const cache = getUserLevelsCleared();
-
-    this.clearedLevels = cache;
-
-    for (const category of folder.categories) {
-      levelContainer.append(this.createCategory(category));
-    }
-  }
-
-  showFolders() {
-    const levels: LevelsJson | undefined = this.scene.cache.json.get("levels");
-    if (!levels) return;
-
-    this.levelsList.node.replaceChildren();
-
-    const levelContainer = document.createElement("div");
-    levelContainer.classList.add("level-container");
-
-    const local = getLocal(this.scene);
-
-    this.levelsList.node.appendChild(levelContainer);
-
-    for (const folder of levels) {
-      levelContainer.appendChild(
-        this.createFolderBtn(local.levels[folder.folderName], folder)
-      );
-    }
-    const importBtn = this.createBtn(this.localCache.mainMenu.importBtn);
-    importBtn.addEventListener("click", () => {
-      this.importBlock.show();
-    });
-    levelContainer.appendChild(importBtn);
-  }
-  createLvlBtn(text: string, levelData: LevelData, key: string) {
-    const card = this.createBtn(text);
-    if (key && this.clearedLevels.has(key)) {
-      card.classList.add("cleared");
-    }
-    card.addEventListener("click", () => {
-      this.selectedLevelInfo.updateInfo(
-        levelData,
-        key,
-        this.clearedLevels.get(key)
-      );
-    });
-    return card;
-  }
-  createFolderBtn(text: string, levelFolder: LevelFolder) {
-    const card = this.createBtn(text);
-    card.addEventListener("click", () => {
-      this.showSelectedFolder(levelFolder);
-    });
-    return card;
-  }
-  createBtn(text: string) {
-    const card = document.createElement("div");
-    const textBlock = document.createElement("div");
-    textBlock.innerText = text;
-    textBlock.classList.add("text");
-
-    card.classList.add("level-card");
-    card.append(textBlock);
-    return card;
-  }
-
-  createCategory(category: LevelCategory) {
-    const folderContainer = document.createElement("div");
-    const folderName = document.createElement("h3");
-
-    folderName.classList.add("folder-text");
-    folderName.innerText = this.localCache.levels[category.categoryName];
-    folderContainer.append(folderName);
-
-    const levels = document.createElement("div");
-    levels.classList.add("container");
-
-    category.levels.forEach((level, indx) => {
-      levels.append(
-        this.createLvlBtn(
-          String(indx + 1),
-          level,
-          `${this.selectedFolder}.${category.categoryName}.${indx + 1}`
-        )
-      );
-    });
-
-    folderContainer.append(levels);
-
-    folderContainer.classList.add("folder");
-
-    return folderContainer;
   }
 
   show(): void {
     super.show();
     this.showFolders();
   }
+
   hide(): void {
     super.hide();
     this.selectedLevelInfo.hide();
     this.selectedLevelInfo.updateInfo(undefined);
+  }
+
+  showFolders(): void {
+    this.clearedLevels = getUserLevelsCleared();
+    if (!this.levels.length) return;
+
+    const wrapper = this.createElem("level-container");
+
+    const mechanicRow = this.createElem("folder-row");
+
+    for (const [folderName, categories] of this.groupedLevels.entries()) {
+      const total = [...categories.values()].reduce(
+        (sum, lvls) => sum + lvls.length,
+        0
+      );
+      const cleared = [...categories.values()].reduce(
+        (sum, lvls) => sum + this.countCleared(lvls),
+        0
+      );
+      const label = `${this.localCache.levels[folderName]}`.toUpperCase();
+
+      const progress = `${cleared}/${total}`;
+
+      const folderBtn = this.createFolderBtn(label, folderName, progress);
+
+      wrapper.appendChild(folderBtn);
+    }
+    const importBtn = this.createBtn(this.localCache.mainMenu.importBtn);
+    importBtn.addEventListener("click", () => {
+      this.selectedLevelInfo.show();
+      this.levelsContainer.node.replaceChildren();
+      this.importBlock.show();
+    });
+    importBtn.className = "card folder-card";
+    importBtn.setAttribute("data-folder", "import");
+
+    this.levelsContainer.node.replaceChildren(wrapper);
+    wrapper.appendChild(mechanicRow);
+    wrapper.appendChild(importBtn);
+  }
+
+  showSelectedFolder(folderName: string): void {
+    if (!this.levels.length) return;
+    this.clearedLevels = getUserLevelsCleared();
+    this.selectedFolder = folderName;
+
+    const grouped = this.groupedLevels.get(folderName);
+    if (!grouped) return;
+
+    this.selectedLevelInfo.show();
+    this.levelsContainer.node.replaceChildren();
+
+    const wrapper = this.createElem("folder-container", "div");
+
+    for (const [categoryName, levelList] of grouped.entries()) {
+      const { cleared, total } = this.countClearedStats(levelList);
+
+      const container = this.createElem("folder", "div");
+
+      const label = `${this.localCache.levels[categoryName]} (${cleared}/${total})`;
+      container.appendChild(this.createElem("folder-text", "p", label));
+
+      const levelGroup = this.createElem("container");
+
+      levelList.forEach((level, index) => {
+        const levelBtn = this.createLevelBtn(
+          `${index + 1}`,
+          level.levelData,
+          level.id
+        );
+        levelGroup.appendChild(levelBtn);
+      });
+
+      container.appendChild(levelGroup);
+      wrapper.appendChild(container);
+    }
+
+    this.levelsContainer.node.appendChild(wrapper);
+  }
+
+  groupLevels(levels: LevelEntry[]): Map<string, Map<string, LevelEntry[]>> {
+    const grouped = new Map<string, Map<string, LevelEntry[]>>();
+    for (const { folderName, categoryName } of levels) {
+      if (!grouped.has(folderName)) {
+        grouped.set(folderName, new Map());
+      }
+      const categoryMap = grouped.get(folderName)!;
+      if (!categoryMap.has(categoryName)) {
+        categoryMap.set(categoryName, []);
+      }
+    }
+    levels.forEach((level) => {
+      grouped.get(level.folderName)!.get(level.categoryName)!.push(level);
+    });
+    return grouped;
+  }
+
+  countCleared(levels: LevelEntry[]): number {
+    return levels.filter((lvl) => this.clearedLevels.has(lvl.id)).length;
+  }
+
+  countClearedStats(levels: LevelEntry[]) {
+    return {
+      cleared: this.countCleared(levels),
+      total: levels.length,
+    };
+  }
+
+  createLevelBtn(
+    text: string,
+    levelData: LevelData,
+    key: string
+  ): HTMLDivElement {
+    const btn = this.createBtn(text);
+    if (this.clearedLevels.has(key)) {
+      btn.classList.add("cleared");
+    }
+    btn.addEventListener("click", () => {
+      console.log(this.selectedLevelInfo, "asd");
+      this.selectedLevelInfo.updateInfo(
+        levelData,
+        key,
+        this.clearedLevels.get(key)
+      );
+      this.selectedLevelInfo.show();
+      console.log("wtf", this.selectedLevelInfo.container.visible);
+    });
+    return btn;
+  }
+
+  createFolderBtn(
+    text: string,
+    folderName: string,
+    progressText: string
+  ): HTMLElement {
+    const card = this.createElem("card folder-card", "button");
+    const label = this.createElem("text", "label", text);
+    const progress = this.createElem("folder__progress", "label", progressText);
+    const img = this.createElem("folder-card__img");
+
+    card.append(img, label, progress);
+    card.setAttribute("data-folder", folderName);
+    card.addEventListener("click", () => this.showSelectedFolder(folderName));
+    return card;
+  }
+
+  createBtn(text: string): HTMLDivElement {
+    const card = this.createElem("card level-card") as HTMLDivElement;
+    const label = this.createElem("text", "div", text);
+    card.appendChild(label);
+    return card;
+  }
+
+  createElem(cls: string, tag: string = "div", text?: string): HTMLElement {
+    const elem = document.createElement(tag);
+    elem.className = cls;
+    if (text) elem.innerText = text;
+    return elem;
+  }
+
+  private addBackButton() {
+    const backBtn = new PrimaryBtn(
+      80,
+      this.actionBtn.container.y,
+      this.localCache.mainMenu.backBtn,
+      200,
+      0,
+      this.scene,
+      () => {
+        this.showFolders();
+        this.selectedLevelInfo.hide();
+        this.importBlock.hide();
+      }
+    );
+    this.selectedLevelInfo.container.add(backBtn.container);
   }
 }

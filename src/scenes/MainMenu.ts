@@ -18,7 +18,7 @@ type TabConfig = {
 };
 
 const TABS: TabConfig[] = [
-  { key: "LevelSelector", type: LevelSelection, props: { width: 1000 } },
+  { key: "LevelSelector", type: LevelSelection },
   { key: "LevelEditor", type: LevelEditor },
   { key: "EndlessZen", type: EndlessZen },
   { key: "Options", type: Options },

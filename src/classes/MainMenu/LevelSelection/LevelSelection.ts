@@ -18,6 +18,8 @@ export class LevelSelection extends MenuTab {
   levels: LevelEntry[];
   groupedLevels: Map<string, Map<string, LevelEntry[]>>;
 
+  cleanupCallbacks: (() => void)[] = [];
+
   constructor(props: MenuTabProps) {
     super(props);
     const { x, y, scene, width, height } = props;
@@ -60,11 +62,13 @@ export class LevelSelection extends MenuTab {
 
   hide(): void {
     super.hide();
+    this.cleanup();
     this.selectedLevelInfo.hide();
     this.selectedLevelInfo.updateInfo(undefined);
   }
 
   showFolders(): void {
+    this.cleanup();
     this.clearedLevels = getUserLevelsCleared();
     if (!this.levels.length) return;
 
@@ -104,6 +108,7 @@ export class LevelSelection extends MenuTab {
   }
 
   showSelectedFolder(folderName: string): void {
+    this.cleanup();
     if (!this.levels.length) return;
     this.clearedLevels = getUserLevelsCleared();
     this.selectedFolder = folderName;
@@ -179,16 +184,15 @@ export class LevelSelection extends MenuTab {
     if (this.clearedLevels.has(key)) {
       btn.classList.add("cleared");
     }
-    btn.addEventListener("click", () => {
-      console.log(this.selectedLevelInfo, "asd");
+    const handler = () => {
       this.selectedLevelInfo.updateInfo(
         levelData,
         key,
         this.clearedLevels.get(key)
       );
       this.selectedLevelInfo.show();
-      console.log("wtf", this.selectedLevelInfo.container.visible);
-    });
+    };
+    btn.addEventListener("click", handler);
     return btn;
   }
 
@@ -204,7 +208,11 @@ export class LevelSelection extends MenuTab {
 
     card.append(img, label, progress);
     card.setAttribute("data-folder", folderName);
-    card.addEventListener("click", () => this.showSelectedFolder(folderName));
+    const handler = () => this.showSelectedFolder(folderName);
+    card.addEventListener("click", handler);
+    this.cleanupCallbacks.push(() =>
+      card.removeEventListener("click", handler)
+    );
     return card;
   }
 
@@ -237,5 +245,10 @@ export class LevelSelection extends MenuTab {
       }
     );
     this.selectedLevelInfo.container.add(backBtn.container);
+  }
+
+  cleanup(): void {
+    this.cleanupCallbacks.forEach((fn) => fn());
+    this.cleanupCallbacks = [];
   }
 }

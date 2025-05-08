@@ -101,7 +101,6 @@ export class PortalEditor {
     const index = this.findPortalIndexWithCell(pos);
     if (index !== -1) {
       this.removePortalAt(index);
-      console.log(`Removed portal with cell: [${pos[0]}, ${pos[1]}]`);
       return true;
     }
     return false;

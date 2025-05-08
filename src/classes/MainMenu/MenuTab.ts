@@ -1,6 +1,6 @@
 import { MenuTabProps, Vector2 } from "../../types";
 import { BaseBlock } from "../common/BaseBlock";
-import { getLocal } from "../../utils";
+import { FADE_DELAY, getLocal } from "../../utils";
 import { PrimaryBtn } from "../ui/buttons/PrimaryBtn";
 
 export class MenuTab extends BaseBlock {
@@ -64,7 +64,7 @@ export class MenuTab extends BaseBlock {
     this.container.setVisible(true);
 
     this.scene.tweens.add({
-      duration: 300,
+      duration: FADE_DELAY,
       targets: this.container,
       x: { from: this.defaultPos.x - 100, to: this.defaultPos.x },
       alpha: { from: 0, to: 1 },
@@ -74,7 +74,7 @@ export class MenuTab extends BaseBlock {
   hide(isForce?: boolean) {
     const before = this.container.x;
     this.scene.tweens.add({
-      duration: isForce ? 0 : 300,
+      duration: isForce ? 0 : FADE_DELAY,
       targets: this.container,
       x: { from: this.defaultPos.x, to: this.defaultPos.x - 100 },
       alpha: { from: 1, to: 0 },

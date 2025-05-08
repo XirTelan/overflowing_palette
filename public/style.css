@@ -352,7 +352,7 @@ input[type="color"]::-webkit-color-swatch {
   display: none;
   flex-direction: column;
   opacity: 0;
-  transition: all 300ms ease-in-out;
+  transition: all 100ms ease-in-out;
   width: calc(100% - 2rem);
 }
 

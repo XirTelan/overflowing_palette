@@ -1,4 +1,4 @@
-export const FADE_DELAY = 300;
+export const FADE_DELAY = 150;
 
 export const DIRECTIONS = [
   [1, 0],

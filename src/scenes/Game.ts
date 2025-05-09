@@ -27,9 +27,9 @@ import { PrimaryBtn } from "@/classes/ui/buttons/PrimaryBtn";
 import { ToolBtn } from "@/classes/ui/buttons/ToolBtn";
 import { AudioManager } from "@/classes/common/AudioManager";
 import { EditorModeUi } from "@/classes/Game/ui/EditorModeUi";
-import { PortalEditor } from "@/classes/Game/PortalEditor";
 import { PlayerModeUi } from "@/classes/Game/ui/PlayerModeUi";
 import { CommonUi } from "@/classes/Game/ui/CommonUi";
+import { EditorManager } from "@/classes/Game/editor/EditorManager";
 
 export class Game extends Scene {
   grid: Grid;
@@ -40,7 +40,7 @@ export class Game extends Scene {
   turnCounter: Phaser.GameObjects.Text;
 
   selectionBox: SelectionBox;
-  editor: PortalEditor;
+  editor: EditorManager;
 
   audioManager: AudioManager;
 
@@ -54,8 +54,6 @@ export class Game extends Scene {
     super("Game");
   }
 
-  preload() {}
-
   create({ mode, levelKey, levelData, endlessOptions }: GameSceneData) {
     const { colors } = this.cache.json.get("config") as GameConfig;
     const {
@@ -66,13 +64,10 @@ export class Game extends Scene {
     new Background(this);
 
     this.initGame(mode, levelData, levelKey ?? "");
-
-    const audioManager = new AudioManager(this);
-    this.registry.set("audioManager", audioManager);
-    this.audioManager = audioManager;
+    this.initAudioManager();
 
     if (mode === GameMode.Editor) {
-      this.editor = new PortalEditor(this);
+      this.editor = new EditorManager(this);
       this.selectionBox = new SelectionBox(this.grid.board, this);
     }
     if (mode == GameMode.Endless) {
@@ -100,7 +95,15 @@ export class Game extends Scene {
     this.cameras.main.fadeIn(FADE_DELAY, 0, 0, 0);
   }
 
+  private initAudioManager() {
+    const existing = this.registry.get("audioManager") as AudioManager;
+    this.audioManager = existing?.setScene?.(this) ?? new AudioManager(this);
+    this.registry.set("audioManager", this.audioManager);
+  }
+
   changeGameState(state: GameStatus) {
+    if (this.gameStates.state === state) return;
+
     const isEndless = this.gameStates.mode === GameMode.Endless;
 
     if (state === GameStatus.Waiting) {

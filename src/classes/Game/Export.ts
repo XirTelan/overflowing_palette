@@ -1,5 +1,11 @@
 import { Game } from "../../scenes/Game";
-import { GameMode, GameStatus,  LevelEntry } from "../../types";
+import {
+  GameMode,
+  GameStatus,
+  LevelEntry,
+  Portal,
+  TimedCell,
+} from "../../types";
 import { getLocal } from "../../utils";
 import { OptionFolder } from "../ui/html/OptionFolder";
 import { Switch } from "../ui/html/Switch";
@@ -157,7 +163,8 @@ export class Export {
       targetColor: this.scene.gameStates.targetColor,
       turns: this.scene.gameStates.turns,
       tools: this.scene.gameStates.availableTools,
-      portals: this.scene.editor?.getPortals(),
+      portals: this.scene.editor?.getValues("portal") as Portal[],
+      timed: this.scene.editor.getValues("timed") as TimedCell[],
       board: data,
     };
 

@@ -1,6 +1,7 @@
 import { CellAction, ColorConfig, ColorType, GameConfig } from "../types";
 import { BlendModes } from "phaser";
 import { Game } from "../scenes/Game";
+import { normalizedRgbToHexString } from "@/utils";
 
 const TILE_BASE_SIZE = 64;
 
@@ -13,9 +14,13 @@ export default abstract class Cell {
 
   tile: Phaser.GameObjects.Image | Phaser.GameObjects.Shader;
   transitionTile: Phaser.GameObjects.Image;
+
   portal: Phaser.GameObjects.Rectangle;
 
   linkendCell?: Cell;
+
+  timedText?: Phaser.GameObjects.Text;
+  timedCounter: number;
 
   protected _color: ColorType;
   get color() {
@@ -75,6 +80,35 @@ export default abstract class Cell {
     this.action(this.pos.x, this.pos.y);
   }
 
+  setTimedCell(turns: number, color: ColorType) {
+    this.timedCounter = turns;
+    const text = this.scene.add.text(0, 0, `${turns}`, {
+      font: `${this.cellSize * 0.9}px Arial`,
+      color: normalizedRgbToHexString(this.colors[color].value),
+      align: "center",
+      stroke: "#000000",
+      strokeThickness: 4,
+    });
+
+    text.setOrigin(0.5, 0.5);
+    text.setPosition(this.cellSize / 2, this.cellSize / 2);
+    this.container.add(text);
+
+    this.timedText = text;
+    this.scene.events.on("turn", this.updateTurns, this);
+  }
+  updateTurns() {
+    this.timedCounter--;
+    try {
+      this.timedText?.setText(`${this.timedCounter}`);
+    } catch (error) {
+      console.warn(error);
+    }
+    if (this.timedCounter <= 0) {
+      this.clearTimed();
+    }
+  }
+
   setTileInteractions() {
     this.tile.setInteractive();
     this.tile.on("pointerup", this.onClick, this);
@@ -96,6 +130,20 @@ export default abstract class Cell {
     this.linkendCell = undefined;
     const test = this.container.getByName("portalMask");
     this.container.remove(test, true);
+  }
+
+  clearTimed() {
+    this.timedCounter = 0;
+    this.timedText?.destroy();
+    this.scene.events.off("turn", this.updateTurns);
+  }
+
+  isLinked(): boolean {
+    return !!this.linkendCell;
+  }
+
+  isTimed(): boolean {
+    return !!this.timedCounter;
   }
 
   abstract setColor(color: ColorType): void;

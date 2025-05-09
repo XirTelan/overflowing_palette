@@ -37,6 +37,8 @@ export type Portal = {
   // color?: string;
 };
 
+export type TimedCell = { pos: Position; color: number; turns: number };
+
 export type LevelData = {
   board: number[][];
   targetColor: number;
@@ -44,6 +46,7 @@ export type LevelData = {
   author?: string;
   tools?: [number, number, number];
   portals?: Portal[];
+  timed?: TimedCell[];
 };
 
 export type LevelEntry = {

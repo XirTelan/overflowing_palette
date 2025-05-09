@@ -14,6 +14,7 @@ export class DebugMenu extends BaseBlock {
   private targetColorInput!: HTMLInputElement;
   private boardInput!: HTMLTextAreaElement;
   private portalsInput!: HTMLTextAreaElement;
+  private timedInput!: HTMLTextAreaElement;
   private toolsInputs: HTMLInputElement[] = [];
 
   private createNumberInput(
@@ -46,7 +47,7 @@ export class DebugMenu extends BaseBlock {
         const parsed = JSON.parse((e.target as HTMLTextAreaElement).value);
         onChange(parsed);
       } catch (err) {
-        console.error(`Invalid ${label} input:`, err);
+        console.warn(`Invalid ${label} input:`, err);
       }
     };
     return input;
@@ -109,6 +110,7 @@ export class DebugMenu extends BaseBlock {
         tools: [0, 0, 0],
         targetColor: 1,
         portals: [],
+        timed: [],
       },
     };
 
@@ -140,7 +142,17 @@ export class DebugMenu extends BaseBlock {
       "portals"
     );
 
-    const textareasRow = this.createRow(this.boardInput, this.portalsInput);
+    this.timedInput = this.createTextAreaInput(
+      this.objectToEdit.levelData.timed,
+      (v) => (this.objectToEdit.levelData.timed = v),
+      "portals"
+    );
+
+    const textareasRow = this.createRow(
+      this.boardInput,
+      this.portalsInput,
+      this.timedInput
+    );
 
     const toolsInputs = this.objectToEdit.levelData.tools!.map((value, index) =>
       this.createNumberInput(value, (v) => {
@@ -232,6 +244,11 @@ export class DebugMenu extends BaseBlock {
       );
       this.portalsInput.value = JSON.stringify(
         this.objectToEdit.levelData.portals ?? [],
+        null,
+        2
+      );
+      this.timedInput.value = JSON.stringify(
+        this.objectToEdit.levelData.timed ?? [],
         null,
         2
       );

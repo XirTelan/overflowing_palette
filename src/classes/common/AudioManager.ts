@@ -9,7 +9,10 @@ type SoundConfig = {
 
 export class AudioManager {
   private scene: Scene;
-  private bgm?: Sound.BaseSound;
+  private bgm?:
+    | Sound.NoAudioSound
+    | Sound.HTML5AudioSound
+    | Sound.WebAudioSound;
   private masterVolume = 1;
   private sfxVolume = 1;
   private bgmVolume = 1;
@@ -17,6 +20,9 @@ export class AudioManager {
   constructor(scene: Scene) {
     this.scene = scene;
     this.loadFromLocalStorage();
+    if (this.bgmVolume > 0) {
+      this.playBGM("bg1");
+    }
   }
 
   private loadFromLocalStorage(): void {
@@ -63,6 +69,7 @@ export class AudioManager {
   setMasterVolume(vol: number): void {
     this.masterVolume = vol;
     this.saveToLocalStorage();
+    this.updateBGMVolume();
   }
 
   setSFXVolume(vol: number): void {
@@ -73,6 +80,7 @@ export class AudioManager {
   setBGMVolume(vol: number): void {
     this.bgmVolume = vol;
     this.saveToLocalStorage();
+    this.updateBGMVolume();
   }
 
   getMasterVolume(): number {
@@ -85,5 +93,16 @@ export class AudioManager {
 
   getSFXVolume(): number {
     return this.sfxVolume;
+  }
+
+  setScene(scene: Scene) {
+    this.scene = scene;
+    return this;
+  }
+
+  private updateBGMVolume(): void {
+    if (this.bgm?.isPlaying) {
+      this.bgm.setVolume(this.bgmVolume * this.masterVolume);
+    }
   }
 }

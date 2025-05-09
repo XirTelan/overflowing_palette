@@ -28,6 +28,7 @@ export class SelectionBox {
   }
 
   onPointerDown(pointer: Phaser.Input.Pointer) {
+    if (pointer.x < 250 || pointer.x > 1400) return;
     this.isSelecting = true;
     this.startX = pointer.x;
     this.startY = pointer.y;

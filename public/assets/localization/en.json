@@ -46,7 +46,8 @@
     "targetColor": "Target Color",
     "cleared": "CLEARED",
     "time": "Time",
-    "timeDefault": "A long time ago"
+    "timeDefault": "A long time ago",
+    "empty": "[No level selected]"
   },
   "endlessZen": {
     "folderName": "Grid Options",

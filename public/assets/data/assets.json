@@ -37,6 +37,11 @@
         "type": "audio",
         "key": "tileFlip",
         "url": "tileFlip.mp3"
+      },
+      {
+        "type": "audio",
+        "key": "bg1",
+        "url": "bg1.ogg"
       }
     ]
   },

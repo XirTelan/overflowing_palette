@@ -2,11 +2,11 @@
   "en": {
     "key": "en",
     "name": "English",
-    "path": "assets/data/locals/en.json"
+    "path": "assets/localization/en.json"
   },
   "ru": {
     "key": "ru",
     "name": "Русский",
-    "path": "assets/data/locals/ru.json"
+    "path": "assets/localization/ru.json"
   }
 }

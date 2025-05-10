@@ -21,6 +21,7 @@
 
 :root {
   --clr-bg: #000;
+  --clr-layer: #3c3c3c;
   --clr-primary: #ab9c6b;
   --clr-accent: #ffcd3f;
   --clr-border-3: #fffbdd;
@@ -578,7 +579,7 @@ input[type="color"]::-webkit-color-swatch {
   .value-selector__input-wrapper {
     display: flex;
     align-items: center;
-    background: #3c3c3c;
+    background: var(--clr-layer);
     border-radius: 100px;
     min-width: 200px;
 
@@ -616,7 +617,7 @@ input[type="color"]::-webkit-color-swatch {
         outline-color: #888;
 
         .icon {
-          background: #3c3c3c;
+          background: var(--clr-layer);
         }
       }
 
@@ -756,6 +757,34 @@ input[type="color"]::-webkit-color-swatch {
   }
 }
 
+.tab {
+  padding: 10px 20px;
+  cursor: pointer;
+  background-color: #444;
+  color: #fff;
+  border-radius: 1rem;
+}
+
+.tab-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.tab:hover {
+  background-color: #555;
+}
+.tab.active {
+  background-color: white;
+  color: black;
+}
+
+.timed-cell-turn {
+  width: 50px;
+  height: 50px;
+  text-align: center;
+}
+
 .results {
   gap: 1rem;
   display: flex;
@@ -830,6 +859,7 @@ input[type="color"]::-webkit-color-swatch {
 }
 
 .range-slider {
+  --border: 50px;
   position: relative;
   min-width: 400px;
   gap: 1rem;
@@ -837,7 +867,9 @@ input[type="color"]::-webkit-color-swatch {
 
   display: flex;
 }
+
 .range-slider__input {
+  position: relative;
   -webkit-appearance: none;
   appearance: none;
   display: flex;
@@ -845,8 +877,21 @@ input[type="color"]::-webkit-color-swatch {
   transition: background 0.3s ease-in-out;
   border-radius: 50px;
   height: 15px;
-  background: linear-gradient(to right, var(--clr-slider) 50%, #e0e0e0 50%);
+  background: linear-gradient(to right, var(--clr-slider) 50%, transparent 50%);
 }
+
+.range-slider__input::before {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  inset: 0;
+  height: 10px;
+  z-index: -1;
+  margin: auto;
+  border-radius: var(--border);
+  background: #a2a2a2;
+}
+
 .range-slider__value {
   min-width: 50px;
   padding: 0 1rem;
@@ -858,7 +903,7 @@ input[type="color"]::-webkit-color-swatch {
   appearance: none;
   width: 20px;
   height: 40px;
-  border-radius: 50px;
+  border-radius: var(--border);
   background: white;
   cursor: pointer;
 }
@@ -867,7 +912,7 @@ input[type="color"]::-webkit-color-swatch {
   width: 20px;
   height: 40px;
   background: white;
-  border-radius: 50px;
+  border-radius: var(--border);
   cursor: pointer;
 }
 

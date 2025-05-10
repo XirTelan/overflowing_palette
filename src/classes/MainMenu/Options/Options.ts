@@ -1,6 +1,6 @@
 import { PrimaryBtn } from "@/classes/ui/buttons/PrimaryBtn";
-import { MenuTabProps, GameConfig } from "@/types";
-import { getLocal } from "@/utils";
+import { MenuTabProps, LanguageConfig } from "@/types";
+import { getConfig, getLocal } from "@/utils";
 import { MenuTab } from "../MenuTab";
 import { ColorsTab } from "./ColorsTab";
 import { GameplayTab } from "./GameplayTab";
@@ -13,18 +13,14 @@ const tabDefinitions = [
   { key: "colors", TabClass: ColorsTab },
   { key: "sound", TabClass: SoundTab },
   { key: "gameplay", TabClass: GameplayTab },
-];
+] as const;
+
+type TabKey = (typeof tabDefinitions)[number]["key"];
 
 export class Options extends MenuTab {
   inputs: HTMLInputElement[] = [];
-
-  generalTab!: GeneralTab;
-  colorTab!: ColorsTab;
-  soundTab!: SoundTab;
-  gameplayTab!: GameplayTab;
-
-  tabs: OptionTab[] = [];
-  activeTab = "general";
+  tabs: Record<TabKey, OptionTab> = {} as any;
+  activeTab: TabKey = "general";
 
   constructor(props: MenuTabProps) {
     super(props);
@@ -34,16 +30,17 @@ export class Options extends MenuTab {
     this.setupTabs(options);
   }
 
-  private setupActionButtons(options: any) {
+  private setupActionButtons(options: LanguageConfig["options"]) {
+    const { primaryBtn } = getConfig(this.scene).mainMenu.options;
     this.actionBtn.text.setText(options.btnSave);
     this.actionBtn.btn.on("pointerup", this.saveUserConfig, this);
 
     const reset = new PrimaryBtn(
-      980,
-      880,
+      primaryBtn.x,
+      primaryBtn.y,
       options.btnReset,
-      350,
-      50,
+      primaryBtn.width,
+      primaryBtn.height,
       this.scene,
       this.resetUserConfig,
       this
@@ -52,13 +49,11 @@ export class Options extends MenuTab {
     this.container.add(reset.container);
   }
 
-  private setupTabs(options: any) {
+  private setupTabs(options: LanguageConfig["options"]) {
     const tabBtns = document.createElement("div");
     const tabsContainer = document.createElement("div");
     this.contentContainer.append(tabBtns, tabsContainer);
     this.contentContainer.classList.add("menu-options");
-
-    const tabRefs: Record<string, OptionTab> = {};
 
     tabDefinitions.forEach(({ key, TabClass }) => {
       const isActive = key === this.activeTab;
@@ -73,21 +68,30 @@ export class Options extends MenuTab {
         this.updateActiveTab,
         this
       );
-      this.tabs.push(tab);
-      tabRefs[key] = tab;
+
+      this.tabs[key] = tab;
     });
 
-    this.generalTab = tabRefs.general as GeneralTab;
-    this.colorTab = tabRefs.colors as ColorsTab;
-    this.soundTab = tabRefs.sound as SoundTab;
-    this.gameplayTab = tabRefs.gameplay as GameplayTab;
+    this.scene.events.on(
+      "shutdown",
+      () => {
+        this.container.destroy(true);
+        Object.values(this.tabs).forEach((tab) => tab.destroy());
+      },
+      this
+    );
+  }
+
+  private isTabKey(key: string): key is TabKey {
+    return tabDefinitions.some((obj) => obj.key == key);
   }
 
   updateActiveTab = (key: string) => {
+    if (!this.isTabKey(key)) return;
     this.activeTab = key;
-    this.tabs.forEach((tab) =>
-      tab.key === key ? tab.activate() : tab.disable()
-    );
+    Object.entries(this.tabs).forEach(([tabKey, tab]) => {
+      tabKey === key ? tab.activate() : tab.disable();
+    });
   };
 
   show(): void {
@@ -98,8 +102,8 @@ export class Options extends MenuTab {
   update() {
     const { colors } = this.scene.cache.json.get("config");
 
-    this.inputs.forEach((input, indx) => {
-      const fromCache = colors[indx];
+    this.inputs.forEach((input, index) => {
+      const fromCache = colors[index];
       const color = Phaser.Display.Color.RGBToString(
         fromCache.x * 255,
         fromCache.y * 255,
@@ -135,7 +139,6 @@ export class Options extends MenuTab {
   private resetUserConfig = () => {
     const levelsCleared = localStorage.getItem("levels.cleared");
     localStorage.clear();
-
     if (levelsCleared) {
       localStorage.setItem("levels.cleared", levelsCleared);
     }
@@ -148,13 +151,16 @@ export class Options extends MenuTab {
   };
 
   private saveUserConfig = () => {
-    const colorsData = this.colorTab.getValues();
-    const generalData = this.generalTab.getValues();
-    const gameplayData = this.gameplayTab.getValues();
+    const colorTab = this.tabs["colors"] as ColorsTab;
+    const generalTab = this.tabs["general"] as GeneralTab;
+    const gameplayTab = this.tabs["gameplay"] as GameplayTab;
 
-    const savedConfig = this.scene.cache.json.get("config") as GameConfig;
+    const savedConfig = getConfig(this.scene);
+    const colorsData = colorTab.getValues();
+    const generalData = generalTab.getValues();
+    const gameplayData = gameplayTab.getValues();
 
-    if (this.colorTab.isDirty && !deepEqual(savedConfig.colors, colorsData)) {
+    if (colorTab.isDirty && !deepEqual(savedConfig.colors, colorsData)) {
       localStorage.setItem("colors", JSON.stringify(colorsData));
     }
 
@@ -170,10 +176,11 @@ export class Options extends MenuTab {
 }
 
 function deepEqual(x: any, y: any): boolean {
+  if (x === y) return true;
+  if (typeof x !== "object" || typeof y !== "object" || !x || !y) return false;
+
   const keysX = Object.keys(x);
   const keysY = Object.keys(y);
-  if (x === y) return true;
-  if (typeof x !== "object" || typeof y !== "object") return false;
   if (keysX.length !== keysY.length) return false;
 
   return keysX.every((key) => deepEqual(x[key], y[key]));

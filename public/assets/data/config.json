@@ -139,6 +139,14 @@
           "align": "center"
         }
       }
+    },
+    "options": {
+      "primaryBtn": {
+        "x": 1020,
+        "y": 1030,
+        "width": 350,
+        "height": 50
+      }
     }
   },
   "common": {
@@ -223,8 +231,8 @@
       },
       "tools": {
         "x": 150,
-        "y": 370,
-        "offset": 80,
+        "y": 600,
+        "offset": 140,
         "options": [
           {
             "textureKey": "swapAll",

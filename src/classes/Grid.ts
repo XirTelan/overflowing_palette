@@ -6,10 +6,11 @@ import {
   GameMode,
   GameStatus,
   LevelData,
+  TimedCell,
   Tools,
   Vector2,
 } from "../types";
-import { DIRECTIONS } from "../utils";
+import { DIRECTIONS, getConfig } from "../utils";
 import { SwapSelection } from "./Game/SwapSelection";
 import SimpleCell from "./SimpleCell";
 import ShaderCell from "./ShaderCell";
@@ -29,6 +30,10 @@ export default class Grid {
   cellSize: number;
   defaultValues: number[][];
   portals: LevelData["portals"];
+  timedCells: LevelData["timed"];
+
+  timedCellsQueue: TimedCell[];
+
   history: { x: number; y: number; color: ColorType }[] = [];
   border: Phaser.GameObjects.NineSlice;
 
@@ -38,14 +43,16 @@ export default class Grid {
     this.scene = scene;
     this.defaultValues = levelData.board;
     this.portals = levelData.portals;
+    this.timedCells = levelData.timed;
 
-    const config = this.scene.cache.json.get("config") as GameConfig;
+    const config = getConfig(scene);
     this.gridOptions = config.game.gridOptions;
 
     this.loadConfig();
     this.calculateCellSize();
     this.createBorder();
     this.createBoard(levelData);
+    this.setupTimedCells(levelData.timed);
     this.createContainer();
   }
 
@@ -53,9 +60,9 @@ export default class Grid {
     const {
       game: { gridOptions },
       gameplay,
-    } = this.scene.cache.json.get("config") as GameConfig;
-    this.gridOptions = gridOptions;
+    } = getConfig(this.scene);
 
+    this.gridOptions = gridOptions;
     this.transitionSpeed = gameplay.transitionDefault;
     this.transitionSpeedMinimum = gameplay.transitionMinimum;
     this.isPerformanceMode = gameplay.performanceMode;
@@ -133,6 +140,21 @@ export default class Grid {
         cellA.setLinkedCell(cellB);
         cellB.setLinkedCell(cellA);
       }
+    }
+  }
+
+  private setupTimedCells(timed: LevelData["timed"]) {
+    this.timedCellsQueue = [];
+    timed?.sort((a, b) => a.turns - b.turns);
+
+    for (const { pos, turns, color } of timed ?? []) {
+      const cell = this.board[pos[0]][pos[1]];
+      cell.setTimedCell(turns, color);
+      this.timedCellsQueue.push({
+        pos,
+        color,
+        turns: this.scene.gameStates.initialState.turns - turns,
+      });
     }
   }
 
@@ -235,19 +257,14 @@ export default class Grid {
     }
   }
 
-  private flip(x: number, y: number, colorToChange: ColorType) {
-    if (colorToChange === this.scene.gameStates.selectedColor) return;
-
+  private flip(
+    x: number,
+    y: number,
+    colorToChange: ColorType,
+    newColor = this.scene.gameStates.selectedColor
+  ) {
     this.scene.changeGameState(GameStatus.Waiting);
-    this.bfs(
-      x,
-      y,
-      colorToChange,
-      this.scene.gameStates.selectedColor,
-      new Set(),
-      0,
-      { x, y }
-    );
+    this.bfs(x, y, colorToChange, newColor, new Set(), 0, { x, y });
   }
 
   cellAction(x: number, y: number) {
@@ -272,7 +289,11 @@ export default class Grid {
       return;
     }
 
-    if (currentCell.color === -1) return;
+    if (
+      currentCell.color === -1 ||
+      currentCell.color === this.scene.gameStates.selectedColor
+    )
+      return;
 
     if (state === GameStatus.Waiting) {
       if (this.activeSwap) {
@@ -299,7 +320,7 @@ export default class Grid {
   }
 
   private getColor() {
-    const { colors } = this.scene.cache.json.get("config") as GameConfig;
+    const { colors } = getConfig(this.scene);
     const { x, y, z } = colors[this.scene.gameStates.targetColor].value;
     return Phaser.Display.Color.GetColor(x * 255, y * 255, z * 255);
   }
@@ -315,6 +336,7 @@ export default class Grid {
         this.board[i][j].setColor(this.defaultValues[i][j]);
       }
     }
+    this.setupTimedCells(this.timedCells);
   }
 
   startTransitionAnimation(
@@ -397,8 +419,18 @@ export default class Grid {
         }
 
         this.pendingCalls--;
+
         if (this.pendingCalls === 0) {
-          this.scene.changeGameState(GameStatus.Active);
+          if (
+            this.timedCellsQueue.length > 0 &&
+            this.timedCellsQueue[this.timedCellsQueue.length - 1].turns ===
+              this.scene.gameStates.turns
+          ) {
+            const { pos, color } = this.timedCellsQueue.pop()!;
+            this.flip(pos[0], pos[1], this.board[pos[0]][pos[1]].color, color);
+          } else {
+            this.scene.changeGameState(GameStatus.Active);
+          }
         }
       },
     });

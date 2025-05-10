@@ -5,7 +5,6 @@ import { getLocal, getUserLevelsCleared } from "../../../utils";
 import { PrimaryBtn } from "@/classes/ui/buttons/PrimaryBtn";
 import { LevelData, LanguageConfig, LevelEntry, MenuTabProps } from "@/types";
 
-
 export class LevelSelection extends MenuTab {
   selectedLevelData: LevelData;
   selectedFolder: string;
@@ -21,7 +20,7 @@ export class LevelSelection extends MenuTab {
 
   constructor(props: MenuTabProps) {
     super(props);
-    const { x, y, scene, width, height } = props;
+    const { scene, width, height } = props;
 
     this.levels = scene.cache.json.get("levels") || [];
     this.groupedLevels = this.groupLevels(this.levels);
@@ -48,7 +47,6 @@ export class LevelSelection extends MenuTab {
     );
 
     this.importBlock = new ImportLevel(scene, this.selectedLevelInfo);
-    this.importBlock.hide();
 
     this.addBackButton();
     this.selectedLevelInfo.hide();
@@ -64,6 +62,7 @@ export class LevelSelection extends MenuTab {
     this.cleanup();
     this.selectedLevelInfo.hide();
     this.selectedLevelInfo.updateInfo(undefined);
+    this.importBlock.hide();
   }
 
   showFolders(): void {

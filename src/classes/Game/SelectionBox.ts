@@ -8,7 +8,7 @@ export class SelectionBox {
   scene: Game;
   board: Grid["board"];
   graphics: Phaser.GameObjects.Graphics;
-  selectionBox: Phaser.Geom.Rectangle;
+  selectionBox?: Phaser.Geom.Rectangle;
   selectedObjects: Cell[] = [];
   isSelecting = false;
   startX: number;
@@ -41,7 +41,7 @@ export class SelectionBox {
   }
 
   onPointerMove(pointer: Phaser.Input.Pointer) {
-    if (!this.isSelecting) return;
+    if (!this.selectionBox || !this.isSelecting) return;
 
     this.selectionBox.width = pointer.x - this.startX;
     this.selectionBox.height = pointer.y - this.startY;
@@ -78,9 +78,12 @@ export class SelectionBox {
     }
 
     this.selectedObjects = selected;
+    this.selectionBox = undefined;
   }
 
   redrawSelectionBox() {
+    if (!this.selectionBox) return;
+
     this.graphics.clear();
     this.graphics
       .fillStyle(0x000000, 0.4)

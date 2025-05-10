@@ -86,6 +86,7 @@ export type LanguageConfig = {
     cleared: string;
     time: string;
     timeDefault: string;
+    empty: string;
   };
   mainMenu: {
     startBtn: string;
@@ -143,6 +144,7 @@ export type LanguageConfig = {
       general: string;
       colors: string;
       gameplay: string;
+      sound: string;
     };
     colorsTab: {
       folderName: string;
@@ -246,17 +248,72 @@ export type GameConfig = {
   shaders: {
     base: { init: Record<string, unknown> };
   };
-  mainMenu: {
-    buttonsBlock: {
-      x: number;
-      y: number;
-      keys: string[];
-      gap: number;
-    };
-  };
+  mainMenu: MainMenuConfig;
   game: {
     gridOptions: GridOptions;
     ui: UiOptions;
+  };
+};
+
+type MainMenuConfig = {
+  levelSelection: {
+    selectedLevelInfo: {
+      previewBlock: {
+        width: number;
+        height: number;
+        cellSize: number;
+      };
+      infoBlock: {
+        x: number;
+        y: number;
+        width: number;
+        height: number;
+      };
+      turnsTextOffset: {
+        x: number;
+        y: number;
+      };
+      targetColorTextOffset: {
+        x: number;
+        y: number;
+      };
+      defaultStyle: {
+        color: string;
+        font: string;
+      };
+      emptyText: {
+        y: number;
+        style: {
+          color: string;
+          font: string;
+        };
+      };
+    };
+  };
+  levelEditor: {
+    defaultStyle: {
+      color: string;
+      font: string;
+    };
+  };
+  buttonsBlock: {
+    x: number;
+    y: number;
+    gap: number;
+  };
+  menuBtn: {
+    btn: {
+      offset: number;
+    };
+    text: {
+      x: number;
+      y: number;
+      style: {
+        color: string;
+        font: string;
+        align: string;
+      };
+    };
   };
 };
 

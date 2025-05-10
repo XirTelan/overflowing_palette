@@ -1,10 +1,10 @@
 import { Scene } from "phaser";
-import { GameMode, LevelData } from "../../../types";
 import { BaseBlock } from "../../common/BaseBlock";
-import { getLocal } from "../../../utils";
 import { InfoBlock } from "./InfoBlock";
 import { PreviewBlock } from "./PreviewBlock";
 import { PrimaryBtn } from "@/classes/ui/buttons/PrimaryBtn";
+import { LevelData, GameMode } from "@/types";
+import { getConfig, getLocal } from "@/utils";
 
 export class SelectedLevelInfo extends BaseBlock {
   previewBlock: PreviewBlock;
@@ -25,8 +25,8 @@ export class SelectedLevelInfo extends BaseBlock {
 
     this.width = width;
 
-    const { selectedLevelInfo } =
-      scene.cache.json.get("config")["mainMenu"]["levelSelection"];
+    const selectedLevelInfo =
+      getConfig(scene).mainMenu.levelSelection.selectedLevelInfo;
 
     const { previewBlock } = getLocal(scene);
 
@@ -48,6 +48,7 @@ export class SelectedLevelInfo extends BaseBlock {
       .text({
         ...selectedLevelInfo.emptyText,
         x: width / 2,
+        text: previewBlock.empty,
       })
       .setOrigin(0.5, 0);
 
@@ -70,7 +71,6 @@ export class SelectedLevelInfo extends BaseBlock {
 
       actionBtn.hide();
     }
-    this.emptyBlock.setVisible(true);
     this.previewBlock.hide();
     this.levelInfo.hide();
   }
@@ -93,6 +93,7 @@ export class SelectedLevelInfo extends BaseBlock {
       this.emptyBlock.setVisible(true);
       return;
     }
+    this.emptyBlock.setVisible(false);
     this.actionBtn.container.setVisible(true);
     this.levelInfo.update(String(levelData.turns), levelData, clearedLevel);
     this.levelInfo.container.setVisible(true);

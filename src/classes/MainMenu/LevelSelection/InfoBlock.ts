@@ -1,7 +1,7 @@
+import { Record } from "@/classes/ui/html/Record";
+import { LevelData, ColorType, LanguageConfig } from "@/types";
+import { getLocal, getConfig } from "@/utils";
 import { Scene } from "phaser";
-import { LevelData, GameConfig, ColorType, LanguageConfig } from "../../../types";
-import { getLocal } from "../../../utils";
-import { Record } from "../../ui/html/Record";
 
 export class InfoBlock {
   scene: Scene;
@@ -59,7 +59,7 @@ export class InfoBlock {
   }
 
   update(turns: string, levelData: LevelData, cleared?: ClearedData) {
-    const { colors } = this.scene.cache.json.get("config") as GameConfig;
+    const { colors } = getConfig(this.scene);
     this.tartgetColorText.childNodes[1].textContent = `${
       colors[levelData.targetColor as ColorType].colorName
     }`;

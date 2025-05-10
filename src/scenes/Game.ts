@@ -2,7 +2,6 @@ import { Scene } from "phaser";
 import {
   ColorConfig,
   ColorType,
-  GameConfig,
   GameMode,
   GameSceneData,
   GameStates,
@@ -20,6 +19,7 @@ import {
   FADE_DELAY,
   generateLevel,
   getColorName,
+  getConfig,
   getLocal,
 } from "../utils";
 import { ColorBtn } from "@/classes/ui/buttons/ColorBtn";
@@ -55,7 +55,7 @@ export class Game extends Scene {
   }
 
   create({ mode, levelKey, levelData, endlessOptions }: GameSceneData) {
-    const { colors } = this.cache.json.get("config") as GameConfig;
+    const { colors } = getConfig(this);
     const {
       game: { ui },
     } = getLocal(this);
@@ -86,7 +86,7 @@ export class Game extends Scene {
         });
       });
     }
-    this.initTextUI(this);
+    this.initTextUI();
     new CommonUi(this);
 
     this.exportBlock = new Export(this);
@@ -211,12 +211,12 @@ export class Game extends Scene {
     this.toolsButtons.forEach((btn) => btn.reset());
   }
 
-  private initTextUI(scene: Game) {
+  private initTextUI() {
     const {
       game: { ui },
-    } = scene.cache.json.get("config") as GameConfig;
+    } = getConfig(this);
 
-    if (scene.gameStates.mode == GameMode.Editor) {
+    if (this.gameStates.mode == GameMode.Editor) {
       new EditorModeUi(this, ui);
     } else {
       new PlayerModeUi(this, ui);

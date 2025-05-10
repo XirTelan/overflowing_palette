@@ -1,14 +1,12 @@
 import { Scene } from "phaser";
-import { GameConfig } from "../../types";
+import { getConfig } from "@/utils";
 
 export class Background {
   constructor(scene: Scene) {
     const width = scene.cameras.main.width;
     const height = scene.cameras.main.height;
 
-    const { current: background } = scene.cache.json.get("config")[
-      "background"
-    ] as GameConfig["background"];
+    const { current: background } = getConfig(scene).background;
 
     const bg = scene.add.shader(
       "distortion",

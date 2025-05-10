@@ -1,15 +1,11 @@
 import { Scene } from "phaser";
 import { OptionTab } from "./OptionTab";
-import { Select } from "../../ui/html/Select";
-import { OptionFolder } from "../../ui/html/OptionFolder";
-import { getLangCode, getLocal } from "../../../utils";
-import {
-  BackgroundConfig,
-  GameConfig,
-  LanguageConfig,
-  LocalizationConfig,
-} from "../../../types";
-import { OptionSelector } from "../../ui/html/OptionSelector";
+import { OptionFolder } from "@/classes/ui/html/OptionFolder";
+import { OptionSelector } from "@/classes/ui/html/OptionSelector";
+import { Select } from "@/classes/ui/html/Select";
+import { BackgroundConfig, LocalizationConfig, LanguageConfig } from "@/types";
+import { getConfig, getLangCode, getLocal } from "@/utils";
+
 
 type GeneralTabConfig = {
   background: BackgroundConfig;
@@ -52,7 +48,7 @@ export class GeneralTab extends OptionTab {
     );
 
     this.scene = scene;
-    const config = scene.cache.json.get("config") as GameConfig;
+    const config = getConfig(scene)
 
     this.currentConfig.background = config.background;
     this.currentConfig.lang = getLangCode();

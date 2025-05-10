@@ -1,10 +1,10 @@
-import { GameConfig, UiOptions } from "@/types";
-import { getLocal, getColorName } from "@/utils";
+import {  UiOptions } from "@/types";
+import { getLocal, getColorName, getConfig } from "@/utils";
 import { PrimaryBtn } from "../../ui/buttons/PrimaryBtn";
 import { ValueSelector } from "../../ui/ValueSelector";
 import { Game } from "@/scenes/Game";
 import { BaseBtn } from "../../ui/buttons/BaseBtn";
-import { PortalEditor } from "../PortalEditor";
+import { PortalEditor } from "../editor/PortalEditor";
 
 export class EditorModeUi {
   private scene: Game;
@@ -94,7 +94,7 @@ export class EditorModeUi {
   private createToolsSection() {
     const {
       game: { ui },
-    } = this.scene.cache.json.get("config") as GameConfig;
+    } = getConfig(this.scene);
     ui.tools.options.forEach((data, index) => {
       this.addText(
         60,
@@ -127,7 +127,6 @@ export class EditorModeUi {
       );
     });
   }
-
 
   private createBlockedTileButton() {
     const blockedTileBtn = new BaseBtn(

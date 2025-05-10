@@ -1,10 +1,14 @@
 import { Scene } from "phaser";
-import { LanguageConfig } from "../types";
+import { GameConfig, LanguageConfig } from "../types";
 
 const DEFAULT_LANG = "en";
 
 export const getLocal = (scene: Scene): LanguageConfig => {
   return scene.cache.json.get("localization");
+};
+
+export const getConfig = (scene: Scene): GameConfig => {
+  return scene.cache.json.get("config");
 };
 
 export const getLangCode = () => {

@@ -1,7 +1,12 @@
 import { Scene } from "phaser";
 import { ColorConfig, GameConfig, Vector2 } from "../types";
 import { LoadingScreen } from "../classes/ui/LoadingScreen";
-import { getLangCode, getLocal, loadingShaderInitConfig } from "../utils";
+import {
+  getConfig,
+  getLangCode,
+  getLocal,
+  loadingShaderInitConfig,
+} from "../utils";
 
 export class Boot extends Scene {
   constructor() {
@@ -94,12 +99,12 @@ export class Boot extends Scene {
     this.cache.json.remove("localization");
     const langs = this.cache.json.get("langs");
 
-    const lang = getLangCode()
+    const lang = getLangCode();
     this.load.json("localization", langs[lang].path);
   }
 
   private loadDefaultLocalColors() {
-    const config = this.cache.json.get("config") as GameConfig;
+    const config = getConfig(this);
     const local = getLocal(this);
 
     config.colors = Object.fromEntries(
@@ -116,7 +121,7 @@ export class Boot extends Scene {
   initShaderConfig(resolution: Vector2) {
     const cache = this.cache;
     const baseShader = cache.shader.get("base");
-    const { shaders, gameplay } = cache.json.get("config") as GameConfig;
+    const { shaders, gameplay } = getConfig(this);
 
     baseShader.uniforms = {
       ...shaders.base.init,
@@ -144,7 +149,7 @@ export class Boot extends Scene {
     key: keyof GameConfig,
     check?: (data: unknown) => data is T
   ) {
-    const config = this.cache.json.get("config") as GameConfig;
+    const config =  getConfig(this)
     const storageData = localStorage.getItem(key);
     if (!storageData) return;
 

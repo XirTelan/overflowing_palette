@@ -1,8 +1,8 @@
 import { ColorBtn } from "@/classes/ui/buttons/ColorBtn";
 import { ToolBtn } from "@/classes/ui/buttons/ToolBtn";
 import { Game } from "@/scenes/Game";
-import { GameConfig, GameMode, UiOptions } from "@/types";
-import { FADE_DELAY, getLocal } from "@/utils";
+import {  GameMode, UiOptions } from "@/types";
+import { FADE_DELAY, getConfig, getLocal } from "@/utils";
 
 export class CommonUi {
   scene: Game;
@@ -61,7 +61,7 @@ export class CommonUi {
     const {
       game: { ui },
       colors,
-    } = scene.cache.json.get("config") as GameConfig;
+    } = getConfig(scene);
 
     const cellSize = ui.colorButtons.size;
     const isEditorMode = scene.gameStates.mode === GameMode.Editor;
@@ -103,7 +103,7 @@ export class CommonUi {
     const available = this.scene.gameStates.availableTools;
     const {
       game: { ui },
-    } = this.scene.cache.json.get("config") as GameConfig;
+    } = getConfig(this.scene);
     available?.forEach((toolCount, indx) => {
       if (toolCount == 0) return;
       this.scene.toolsButtons.push(
@@ -142,7 +142,7 @@ export class CommonUi {
     const scene = this.scene;
     const {
       game: { ui },
-    } = scene.cache.json.get("config") as GameConfig;
+    } = getConfig(scene);
     const commonProps1 = [0, 30, -20, 0, 20, 0];
     const commonProps2 = [80, 0, 25, -15, 0, 15, 0, 0x94844c];
     const commonProps3 = [0, -20, -10, 0, 10, 0, 0xffffff, 0.2];

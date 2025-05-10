@@ -1,7 +1,7 @@
 import { Scene } from "phaser";
 import { BaseBlock } from "../../common/BaseBlock";
 import { LevelData, GameConfig, ColorType } from "@/types";
-import { normalizedRgbToColor } from "@/utils";
+import { getConfig, normalizedRgbToColor } from "@/utils";
 
 const CELL_SIZE = 50;
 const STROKE_THIK = 4;
@@ -18,7 +18,7 @@ export class PreviewBlock extends BaseBlock {
     const { selectedLevelInfo } =
       this.scene.cache.json.get("config")["mainMenu"]["levelSelection"];
 
-    const { colors } = this.scene.cache.json.get("config") as GameConfig;
+    const { colors } = getConfig(this.scene);
 
     const rows = level.length;
     const cols = level[0].length;

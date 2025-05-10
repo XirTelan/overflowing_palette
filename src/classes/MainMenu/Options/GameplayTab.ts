@@ -1,10 +1,12 @@
 import { Scene } from "phaser";
-import { OptionFolder } from "../../ui/html/OptionFolder";
+
 import { OptionTab } from "./OptionTab";
-import { getLocal, mapRange } from "../../../utils";
-import { GameConfig } from "../../../types";
-import { OptionSelector } from "../../ui/html/OptionSelector";
-import { RangeSlider } from "../../ui/html/RangeSlider";
+import { getConfig, getLocal, mapRange } from "@/utils";
+import { OptionFolder } from "@/classes/ui/html/OptionFolder";
+import { OptionSelector } from "@/classes/ui/html/OptionSelector";
+import { RangeSlider } from "@/classes/ui/html/RangeSlider";
+
+
 
 export class GameplayTab extends OptionTab {
   currentConfig;
@@ -29,7 +31,7 @@ export class GameplayTab extends OptionTab {
       context
     );
 
-    const config = scene.cache.json.get("config") as GameConfig;
+    const config = getConfig(scene)
 
     this.currentConfig = config.gameplay;
 

@@ -8,7 +8,7 @@ import { Options } from "@/classes/MainMenu/Options/Options";
 import { Background } from "@/classes/ui/Background";
 import { MenuBtn } from "@/classes/ui/buttons/MenuBtn";
 import { GameConfig, LanguageConfig } from "@/types";
-import { getLocal } from "@/utils";
+import { getConfig, getLocal } from "@/utils";
 import { Scene } from "phaser";
 
 type TabConfig = {
@@ -96,8 +96,8 @@ export class MainMenu extends Scene {
   }
 
   private createButtons() {
-    const { x, y, gap } = this.cache.json.get("config").mainMenu
-      .buttonsBlock as GameConfig["mainMenu"]["buttonsBlock"];
+    getConfig(this).mainMenu.buttonsBlock;
+    const { x, y, gap } = getConfig(this).mainMenu.buttonsBlock;
     const local: LanguageConfig = getLocal(this);
 
     const buttonData = [

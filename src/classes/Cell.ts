@@ -1,7 +1,7 @@
-import { CellAction, ColorConfig, ColorType, GameConfig } from "../types";
+import { CellAction, ColorConfig, ColorType } from "../types";
 import { BlendModes } from "phaser";
 import { Game } from "../scenes/Game";
-import { normalizedRgbToHexString } from "@/utils";
+import { getConfig, normalizedRgbToHexString } from "@/utils";
 
 const TILE_BASE_SIZE = 64;
 
@@ -52,7 +52,7 @@ export default abstract class Cell {
 
     this.action = action;
 
-    const { colors } = scene.cache.json.get("config") as GameConfig;
+    const { colors } = getConfig(scene);
     this.colors = colors;
 
     this.pos = { x, y };

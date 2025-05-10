@@ -1,6 +1,6 @@
 import { Game } from "@/scenes/Game";
 import { GameConfig, Tools } from "@/types";
-import { getLocal } from "@/utils";
+import { getConfig, getLocal } from "@/utils";
 import { BaseBtn } from "./BaseBtn";
 import { TextBox } from "../textBox";
 
@@ -34,10 +34,8 @@ export class ToolBtn extends BaseBtn {
     } = getLocal(scene);
 
     const {
-      game: {
-        ui: { tools },
-      },
-    } = scene.cache.json.get("config") as GameConfig;
+      ui: { tools },
+    } = getConfig(scene).game;
 
     this.scene = scene;
     this.toolKey = toolKey;

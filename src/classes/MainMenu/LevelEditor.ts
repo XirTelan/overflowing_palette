@@ -1,6 +1,6 @@
 import { MenuTab } from "./MenuTab";
-import { ColorType, GameConfig, GameMode, MenuTabProps } from "../../types";
-import { cycleThroughColors, getColorName, getLocal } from "../../utils";
+import { ColorType,  GameMode, MenuTabProps } from "../../types";
+import { cycleThroughColors, getColorName, getConfig, getLocal } from "../../utils";
 import { OptionFolder } from "../ui/html/OptionFolder";
 import { ValueSelector } from "../ui/html/ValueSelector";
 
@@ -13,7 +13,7 @@ export class LevelEditor extends MenuTab {
     super(props);
     const { scene, width, height } = props;
 
-    const { colors } = scene.cache.json.get("config") as GameConfig;
+    const { colors } = getConfig(scene);
     const { levelEditor } = getLocal(scene);
 
     const viewBox = scene.add
@@ -97,7 +97,7 @@ export class LevelEditor extends MenuTab {
     return arr;
   }
   changeTargetColor(value: number) {
-    const { colors } = this.scene.cache.json.get("config") as GameConfig;
+    const { colors } = getConfig(this.scene);
     let newTarget = cycleThroughColors(value, this.selectedFillColor);
     this.selectedFillColor = newTarget;
     return getColorName(newTarget, colors);

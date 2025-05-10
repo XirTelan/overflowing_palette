@@ -117,8 +117,13 @@ export class MainMenu extends Scene {
     });
 
     this.btnsContainer = container;
+    this.events.on("shutdown", this.onDestroy, this);
   }
 
+  onDestroy() {
+    Object.values(this.tabs).forEach((tab: MenuTab) => tab.destroy());
+    this.btnsContainer.destroy(true);
+  }
   private createTabButton(x: number, y: number, label: string, tabKey: string) {
     return new MenuBtn(this, x, y, label, tabKey, () => {
       TABS.forEach(({ key }) => {

@@ -5,7 +5,6 @@ import { getLocal, getUserLevelsCleared } from "../../../utils";
 import { PrimaryBtn } from "@/classes/ui/buttons/PrimaryBtn";
 import { LevelData, LanguageConfig, LevelEntry, MenuTabProps } from "@/types";
 
-const PREVIEW_POS = 1000;
 
 export class LevelSelection extends MenuTab {
   selectedLevelData: LevelData;
@@ -105,6 +104,9 @@ export class LevelSelection extends MenuTab {
     this.levelsContainer.node.replaceChildren(wrapper);
     wrapper.appendChild(mechanicRow);
     wrapper.appendChild(importBtn);
+    this.scene.events.on("shutdown", () => {
+      wrapper.replaceChildren();
+    });
   }
 
   showSelectedFolder(folderName: string): void {
@@ -142,6 +144,9 @@ export class LevelSelection extends MenuTab {
 
       container.appendChild(levelGroup);
       wrapper.appendChild(container);
+      this.scene.events.on("shutdown", () => {
+        wrapper.replaceChildren();
+      });
     }
 
     this.levelsContainer.node.appendChild(wrapper);

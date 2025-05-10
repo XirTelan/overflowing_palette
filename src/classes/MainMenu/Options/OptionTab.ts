@@ -2,6 +2,8 @@ export class OptionTab {
   key: string;
   private btn: HTMLButtonElement;
   protected tab: HTMLDivElement;
+  private _callback?: EventListener;
+
   constructor(
     key: string,
     isActive: boolean,
@@ -20,6 +22,7 @@ export class OptionTab {
     this.tab = tab;
     if (isActive) this.activate();
   }
+
   private createButton(
     text: string,
     callback: (key: string) => void,
@@ -28,11 +31,12 @@ export class OptionTab {
     const btn = document.createElement("button");
     btn.textContent = text;
     btn.classList.add("option-tab__button");
-    btn.addEventListener("click", () => {
-      callback.call(context, this.key);
-    });
+    const handler = () => callback.call(context, this.key);
+    btn.addEventListener("click", handler);
+    this._callback = handler;
     return btn;
   }
+
   private createTab(key: string) {
     const tab = document.createElement("div");
     tab.classList.add("option-tab");
@@ -44,8 +48,17 @@ export class OptionTab {
     this.btn.classList.remove("active");
     this.tab.classList.remove("active");
   }
+
   activate(): void {
     this.btn.classList.add("active");
     this.tab.classList.add("active");
+  }
+
+  destroy(): void {
+    if (this._callback) {
+      this.btn.removeEventListener("click", this._callback);
+    }
+    this.btn.remove();
+    this.tab.remove();
   }
 }

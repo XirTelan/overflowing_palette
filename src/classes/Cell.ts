@@ -56,6 +56,8 @@ export default abstract class Cell {
     this.colors = colors;
 
     this.pos = { x, y };
+
+    this.scene.events.on("shutdown", this.onDestroy, this);
   }
 
   createTransitionTile() {
@@ -130,6 +132,11 @@ export default abstract class Cell {
     this.linkendCell = undefined;
     const test = this.container.getByName("portalMask");
     this.container.remove(test, true);
+  }
+
+  onDestroy() {
+    this.container.destroy(true);
+    this.clearTimed();
   }
 
   clearTimed() {

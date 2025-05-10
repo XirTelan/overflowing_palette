@@ -59,6 +59,10 @@ export class MenuTab extends BaseBlock {
     this.actionBtn.container;
     this.container.add([this.viewBox, this.actionBtn.container]);
   }
+
+  destroy(){
+    this.contentContainer.remove()
+  }
   show() {
     if (this.container.visible) return;
     this.container.setVisible(true);

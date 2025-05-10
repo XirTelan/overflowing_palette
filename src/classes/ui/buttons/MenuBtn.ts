@@ -1,7 +1,9 @@
+import { AudioManager } from "@/classes/common/AudioManager";
 import { BaseBlock } from "@/classes/common/BaseBlock";
 import { Scene } from "phaser";
 
 export class MenuBtn extends BaseBlock {
+  audioManager: AudioManager;
   btn: Phaser.GameObjects.Image;
   overlay: Phaser.GameObjects.Image;
   active: Phaser.GameObjects.Container;
@@ -56,6 +58,7 @@ export class MenuBtn extends BaseBlock {
 
     this.btn.setInteractive();
     this.btn.on("pointerup", onClick, this);
+    this.btn.on("pointerup", this.onClick, this);
     this.btn.on("pointerover", this.onEnter, this);
     this.btn.on("pointerout", this.onLeave, this);
 
@@ -70,6 +73,8 @@ export class MenuBtn extends BaseBlock {
 
     this.active.setVisible(false);
     this.container.setVisible(false);
+
+    this.audioManager = this.scene.registry.get("audioManager") as AudioManager;
 
     //delay to make sure fonts is ready since any other mehod doesnt worked
     this.scene.time.delayedCall(50, () => {
@@ -91,10 +96,15 @@ export class MenuBtn extends BaseBlock {
     }
   }
 
+  private onClick() {
+    this.audioManager?.playSFX("btnClick");
+  }
+
   private onEnter() {
     this.overlay.setVisible(true);
     this.scene.input.setDefaultCursor("pointer");
     this.text.setColor("#ffffff");
+    this.audioManager?.playSFX("btnClick", { detune: 100, volume: 0.5, });
   }
   private onLeave() {
     this.overlay.setVisible(false);

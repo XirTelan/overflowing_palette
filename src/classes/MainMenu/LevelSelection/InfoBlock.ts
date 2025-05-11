@@ -72,7 +72,7 @@ export class InfoBlock {
     );
 
     this.turnsText.childNodes[1].textContent = turns;
-    this.gridSize.childNodes[1].textContent = `${levelData.board.length}x${levelData.board[0].length} `;
+    this.gridSize.childNodes[1].textContent = `${levelData.board[0].length}x${levelData.board.length} `;
 
     if (levelData.author) {
       this.author.style.display = "flex";

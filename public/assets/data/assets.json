@@ -81,18 +81,18 @@
     ]
   },
   {
-    "path": "assets/icons/",
+    "path": "assets/textures/icons",
 
     "files": [
       {
         "type": "image",
         "key": "swapAll",
-        "url": "swapAll.png"
+        "url": "swapAll.webp"
       },
       {
         "type": "image",
         "key": "swapLine",
-        "url": "swapLine.png"
+        "url": "swapLine.webp"
       }
     ]
   },
@@ -115,48 +115,48 @@
       {
         "type": "image",
         "key": "MainBtnActive",
-        "url": "MainBtnActive.png"
+        "url": "MainBtnActive.webp"
       },
       {
         "type": "image",
         "key": "btnRound",
-        "url": "btnRound.png"
+        "url": "btnRound.webp"
       },
       {
         "type": "image",
         "key": "btnRoundOver",
-        "url": "btnRoundOver.png"
+        "url": "btnRoundOver.webp"
       },
 
       {
         "type": "image",
         "key": "MainBtnActiveCircle",
-        "url": "MainBtnActiveCircle.png"
+        "url": "MainBtnActiveCircle.webp"
       },
       {
         "type": "image",
         "key": "tile",
-        "url": "tile.png"
+        "url": "tile.webp"
       },
       {
         "type": "image",
         "key": "transitionTile",
-        "url": "transitionTile.png"
+        "url": "transitionTile.webp"
       },
       {
         "type": "image",
         "key": "portalMask",
-        "url": "portalMask.png"
+        "url": "portalMask.webp"
       },
       {
         "type": "image",
         "key": "blockedTileOver",
-        "url": "blockedTileOver.png"
+        "url": "blockedTileOver.webp"
       },
       {
         "type": "image",
         "key": "blockedTile",
-        "url": "blockedTile.png"
+        "url": "blockedTile.webp"
       }
     ]
   },

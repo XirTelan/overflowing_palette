@@ -5,9 +5,10 @@ import { LevelEditor } from "@/classes/MainMenu/LevelEditor";
 import { LevelSelection } from "@/classes/MainMenu/LevelSelection/LevelSelection";
 import { MenuTab } from "@/classes/MainMenu/MenuTab";
 import { Options } from "@/classes/MainMenu/Options/Options";
+import { TutorialsTab } from "@/classes/MainMenu/Tutorials/TutorialsTab";
 import { Background } from "@/classes/ui/Background";
 import { MenuBtn } from "@/classes/ui/buttons/MenuBtn";
-import { GameConfig, LanguageConfig } from "@/types";
+import { LanguageConfig } from "@/types";
 import { getConfig, getLocal } from "@/utils";
 import { Scene } from "phaser";
 
@@ -21,6 +22,7 @@ const TABS: TabConfig[] = [
   { key: "LevelSelector", type: LevelSelection },
   { key: "LevelEditor", type: LevelEditor },
   { key: "EndlessZen", type: EndlessZen },
+  { key: "Tutorials", type: TutorialsTab },
   { key: "Options", type: Options },
 ];
 
@@ -31,6 +33,8 @@ export class MainMenu extends Scene {
   tabs = new Map<string, MenuTab>();
   tabBtns = new Map<string, MenuBtn>();
   btnsContainer!: Phaser.GameObjects.Container;
+
+  tutorialMenu?: TutorialsTab;
 
   constructor() {
     super("MainMenu");
@@ -104,6 +108,7 @@ export class MainMenu extends Scene {
       { key: "LevelSelector", text: local.mainMenu.selectLevel },
       { key: "EndlessZen", text: local.mainMenu.endlessZen },
       { key: "LevelEditor", text: local.mainMenu.createLevel },
+      { key: "Tutorials", text: local.mainMenu.tutorials },
       { key: "Options", text: local.mainMenu.options },
     ];
 

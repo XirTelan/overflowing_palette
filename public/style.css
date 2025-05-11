@@ -186,6 +186,7 @@ select {
     font-size: 2.5rem;
     font-family: "Cinzel", Georgia, serif;
     font-weight: 900;
+    text-shadow: 0px 0px 1rem var(--clr-accent);
 
     border-radius: var(--border-radius);
     place-self: center;
@@ -208,6 +209,7 @@ select {
   position: absolute;
   inset: 0;
   background-size: cover;
+  background-position: center;
 
   outline: 4px solid #747b7e;
   outline-offset: -4px;
@@ -231,15 +233,41 @@ select {
   background: #00000080;
   border-radius: var(--border-radius);
 }
+
 .folder-card[data-folder="tools"] {
   .folder-card__img {
-    background: url("./assets//textures/bgTools.png") no-repeat;
+    background: url("./assets/textures/levelBg/bgTools.png") no-repeat;
     background-position: center;
   }
 }
 .folder-card[data-folder="default"] {
   .folder-card__img {
-    background: url("./assets//textures/bgDefault.png") no-repeat;
+    background: url("./assets/textures/levelBg/bgDefault.png") no-repeat;
+    background-position: center;
+  }
+}
+
+.folder-card[data-folder="portals"] {
+  .folder-card__img {
+    background: url("./assets/textures/levelBg/bgPortals.png") no-repeat;
+    background-position: center;
+  }
+}
+.folder-card[data-folder="custom"] {
+  .folder-card__img {
+    background: url("./assets/textures/levelBg/bgCustom.png") no-repeat;
+    background-position: center;
+  }
+}
+.folder-card[data-folder="timed"] {
+  .folder-card__img {
+    background: url("./assets/textures/levelBg/bgTimed.png") no-repeat;
+    background-position: center;
+  }
+}
+.folder-card[data-folder="advanced"] {
+  .folder-card__img {
+    background: url("./assets/textures/levelBg/bgAdvanced.png") no-repeat;
     background-position: center;
   }
 }
@@ -958,4 +986,71 @@ input[type="radio"] {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.tutorials {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  font-family: sans-serif;
+  color: #eee;
+}
+
+.topics {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 350px;
+  padding: 1rem;
+  box-sizing: border-box;
+  border-right: 1px solid #444;
+}
+
+.topic {
+  cursor: pointer;
+}
+
+.topic:hover {
+  background: #444;
+}
+
+.content {
+  flex: 1;
+  padding: 12px;
+  overflow-y: auto;
+}
+
+.content h2 {
+  margin-top: 0;
+  font-size: 20px;
+}
+
+.tutorial-img {
+  max-width: 100%;
+  margin-top: 10px;
+  border: 1px solid #555;
+  padding-bottom: 1rem;
+  background-color: #1f1d1b;
+  border-radius: 4px;
+}
+.tutorials p {
+  margin: 0 0 10px;
+  line-height: 1.5;
+  color: #ddd;
+}
+
+.tutorials ul {
+  padding-left: 20px;
+  margin: 0 0 10px;
+}
+
+.tutorials li {
+  margin-bottom: 6px;
+}
+
+.tutorial-img {
+  max-width: 100%;
+  border-radius: 6px;
+  border: 1px solid #555;
+  margin-top: 10px;
 }

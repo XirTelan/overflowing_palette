@@ -27,15 +27,23 @@
     "default7": "Penitent's End",
     "default8": "Hallowed Reach",
     "default9": "Avinoleum",
-    "default10": "Hallowed Reach",
+    "default10": "Beohr Waters",
     "advanced": "Advanced",
-    "advanced1": "Easy: Intro to Tools",
+    "advanced1": "Easy",
     "advanced2": "Normal",
     "advanced3": "Hard",
+    "tools": "Tools",
+    "tools1": "Easy",
+    "tools2": "Normal",
+    "tools3": "Hard",
+    "portals": "Portals",
+    "portals1": "Easy",
+    "timed": "Timers",
+    "timed1": "Easy",
     "custom": "Custom",
     "custom1": "Pack 1",
     "custom2": "Pack 2",
-    "custom3": "By Reddit",
+    "custom3": "From users",
     "custom4": "Chaos"
   },
   "previewBlock": {
@@ -65,7 +73,8 @@
     "createLevel": "Create Level",
     "options": "Options",
     "gitHub": "Open Docs\n (GitHub)",
-    "importBtn": "Import"
+    "importBtn": "Import",
+    "tutorials": "Tutorials"
   },
   "game": {
     "ui": {
@@ -165,5 +174,27 @@
     },
     "cancelBtn": "Cancel",
     "copy": "Copy to clipboard"
+  },
+  "tutorials": {
+    "basics": {
+      "title": "Basics",
+      "content": "<img src=\"assets/textures/tutorials/basics.png\"   loading=\"lazy\" alt=\"Basics Example\" class=\"tutorial-img\" /><p>Select a color on the right and apply it to the blocks on the palette to the left. The new color will spread to all connected blocks of the same color.</p><p>Different levels have different move limits. Plan your moves carefully to solve puzzles.</p>"
+    },
+    "mechanicBlocked": {
+      "title": "Mechanics: Locked Colors",
+      "content": "<img src=\"assets/textures/tutorials/blocked.png\" loading=\"lazy\" alt=\"Locked Blocks\" class=\"tutorial-img\" /><p>Locked blocks cannot be changed directly. They act as walls that block color spreading.</p>"
+    },
+    "mechanicTools": {
+      "title": "Mechanics: Swap Tools",
+      "content": "<img src=\"assets/textures/tutorials/tools.png\" loading=\"lazy\" alt=\"Tools Overview\" class=\"tutorial-img\" /><p>Some levels introduce swap tools that exchange the positions of two blocks with different colors. There are three types:</p><ul><li><strong>Horizontal Tool</strong>: Swaps blocks horizontally.</li><li><strong>Vertical Tool</strong>: Swaps blocks vertically.</li><li><strong>Omni Tool</strong>: Swaps blocks in any direction.</li></ul>"
+    },
+    "mechanicPortals": {
+      "title": "Mechanics: Portals",
+      "content": "<img src=\"assets/textures/tutorials/portals.png\" loading=\"lazy\" alt=\"Portal Demo\" class=\"tutorial-img\" /><p>Portals link two blocks together and behave as if they are adjacent. Coloring one will also affect the other, even across the board.</p>"
+    },
+    "mechanicTimed": {
+      "title": "Mechanics: Timer Block",
+      "content": "<img src=\"assets/textures/tutorials/timer.png\" loading=\"lazy\" alt=\"Timer Block\" class=\"tutorial-img\" /><p>Numbers on cells show how many turns remain before the block triggers. The number color indicates what color it will become. When triggered, the block changes its own color and affects adjacent blocks with the same color.</p>"
+    }
   }
 }

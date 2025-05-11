@@ -291,12 +291,6 @@ export default class Grid {
       return;
     }
 
-    if (
-      currentCell.color === -1 ||
-      currentCell.color === this.scene.gameStates.selectedColor
-    )
-      return;
-
     if (state === GameStatus.Waiting) {
       if (this.activeSwap) {
         this.activeSwap.cancelSwapSelection();
@@ -309,6 +303,12 @@ export default class Grid {
       this.swapSelection(x, y);
       return;
     }
+
+    if (
+      currentCell.color === -1 ||
+      currentCell.color === this.scene.gameStates.selectedColor
+    )
+      return;
 
     this.flip(x, y, currentCell.color);
   }

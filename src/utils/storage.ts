@@ -1,5 +1,6 @@
 import { Scene } from "phaser";
 import { GameConfig, LanguageConfig } from "../types";
+import { localStoragePrefix } from "./constants";
 
 const DEFAULT_LANG = "en";
 
@@ -16,6 +17,6 @@ export const getLangCode = () => {
 };
 
 export const getUserLevelsCleared = (): Map<string, object> => {
-  const localData = localStorage.getItem("levels.cleared");
+  const localData = localStorage.getItem(`${localStoragePrefix}levels.cleared`);
   return localData ? new Map(JSON.parse(localData)) : new Map();
 };

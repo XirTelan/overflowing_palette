@@ -6,6 +6,7 @@ import {
   getLangCode,
   getLocal,
   loadingShaderInitConfig,
+  localStoragePrefix,
 } from "../utils";
 
 export class Boot extends Scene {
@@ -90,6 +91,7 @@ export class Boot extends Scene {
     }
 
     this.cameras.main.fadeOut(300, 0, 0, 0);
+
     this.time.delayedCall(300, () => {
       this.scene.start("MainMenu");
     });
@@ -149,8 +151,8 @@ export class Boot extends Scene {
     key: keyof GameConfig,
     check?: (data: unknown) => data is T
   ) {
-    const config =  getConfig(this)
-    const storageData = localStorage.getItem(key);
+    const config = getConfig(this);
+    const storageData = localStorage.getItem(`${localStoragePrefix}${key}`);
     if (!storageData) return;
 
     const parsedData = JSON.parse(storageData);

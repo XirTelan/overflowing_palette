@@ -11,6 +11,7 @@ import {
   generateLevel,
   getUserLevelsCleared,
   findNextLevel,
+  localStoragePrefix,
 } from "@/utils";
 import { BaseBlock } from "../common/BaseBlock";
 import { PrimaryBtn } from "../ui/buttons/PrimaryBtn";
@@ -158,7 +159,10 @@ export class ResultScreen extends BaseBlock {
     const cache = getUserLevelsCleared();
     cache.set(levelKey, { time });
 
-    localStorage.setItem("levels.cleared", JSON.stringify(Array.from(cache)));
+    localStorage.setItem(
+      `${localStoragePrefix}levels.cleared`,
+      JSON.stringify(Array.from(cache))
+    );
   }
 
   addRecord(label: string, value: string): HTMLElement {

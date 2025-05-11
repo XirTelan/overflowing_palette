@@ -1,6 +1,6 @@
 import { PrimaryBtn } from "@/classes/ui/buttons/PrimaryBtn";
 import { MenuTabProps, LanguageConfig } from "@/types";
-import { getConfig, getLocal } from "@/utils";
+import { getConfig, getLocal, localStoragePrefix } from "@/utils";
 import { MenuTab } from "../MenuTab";
 import { ColorsTab } from "./ColorsTab";
 import { GameplayTab } from "./GameplayTab";
@@ -137,10 +137,15 @@ export class Options extends MenuTab {
   }
 
   private resetUserConfig = () => {
-    const levelsCleared = localStorage.getItem("levels.cleared");
+    const levelsCleared = localStorage.getItem(
+      `${localStoragePrefix}levels.cleared`
+    );
     localStorage.clear();
     if (levelsCleared) {
-      localStorage.setItem("levels.cleared", levelsCleared);
+      localStorage.setItem(
+        `${localStoragePrefix}levels.cleared`,
+        levelsCleared
+      );
     }
 
     this.hide();
@@ -161,11 +166,20 @@ export class Options extends MenuTab {
     const gameplayData = gameplayTab.getValues();
 
     if (colorTab.isDirty && !deepEqual(savedConfig.colors, colorsData)) {
-      localStorage.setItem("colors", JSON.stringify(colorsData));
+      localStorage.setItem(
+        `${localStoragePrefix}colors`,
+        JSON.stringify(colorsData)
+      );
     }
 
-    localStorage.setItem("background", JSON.stringify(generalData.background));
-    localStorage.setItem("gameplay", JSON.stringify(gameplayData));
+    localStorage.setItem(
+      `${localStoragePrefix}background`,
+      JSON.stringify(generalData.background)
+    );
+    localStorage.setItem(
+      `${localStoragePrefix}gameplay`,
+      JSON.stringify(gameplayData)
+    );
     localStorage.setItem("lang", generalData.lang);
 
     this.hide();

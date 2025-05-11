@@ -136,16 +136,18 @@ export default class Grid {
       const cellA = this.board[x1][y1];
       const cellB = this.board[x2][y2];
 
+      const color = Math.floor(Math.random() * 0xffffff);
+
       if (cellA && cellB) {
-        cellA.setLinkedCell(cellB);
-        cellB.setLinkedCell(cellA);
+        cellA.setLinkedCell(cellB, color);
+        cellB.setLinkedCell(cellA, color);
       }
     }
   }
 
   private setupTimedCells(timed: LevelData["timed"]) {
     this.timedCellsQueue = [];
-    timed?.sort((a, b) => a.turns - b.turns);
+    timed?.sort((a, b) => b.turns - a.turns);
 
     for (const { pos, turns, color } of timed ?? []) {
       const cell = this.board[pos[0]][pos[1]];
@@ -396,7 +398,7 @@ export default class Grid {
     this.scene.tweens.addCounter({
       from: 0,
       to: 1,
-      delay: animationDelay * 0.1,
+      delay: animationDelay * 0.5,
       duration: animationDelay,
       ease: "Cubic.InOut",
       onStart: () => {

@@ -1,135 +1,129 @@
 import { ColorBtn } from "@/classes/ui/buttons/ColorBtn";
 import { ToolBtn } from "@/classes/ui/buttons/ToolBtn";
 import { Game } from "@/scenes/Game";
-import {  GameMode, UiOptions } from "@/types";
+import { GameMode, UiOptions } from "@/types";
 import { FADE_DELAY, getConfig, getLocal } from "@/utils";
 
 export class CommonUi {
   scene: Game;
   ui: UiOptions;
+
   constructor(scene: Game) {
     this.scene = scene;
+    this.ui = getConfig(scene).game.ui;
+
     const local = getLocal(scene);
+
     if (
-      scene.gameStates.mode != GameMode.Editor &&
+      scene.gameStates.mode !== GameMode.Editor &&
       scene.gameStates.availableTools
     ) {
-      this.createToolsButtons();
+      this.createToolButtons();
     }
-    this.createColorSelectionButtons();
+
+    this.createColorButtons();
     this.createCloseButton();
+    this.createTriangles();
 
     scene.time.delayedCall(50, () => {
-      this.createTitle(scene, local.game.ui.mode);
+      this.createTitle(local.game.ui.mode);
     });
-
-    this.createTriangles();
   }
-  createCloseButton() {
-    const scene = this.scene;
-    const {
-      game: { ui },
-    } = this.scene.cache.json.get("config");
+
+  private createCloseButton() {
+    const { scene, ui } = this;
+    const btnCfg = ui.closeBtn;
 
     const closeBtn = scene.add
       .image(
-        scene.cameras.main.width - ui.closeBtn.offset.x,
-        0 + ui.closeBtn.offset.y,
+        scene.cameras.main.width - btnCfg.offset.x,
+        btnCfg.offset.y,
         "uiatlas",
         "close"
       )
-      .setScale(ui.closeBtn.scale);
-
-    closeBtn.setInteractive();
+      .setScale(btnCfg.scale)
+      .setInteractive();
 
     closeBtn.on("pointerup", () => {
       scene.cameras.main.fadeOut(FADE_DELAY, 0, 0, 0);
-      scene.time.delayedCall(FADE_DELAY, () => {
-        scene.scene.start("MainMenu");
-      });
+      scene.time.delayedCall(FADE_DELAY, () => scene.scene.start("MainMenu"));
     });
-    closeBtn.on("pointerover", () => {
-      closeBtn.setScale(ui.closeBtn.scale + 0.1);
-    });
-    closeBtn.on("pointerout", () => {
-      closeBtn.setScale(ui.closeBtn.scale);
-    });
+
+    closeBtn.on("pointerover", () => closeBtn.setScale(btnCfg.scale + 0.1));
+    closeBtn.on("pointerout", () => closeBtn.setScale(btnCfg.scale));
   }
 
-  createColorSelectionButtons() {
-    const scene = this.scene;
-    const {
-      game: { ui },
-      colors,
-    } = getConfig(scene);
+  private createColorButtons() {
+    const { scene } = this;
+    const { colorButtons: btnCfg } = this.ui;
+    const { colors } = getConfig(scene);
 
-    const cellSize = ui.colorButtons.size;
-    const isEditorMode = scene.gameStates.mode === GameMode.Editor;
+    const cellSize = btnCfg.size;
+    const isEditor = scene.gameStates.mode === GameMode.Editor;
 
     scene.gameStates.availableColors.add(scene.gameStates.targetColor);
 
-    const colorsCount = isEditorMode
-      ? 8
-      : scene.gameStates.availableColors.size;
-
     const availableColors = Object.entries(colors).filter(
-      ([colorType]) =>
-        isEditorMode || scene.gameStates.availableColors.has(Number(colorType))
+      ([type]) => isEditor || scene.gameStates.availableColors.has(Number(type))
     );
-    availableColors.forEach(([colorType, colorValue], index) => {
-      const colorId = Number(colorType);
-      const offsetX =
-        colorsCount > 4 && index >= 4 ? cellSize + ui.colorButtons.gap * 2 : 0;
-      const adjustedIndex = (index + 4) % 4;
-      const offsetY = adjustedIndex * (cellSize + ui.colorButtons.gap);
 
-      const newBtn = new ColorBtn(
+    availableColors.forEach(([type, { value }], i) => {
+      const colorId = Number(type);
+      const row = i % 4;
+      const colOffset = i >= 4 ? cellSize + btnCfg.gap * 2 : 0;
+      const y = row * (cellSize + btnCfg.gap);
+
+      const btn = new ColorBtn(
         scene,
-        offsetX,
-        offsetY,
+        colOffset,
+        y,
         cellSize,
-        [colorId, colorValue.value],
-        index + 1,
+        [colorId, value],
+        i + 1,
         scene.btnContainer
       );
-      scene.colorSelectionButtons.push(newBtn);
+
+      scene.colorSelectionButtons.push(btn);
     });
 
     scene.btnContainer.y -= (scene.colorSelectionButtons.length * cellSize) / 4;
   }
 
-  createToolsButtons() {
-    let count = 0;
-    const available = this.scene.gameStates.availableTools;
-    const {
-      game: { ui },
-    } = getConfig(this.scene);
-    available?.forEach((toolCount, indx) => {
-      if (toolCount == 0) return;
-      this.scene.toolsButtons.push(
-        new ToolBtn(
-          this.scene,
-          150,
-          600 + count * 140,
-          toolCount,
-          ui.tools.options[indx].hotkey,
-          indx
-        )
+  private createToolButtons() {
+    const { scene } = this;
+    const toolsCfg = this.ui.tools;
+
+    let toolIndex = 0;
+    scene.gameStates.availableTools?.forEach((count, index) => {
+      if (count === 0) return;
+
+      const btn = new ToolBtn(
+        scene,
+        toolsCfg.x,
+        toolsCfg.y + toolIndex * toolsCfg.offset,
+        count,
+        toolsCfg.options[index].hotkey,
+        index
       );
-      count++;
+
+      scene.toolsButtons.push(btn);
+      toolIndex++;
     });
   }
 
-  createTitle(scene: Game, mode: string) {
+  private createTitle(mode: string) {
+    const { scene } = this;
+
     const icon = scene.add
       .image(60, 50, "uiatlas", "icon")
       .setScale(0.5)
       .setOrigin(0);
+
     scene.make.text({
       x: icon.x + 50,
       y: icon.y,
-      text: `Overflowing Palette ${
-        scene.gameStates.mode === GameMode.Editor ? `| ${mode}` : ""
+      text: `Overflowing Palette${
+        scene.gameStates.mode === GameMode.Editor ? ` | ${mode}` : ""
       }`,
       style: {
         color: "#ab9c6b",
@@ -138,40 +132,37 @@ export class CommonUi {
     });
   }
 
-  createTriangles() {
-    const scene = this.scene;
-    const {
-      game: { ui },
-    } = getConfig(scene);
-    const commonProps1 = [0, 30, -20, 0, 20, 0];
-    const commonProps2 = [80, 0, 25, -15, 0, 15, 0, 0x94844c];
-    const commonProps3 = [0, -20, -10, 0, 10, 0, 0xffffff, 0.2];
+  private createTriangles() {
+    const { scene } = this;
+    const { targetUI } = this.ui;
+
+    const whiteTriangle = [0, 30, -20, 0, 20, 0];
+    const goldTriangle = [80, 0, 25, -15, 0, 15, 0, 0x94844c];
+    const grayTriangle = [0, -20, -10, 0, 10, 0, 0xffffff, 0.2];
 
     scene.add.triangle(
-      ui.targetUI.x - 45,
-      ui.targetUI.y + 15,
-      ...commonProps1,
+      targetUI.x - 45,
+      targetUI.y + 15,
+      ...whiteTriangle,
       0xffffff
     );
     scene.add.triangle(
-      ui.targetUI.x - 5,
-      ui.targetUI.y + 15,
-      ...commonProps1,
+      targetUI.x - 5,
+      targetUI.y + 15,
+      ...whiteTriangle,
       0x94844c
     );
-
-    scene.add.triangle(scene.btnContainer.x - 10, ...commonProps2);
-    scene.add.triangle(scene.btnContainer.x + 20, ...commonProps2);
-
+    scene.add.triangle(scene.btnContainer.x - 10, ...goldTriangle);
+    scene.add.triangle(scene.btnContainer.x + 20, ...goldTriangle);
     scene.add.triangle(
       scene.btnContainer.x + 10,
       scene.cameras.main.height - 240,
-      ...commonProps3
+      ...grayTriangle
     );
     scene.add.triangle(
       scene.btnContainer.x + 10,
       scene.cameras.main.height - 220,
-      ...commonProps3
+      ...grayTriangle
     );
   }
 }

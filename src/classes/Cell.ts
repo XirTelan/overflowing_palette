@@ -83,6 +83,10 @@ export default abstract class Cell {
   }
 
   setTimedCell(turns: number, color: ColorType) {
+    if (this.timedText) {
+      this.clearTimed();
+    }
+
     this.timedCounter = turns;
     const text = this.scene.add.text(0, 0, `${turns}`, {
       font: `${this.cellSize * 0.9}px Arial`,
@@ -118,11 +122,14 @@ export default abstract class Cell {
     this.tile.on("pointerout", this.onLeave, this);
   }
 
-  setLinkedCell(cell: Cell) {
+  setLinkedCell(cell: Cell, color?: number) {
     const mask = this.scene.add
       .image(this.tile.x, this.tile.y, "portalMask")
       .setOrigin(0)
       .setScale(this.tileScale);
+
+    if (color) mask.setTintFill(color);
+
     mask.name = "portalMask";
     this.linkendCell = cell;
     this.container.add(mask);
@@ -142,7 +149,7 @@ export default abstract class Cell {
   clearTimed() {
     this.timedCounter = 0;
     this.timedText?.destroy();
-    this.scene.events.off("turn", this.updateTurns);
+    this.scene.events.off("turn", this.updateTurns,this);
   }
 
   isLinked(): boolean {

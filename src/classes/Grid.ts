@@ -423,17 +423,27 @@ export default class Grid {
         this.pendingCalls--;
 
         if (this.pendingCalls === 0) {
-          if (
+          while (
             this.timedCellsQueue.length > 0 &&
             this.timedCellsQueue[this.timedCellsQueue.length - 1].turns ===
               this.scene.gameStates.turns
           ) {
             const { pos, color } = this.timedCellsQueue.pop()!;
-            this.flip(pos[0], pos[1], this.board[pos[0]][pos[1]].color, color);
-          } else {
-            this.scene.changeGameState(GameStatus.Active);
+            if (this.board[pos[0]][pos[1]].color !== color) {
+              this.flip(
+                pos[0],
+                pos[1],
+                this.board[pos[0]][pos[1]].color,
+                color
+              );
+              return;
+            }
           }
+
+          this.scene.changeGameState(GameStatus.Active);
         }
+
+        console.log(this.timedCellsQueue);
       },
     });
   }

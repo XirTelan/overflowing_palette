@@ -1,4 +1,4 @@
-import {  UiOptions } from "@/types";
+import { UiOptions } from "@/types";
 import { getLocal, getColorName, getConfig } from "@/utils";
 import { PrimaryBtn } from "../../ui/buttons/PrimaryBtn";
 import { ValueSelector } from "../../ui/ValueSelector";
@@ -28,7 +28,7 @@ export class EditorModeUi {
   private addStaticTexts() {
     this.addText(60, 110, this.local.game.ui.movesCount);
     this.addText(60, 200, this.local.game.ui.targetColorEditor);
-    this.addText(60, 290, this.local.game.ui.tools);
+    this.addText(60, this.ui.tools.y - 80, this.local.game.ui.tools);
   }
 
   private addText(x: number, y: number, text: string) {
@@ -70,7 +70,7 @@ export class EditorModeUi {
   private createExportButton() {
     new PrimaryBtn(
       150,
-      650,
+      850,
       this.local.game.ui.export,
       300,
       50,
@@ -98,14 +98,14 @@ export class EditorModeUi {
     ui.tools.options.forEach((data, index) => {
       this.addText(
         60,
-        this.ui.tools.y + this.ui.tools.offset * index - 50,
+        this.ui.tools.y + 80 * index - 50,
         this.local.game.tools[data.textKey]
       );
 
       new ValueSelector<number>(
         this.scene,
         this.ui.tools.x,
-        this.ui.tools.y + this.ui.tools.offset * index,
+        this.ui.tools.y + 80 * index,
         this.ui.targetValueSelector.width,
         this.scene.gameStates.availableTools[index],
         () => {

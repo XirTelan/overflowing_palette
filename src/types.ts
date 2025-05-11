@@ -97,6 +97,7 @@ export type LanguageConfig = {
     options: string;
     gitHub: string;
     importBtn: string;
+    tutorials: string
   };
   endlessZen: {
     folderName: string;
@@ -203,6 +204,7 @@ export type LanguageConfig = {
     cancelBtn: string;
     copy: string;
   };
+  tutorials: TutorialTopics;
 };
 
 export type LocalizationConfig = {
@@ -313,6 +315,14 @@ type MainMenuConfig = {
         font: string;
         align: string;
       };
+    };
+  };
+  options: {
+    primaryBtn: {
+      x: number;
+      y: number;
+      width: number;
+      height: number;
     };
   };
 };
@@ -451,3 +461,10 @@ export interface MenuTabProps {
   width: number;
   height: number;
 }
+
+export type TutorialTopic = {
+  title: string;
+  content: string;
+};
+
+export type TutorialTopics = Record<string, TutorialTopic>;

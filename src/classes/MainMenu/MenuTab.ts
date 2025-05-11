@@ -49,8 +49,8 @@ export class MenuTab extends BaseBlock {
     this.container.setMask(mask);
 
     this.actionBtn = new PrimaryBtn(
-      width - 180,
-      height - 200,
+      width - 140,
+      height - 50,
       mainMenu.startBtn,
       350,
       0,
@@ -60,8 +60,8 @@ export class MenuTab extends BaseBlock {
     this.container.add([this.viewBox, this.actionBtn.container]);
   }
 
-  destroy(){
-    this.contentContainer.remove()
+  destroy() {
+    this.contentContainer.remove();
   }
   show() {
     if (this.container.visible) return;

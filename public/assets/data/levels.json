@@ -626,23 +626,136 @@
       ]
     }
   },
+
   {
-    "id": "d772c151-e940-412b-be5b-84611542cc9a",
+    "id": "63addeae-c5a0-4f36-b75a-de424d2f2033",
     "folderName": "default",
     "categoryName": "default9",
     "levelData": {
-      "targetColor": 1,
+      "targetColor": 0,
+      "turns": 4,
+      "tools": [0, 0, 0],
+      "portals": [],
+      "timed": [],
+      "board": [
+        [0, 0, 3, 0, 0, 3, 0, 0, 2, 0],
+        [2, 2, 3, 2, 2, 3, 2, 2, 2, 2],
+        [0, 0, 3, 0, 0, 3, 0, 0, 2, 0],
+        [2, 2, 2, 2, 2, 3, 2, 2, 2, 2],
+        [0, 0, 3, 0, 0, 3, 0, 0, 2, 0],
+        [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+        [0, 0, 3, 0, 0, 3, 0, 0, 2, 0],
+        [0, 0, 3, 0, 0, 3, 0, 0, 2, 0]
+      ]
+    }
+  },
+  {
+    "id": "3f6a7846-79f4-4c1c-87c7-876c73426a56",
+    "folderName": "default",
+    "categoryName": "default9",
+    "levelData": {
+      "targetColor": 0,
+      "turns": 7,
+      "tools": [0, 0, 0],
+      "portals": [],
+      "timed": [],
+      "board": [
+        [0, 2, 2, 2, 1, -1, 0, 2, 1, 0],
+        [0, 2, -1, 0, -1, 0, 0, -1, 2, -1],
+        [-1, -1, 0, 3, 3, 2, 3, 1, 0, 0],
+        [0, 2, -1, 3, 0, 2, 2, 1, 1, 0],
+        [3, 1, 1, 1, 1, -1, 2, 3, 3, 1],
+        [3, 0, 0, -1, 0, 0, 3, 1, 1, -1],
+        [1, 0, -1, -1, 3, 3, -1, 2, 2, 0],
+        [3, 3, 3, -1, -1, 1, -1, -1, 0, 0]
+      ]
+    }
+  },
+  {
+    "id": "6345d242-3135-4d73-af69-c9216c893bf2",
+    "folderName": "default",
+    "categoryName": "default9",
+    "levelData": {
+      "targetColor": 3,
+      "turns": 5,
+      "tools": [0, 0, 0],
+      "portals": [],
+      "timed": [],
+      "board": [
+        [0, 0, 2, 0, 0, 0, 1, 1, 1, 3],
+        [0, -1, -1, -1, -1, 0, 2, 2, 2, 2],
+        [1, 1, 1, 1, 1, 1, 1, 1, -1, -1],
+        [1, 1, 2, 2, -1, -1, 0, 0, 0, -1],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, -1],
+        [1, 1, 1, 0, 0, 0, 2, 2, 0, 0],
+        [1, 2, 2, -1, 2, 0, -1, -1, -1, 0],
+        [3, 0, 0, 1, 0, 0, 2, 0, 2, 0]
+      ]
+    }
+  },
+  {
+    "id": "d51319e8-b30b-4b50-9631-8d2e151679f5",
+    "folderName": "default",
+    "categoryName": "default9",
+    "levelData": {
+      "targetColor": 2,
       "turns": 3,
       "tools": [0, 0, 0],
+      "portals": [],
+      "timed": [],
       "board": [
-        [0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
-        [0, 1, 3, 3, 3, 3, 3, 3, 1, 1],
-        [0, 1, 3, 2, 2, 2, 2, 3, 2, 2],
-        [0, 1, 3, 2, 1, 1, 0, 3, 1, 2],
-        [0, 1, 3, 2, 1, 1, 0, 3, 1, 2],
-        [0, 0, 3, 2, 0, 0, 0, 3, 1, 2],
-        [1, 1, 3, 3, 3, 3, 3, 3, 1, 2],
-        [1, 1, 1, 2, 2, 2, 2, 2, 2, 2]
+        [2, 3, 3, 3, 2, 2, 3, 3, 3, 2],
+        [3, 3, 3, 2, 2, 2, 2, 3, 3, 3],
+        [0, 0, 0, 2, 2, 2, 2, 0, 0, 0],
+        [2, 0, 0, 0, 2, 2, 0, 0, 0, 2],
+        [2, 2, 2, 0, 0, 0, 0, 2, 2, 2],
+        [3, 3, 3, 2, 0, 0, 2, 3, 3, 3],
+        [2, 2, 1, 0, 0, 0, 0, 1, 2, 2],
+        [1, 1, 1, 1, 0, 0, 1, 1, 1, 1]
+      ]
+    }
+  },
+  {
+    "id": "ae51fd23-ca03-4042-848c-c3cb4503cfe5",
+    "folderName": "default",
+    "categoryName": "default9",
+    "levelData": {
+      "targetColor": 3,
+      "turns": 4,
+      "tools": [0, 0, 0],
+      "portals": [],
+      "timed": [],
+      "board": [
+        [3, 3, 3, 3, 1, 1, 1, 1, 0, -1],
+        [0, 0, 0, 2, 2, 2, 2, 1, 0, -1],
+        [0, 3, 0, 3, 1, 3, 3, 1, 0, -1],
+        [0, -1, 0, -1, 1, -1, 3, 1, 0, -1],
+        [0, -1, 0, 3, 1, -1, 1, 1, 0, -1],
+        [0, -1, 0, 3, 3, -1, 3, 3, 3, -1],
+        [0, -1, -1, -1, -1, -1, 2, 2, 3, 3],
+        [0, 0, 0, 2, 2, 2, 2, 2, 3, 3]
+      ]
+    }
+  },
+  {
+    "id": "dbe5e551-363f-49bb-b5e9-46bae62a711f",
+    "folderName": "default",
+    "categoryName": "default9",
+    "levelData": {
+      "targetColor": 3,
+      "turns": 5,
+      "tools": [0, 0, 0],
+      "portals": [],
+      "timed": [],
+      "board": [
+        [3, -1, -1, 1, 1, 1, 1, 2, 2, 3],
+        [3, 2, 2, 0, 0, 0, 0, 3, 2, 3],
+        [3, 2, 3, 1, 1, 1, 1, 2, 2, 3],
+        [3, 2, 2, 0, 0, 0, 0, 3, 3, 3],
+        [3, 3, 3, 1, 1, 1, 1, 2, 2, 3],
+        [3, 2, 2, 0, 0, 0, 0, 3, 2, 3],
+        [3, 2, 3, 1, 1, 1, 1, 2, 2, 3],
+        [3, 2, 2, 0, 0, 0, 0, -1, -1, 3]
       ]
     }
   },
@@ -769,7 +882,7 @@
   {
     "id": "c3fab526-2418-4f70-8289-d331ac58dc76",
     "folderName": "tools",
-    "categoryName": "advanced1",
+    "categoryName": "tools1",
     "levelData": {
       "targetColor": 0,
       "turns": 1,
@@ -784,7 +897,7 @@
   {
     "id": "7bc90191-7f0b-45c0-ac45-fb1a5876bf08",
     "folderName": "tools",
-    "categoryName": "advanced1",
+    "categoryName": "tools1",
     "levelData": {
       "targetColor": 0,
       "turns": 1,
@@ -799,7 +912,7 @@
   {
     "id": "d4b4606b-9fb9-426c-ad72-73a1673c026e",
     "folderName": "tools",
-    "categoryName": "advanced1",
+    "categoryName": "tools1",
     "levelData": {
       "targetColor": 0,
       "turns": 1,
@@ -814,7 +927,7 @@
   {
     "id": "4f49d130-2a05-47a4-9058-ccc3f49eb034",
     "folderName": "tools",
-    "categoryName": "advanced1",
+    "categoryName": "tools1",
     "levelData": {
       "targetColor": 2,
       "turns": 3,
@@ -834,7 +947,7 @@
   {
     "id": "b520793e-63cd-4c75-979c-9e019376728f",
     "folderName": "tools",
-    "categoryName": "advanced2",
+    "categoryName": "tools2",
     "levelData": {
       "targetColor": 2,
       "turns": 4,
@@ -854,7 +967,7 @@
   {
     "id": "1265736e-07c3-4ff1-ae5d-8d21b7211cd3",
     "folderName": "tools",
-    "categoryName": "advanced2",
+    "categoryName": "tools2",
     "levelData": {
       "targetColor": 4,
       "turns": 3,
@@ -877,7 +990,7 @@
   {
     "id": "9b620949-bdb6-4615-b712-40f3c9215bb2",
     "folderName": "tools",
-    "categoryName": "advanced2",
+    "categoryName": "tools2",
     "levelData": {
       "targetColor": 2,
       "turns": 1,
@@ -895,7 +1008,7 @@
   {
     "id": "f46c8a3d-9102-4d54-960c-b60a6a7c45f0",
     "folderName": "tools",
-    "categoryName": "advanced2",
+    "categoryName": "tools2",
     "levelData": {
       "targetColor": 5,
       "turns": 2,
@@ -919,7 +1032,7 @@
   {
     "id": "fc9065b6-0d28-4b31-835e-0fa20c3e54dd",
     "folderName": "tools",
-    "categoryName": "advanced2",
+    "categoryName": "tools2",
     "levelData": {
       "targetColor": 3,
       "turns": 3,
@@ -939,7 +1052,7 @@
   {
     "id": "3e5ca045-7faa-4e0f-90b1-0882660ae344",
     "folderName": "tools",
-    "categoryName": "advanced3",
+    "categoryName": "tools3",
     "levelData": {
       "targetColor": 0,
       "turns": 5,
@@ -959,9 +1072,235 @@
     }
   },
   {
-    "id": "06364f86-dd85-437b-b091-512cfa1ca0e5",
+    "id": "bb8499ed-50ab-473a-9bff-19b259a668a5",
     "folderName": "portals",
     "categoryName": "portals1",
+    "levelData": {
+      "targetColor": 1,
+      "turns": 3,
+      "tools": [0, 0, 0],
+      "portals": [
+        {
+          "pair": [
+            [0, 0],
+            [2, 2]
+          ]
+        },
+        {
+          "pair": [
+            [3, 3],
+            [5, 5]
+          ]
+        },
+        {
+          "pair": [
+            [2, 3],
+            [0, 5]
+          ]
+        },
+        {
+          "pair": [
+            [3, 2],
+            [5, 0]
+          ]
+        }
+      ],
+      "timed": [],
+      "board": [
+        [2, 3, -1, 2, 2, 3],
+        [3, -1, -1, -1, -1, 2],
+        [-1, -1, 2, 3, -1, 2],
+        [3, -1, 2, 3, -1, -1],
+        [3, -1, -1, -1, -1, 2],
+        [2, 3, 3, -1, 2, 3]
+      ]
+    }
+  },
+  {
+    "id": "ee4e0e15-9b1d-495e-af91-0385881162e5",
+    "folderName": "portals",
+    "categoryName": "portals1",
+    "levelData": {
+      "targetColor": 0,
+      "turns": 2,
+      "tools": [0, 0, 0],
+      "portals": [
+        {
+          "pair": [
+            [2, 4],
+            [3, 1]
+          ]
+        }
+      ],
+      "timed": [],
+      "board": [
+        [1, 1, 1, 0, 0, 0],
+        [1, -1, 1, 0, -1, 0],
+        [1, -1, 1, -1, 2, 1],
+        [1, 2, -1, 1, -1, 1],
+        [0, -1, 0, 1, -1, 1],
+        [0, 0, 0, 1, 1, 1]
+      ]
+    }
+  },
+  {
+    "id": "38664f5c-7463-4757-be75-03aa3a512ca5",
+    "folderName": "portals",
+    "categoryName": "portals2",
+    "levelData": {
+      "targetColor": 3,
+      "turns": 4,
+      "tools": [0, 0, 0],
+      "portals": [
+        {
+          "pair": [
+            [0, 8],
+            [7, 4]
+          ]
+        },
+        {
+          "pair": [
+            [1, 0],
+            [7, 8]
+          ]
+        }
+      ],
+      "timed": [],
+      "board": [
+        [4, 4, 5, 1, 1, 1, 1, 1, 1, 4],
+        [2, -1, 5, 5, 5, 5, 5, 3, 3, 4],
+        [2, -1, 5, 1, 1, 1, 1, 3, 3, 4],
+        [2, -1, 5, 5, 5, 5, 1, 5, -1, 4],
+        [2, -1, -1, 5, 1, 1, 1, 5, -1, 4],
+        [2, 2, 2, 2, 1, 5, 5, 5, -1, 4],
+        [3, 3, 3, 3, 1, -1, -1, 5, 5, 5],
+        [3, 3, 3, 3, 2, 2, 2, 2, 2, 4]
+      ]
+    }
+  },
+  {
+    "id": "2a649678-362e-4d8f-8db2-f98223fb463b",
+    "folderName": "portals",
+    "categoryName": "portals2",
+    "levelData": {
+      "targetColor": 3,
+      "turns": 3,
+      "tools": [0, 0, 0],
+      "portals": [
+        {
+          "pair": [
+            [3, 2],
+            [4, 6]
+          ]
+        },
+        {
+          "pair": [
+            [2, 7],
+            [4, 7]
+          ]
+        }
+      ],
+      "timed": [],
+      "board": [
+        [2, 1, 3, 3, 3, 3, 3, 3, 3, 3],
+        [2, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+        [2, 2, 2, 2, 2, 2, 2, 2, 0, 0],
+        [3, 1, 0, 1, 1, 1, 1, 1, 1, 0],
+        [3, 1, 0, 1, 0, 0, 0, 2, 1, 0],
+        [3, 1, 0, 1, 1, 1, 1, 2, 1, 0],
+        [3, 1, 0, 0, 0, 0, 0, 2, 1, 0],
+        [3, 1, 1, 1, 1, 1, 1, 2, 1, 0]
+      ]
+    }
+  },
+  {
+    "id": "58e65d60-d331-4193-b4d7-3ec1486498cb",
+    "folderName": "advanced",
+    "categoryName": "advanced1",
+    "levelData": {
+      "targetColor": 5,
+      "turns": 3,
+      "tools": [0, 1, 0],
+      "portals": [],
+      "timed": [
+        {
+          "pos": [0, 0],
+          "turns": 3,
+          "color": 5
+        }
+      ],
+      "board": [
+        [3, 3, 0, 0, 5, 5, 0, 0, 3, 3],
+        [3, 0, 2, 0, 0, 0, 0, 2, 0, 3],
+        [0, 0, 2, 2, 2, 2, 2, 2, 0, 0],
+        [5, 0, 0, 2, 2, 0, 2, 0, 0, 5],
+        [5, 0, 0, 0, 0, 2, 0, 0, 0, 5],
+        [0, 0, 2, 2, 2, 2, 2, 2, 0, 0],
+        [3, 0, 2, 0, 0, 0, 0, 2, 0, 3],
+        [3, 3, 0, 0, 5, 5, 0, 0, 3, 3]
+      ]
+    }
+  },
+  {
+    "id": "8b32c34e-2279-49f3-8db5-a9f2d9c55b77",
+    "folderName": "advanced",
+    "categoryName": "advanced2",
+    "levelData": {
+      "targetColor": 0,
+      "turns": 2,
+      "tools": [0, 0, 0],
+      "portals": [
+        {
+          "pair": [
+            [5, 9],
+            [4, 6]
+          ]
+        },
+        {
+          "pair": [
+            [3, 3],
+            [2, 0]
+          ]
+        }
+      ],
+      "timed": [
+        {
+          "pos": [0, 9],
+          "turns": 1,
+          "color": 1
+        },
+        {
+          "pos": [0, 0],
+          "turns": 1,
+          "color": 3
+        },
+        {
+          "pos": [7, 9],
+          "turns": 1,
+          "color": 3
+        },
+        {
+          "pos": [7, 0],
+          "turns": 1,
+          "color": 1
+        }
+      ],
+      "board": [
+        [1, 1, 1, 1, -1, -1, 3, 3, 3, 3],
+        [1, 4, 4, 4, 4, 4, 4, 4, 4, 3],
+        [1, 4, -1, -1, -1, -1, -1, -1, 4, 3],
+        [-1, 4, -1, 3, -1, 3, 3, -1, 4, -1],
+        [-1, 4, -1, 3, 3, -1, 3, -1, 4, -1],
+        [2, 4, -1, -1, -1, -1, -1, -1, 4, 1],
+        [2, 4, 4, 4, 4, 4, 4, 4, 4, 1],
+        [2, 2, 2, 2, -1, -1, 1, 1, 1, 1]
+      ]
+    }
+  },
+  {
+    "id": "0c1bf365-78ce-4806-bcd1-cea64b966dbd",
+    "folderName": "advanced",
+    "categoryName": "advanced2",
     "levelData": {
       "targetColor": 0,
       "turns": 3,
@@ -969,31 +1308,39 @@
       "portals": [
         {
           "pair": [
-            [1, 0],
-            [4, 0]
-          ]
-        },
-        {
-          "pair": [
-            [5, 3],
-            [0, 3]
+            [2, 0],
+            [5, 0]
           ]
         }
       ],
+      "timed": [
+        {
+          "pos": [7, 0],
+          "turns": 1,
+          "color": 1
+        },
+        {
+          "pos": [0, 0],
+          "turns": 2,
+          "color": 1
+        }
+      ],
       "board": [
-        [1, 1, 1, 1, 1, 1, 1],
-        [1, 0, 0, 0, 0, 0, 1],
-        [0, 0, 3, 3, 3, 0, 0],
-        [0, 0, 3, 1, 3, 0, 0],
-        [3, 0, 3, 1, 3, 0, 3],
-        [3, 3, 3, 0, 3, 3, 3]
+        [3, 1, 1, 2, 2, 2, 1, 2, 0, 0],
+        [2, 1, 1, 3, 3, 3, 1, 2, 1, 1],
+        [2, 2, 2, 2, 0, 0, 1, 2, 1, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [2, 2, 2, 2, 0, 0, 1, 2, 1, 0],
+        [2, 1, 1, 3, 3, 3, 1, 2, 1, 1],
+        [3, 1, 1, 2, 2, 2, 1, 2, 0, 0]
       ]
     }
   },
   {
     "id": "8133de34-ee17-4103-8175-aca68ba60ff4",
-    "folderName": "advanced",
-    "categoryName": "advanced1",
+    "folderName": "portals",
+    "categoryName": "portals2",
     "levelData": {
       "targetColor": 3,
       "turns": 3,
@@ -1025,35 +1372,92 @@
     }
   },
   {
-    "id": "f31cc7fc-3166-48db-a543-9f77e4614d70",
-    "folderName": "advanced",
-    "categoryName": "advanced1",
+    "id": "50e8fc39-b25f-43c0-b1af-4a640004821f",
+    "folderName": "timed",
+    "categoryName": "timed1",
     "levelData": {
-      "targetColor": 1,
-      "turns": 100,
+      "targetColor": 2,
+      "turns": 3,
       "tools": [0, 0, 0],
       "portals": [
         {
           "pair": [
-            [1, 0],
-            [4, 0]
-          ]
-        },
-        {
-          "pair": [
-            [5, 3],
-            [0, 3]
+            [2, 2],
+            [3, 3]
           ]
         }
       ],
-      "timed": [],
+      "timed": [
+        {
+          "pos": [0, 0],
+          "turns": 2,
+          "color": 2
+        }
+      ],
       "board": [
-        [1, 1, 1, 1, 1, 1, 1],
-        [1, 0, 0, 0, 0, 0, 1],
-        [0, 0, 3, 3, 3, 0, 0],
-        [0, 0, 3, 1, 3, 0, 0],
-        [3, 0, 3, 1, 3, 0, 3],
-        [3, 3, 3, 0, 3, 3, 3]
+        [0, 0, 1, 0, 2, 0],
+        [0, 0, 1, 2, 2, 0],
+        [0, 2, 1, -1, 0, 0],
+        [0, 2, -1, 1, 0, 0],
+        [0, 2, 0, 1, 0, 2],
+        [2, 2, 0, 1, 2, 2]
+      ]
+    }
+  },
+  {
+    "id": "77ed695b-414b-4d3a-a64f-6f0d4fd0ccdd",
+    "folderName": "timed",
+    "categoryName": "timed1",
+    "levelData": {
+      "targetColor": 2,
+      "turns": 2,
+      "tools": [0, 0, 0],
+      "portals": [],
+      "timed": [
+        {
+          "pos": [3, 0],
+          "turns": 2,
+          "color": 2
+        }
+      ],
+      "board": [
+        [2, -1, 2, 2, 0, 0],
+        [0, -1, 3, 3, -1, 0],
+        [0, -1, 3, 3, -1, 0],
+        [0, 0, 2, 2, -1, 2]
+      ]
+    }
+  },
+  {
+    "id": "62714882-5627-414e-abf9-6b7728f45058",
+    "folderName": "timed",
+    "categoryName": "timed1",
+    "levelData": {
+      "targetColor": 0,
+      "turns": 2,
+      "tools": [0, 0, 0],
+      "portals": [],
+      "timed": [
+        {
+          "pos": [3, 5],
+          "turns": 1,
+          "color": 2
+        },
+        {
+          "pos": [2, 4],
+          "turns": 2,
+          "color": 0
+        }
+      ],
+      "board": [
+        [2, 2, 3, 3, 3, 3, 0, 0, 2, 0],
+        [3, 2, 3, 3, 3, 3, 3, 0, 1, 3],
+        [3, 2, 1, 3, 3, 3, 3, 3, 3, 3],
+        [3, 0, 3, 3, 3, 3, 3, 3, 3, 3],
+        [3, 3, 3, 3, 3, 3, 3, 3, 3, 0],
+        [3, 3, 3, 3, 0, 0, 0, 3, 3, 2],
+        [1, 1, 3, 3, 0, 0, 0, 3, 3, 3],
+        [1, 1, 1, 3, 3, 3, 0, 1, 0, 0]
       ]
     }
   },
@@ -1360,7 +1764,7 @@
   {
     "id": "c55b14f6-8c00-4a41-a749-056901234214",
     "folderName": "custom",
-    "categoryName": "cusom3",
+    "categoryName": "custom3",
     "levelData": {
       "targetColor": 0,
       "author": "whovianHomestuck",
@@ -1380,7 +1784,7 @@
   {
     "id": "ea34c7ea-3834-4f28-9e08-91fefa8d78ac",
     "folderName": "custom",
-    "categoryName": "cusom3",
+    "categoryName": "custom3",
     "levelData": {
       "targetColor": 2,
       "author": "National-Check9360",

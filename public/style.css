@@ -236,38 +236,38 @@ select {
 
 .folder-card[data-folder="tools"] {
   .folder-card__img {
-    background: url("./assets/textures/levelBg/bgTools.png") no-repeat;
+    background: url("./assets/textures/levelBg/bgTools.webp") no-repeat;
     background-position: center;
   }
 }
 .folder-card[data-folder="default"] {
   .folder-card__img {
-    background: url("./assets/textures/levelBg/bgDefault.png") no-repeat;
+    background: url("./assets/textures/levelBg/bgDefault.webp") no-repeat;
     background-position: center;
   }
 }
 
 .folder-card[data-folder="portals"] {
   .folder-card__img {
-    background: url("./assets/textures/levelBg/bgPortals.png") no-repeat;
+    background: url("./assets/textures/levelBg/bgPortals.webp") no-repeat;
     background-position: center;
   }
 }
 .folder-card[data-folder="custom"] {
   .folder-card__img {
-    background: url("./assets/textures/levelBg/bgCustom.png") no-repeat;
+    background: url("./assets/textures/levelBg/bgCustom.webp") no-repeat;
     background-position: center;
   }
 }
 .folder-card[data-folder="timed"] {
   .folder-card__img {
-    background: url("./assets/textures/levelBg/bgTimed.png") no-repeat;
+    background: url("./assets/textures/levelBg/bgTimed.webp") no-repeat;
     background-position: center;
   }
 }
 .folder-card[data-folder="advanced"] {
   .folder-card__img {
-    background: url("./assets/textures/levelBg/bgAdvanced.png") no-repeat;
+    background: url("./assets/textures/levelBg/bgAdvanced.webp") no-repeat;
     background-position: center;
   }
 }
@@ -577,7 +577,7 @@ input[type="color"]::-webkit-color-swatch {
 }
 
 .folder-title__icon[icon="lang"] {
-  background: no-repeat url("./assets/textures/icons/www.png");
+  background: no-repeat url("./assets/textures/icons/www.webp");
   background-size: contain;
 }
 

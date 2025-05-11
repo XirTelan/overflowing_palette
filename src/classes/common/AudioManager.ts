@@ -17,12 +17,16 @@ export class AudioManager {
   private sfxVolume = 1;
   private bgmVolume = 1;
 
+  private isLocked = true;
+
   constructor(scene: Scene) {
     this.scene = scene;
     this.loadFromLocalStorage();
-    if (this.bgmVolume > 0) {
+
+    scene.input.once("pointerup", () => {
+      this.isLocked = false;
       this.playBGM("bg1");
-    }
+    });
   }
 
   private loadFromLocalStorage(): void {
@@ -48,6 +52,7 @@ export class AudioManager {
   }
 
   playSFX(key: string, config: Phaser.Types.Sound.SoundConfig = {}): boolean {
+    if (this.isLocked) return false;
     return this.scene.sound.play(key, {
       ...config,
       volume: (config.volume ?? 1) * this.sfxVolume * this.masterVolume,
@@ -56,13 +61,11 @@ export class AudioManager {
 
   playBGM(key: string, config: Phaser.Types.Sound.SoundConfig = {}): void {
     if (this.bgm) this.bgm.stop();
-
     this.bgm = this.scene.sound.add(key, {
       loop: true,
       ...config,
       volume: (config.volume ?? 1) * this.bgmVolume * this.masterVolume,
     });
-
     this.bgm.play();
   }
 

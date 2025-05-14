@@ -4,59 +4,54 @@
     "highlightIntensity": 0,
     "fluidColors": 1,
     "sound": 50,
+    "performanceMode": false,
     "transitionDefault": 500,
     "transitionMinimum": 50,
     "transitionMax": 850
   },
+  "sound": {
+    "master": 100,
+    "bgm": 100,
+    "sfx": 100
+  },
   "background": {
     "current": {
-      "key": "bg4",
+      "key": "bg1",
       "distortion": 1,
       "overlay": 0
     },
-    "options": [
-      {
-        "key": "bg1",
-        "name": "Thessaleo Falls"
-      },
-      {
-        "key": "bg2",
-        "name": "Overflowing Palette"
-      },
-      {
-        "key": "bg3",
-        "name": "Riccioli Islands"
-      },
-      {
-        "key": "bg4",
-        "name": "Mt. Firmament"
-      }
-    ]
+    "options": ["bg1", "bg2", "bg3", "bg4"]
   },
   "colors": {
-    "0": { "colorName": "Red", "value": { "x": 1, "y": 0.302, "z": 0.275 } },
+    "0": {
+      "colorName": "default1",
+      "value": { "x": 1, "y": 0.302, "z": 0.275 }
+    },
     "1": {
-      "colorName": "Green",
+      "colorName": "default2",
       "value": { "x": 0.357, "y": 0.8, "z": 0.498 }
     },
-    "2": { "colorName": "Blue", "value": { "x": 0.451, "y": 0.682, "z": 1 } },
+    "2": {
+      "colorName": "default3",
+      "value": { "x": 0.451, "y": 0.682, "z": 1 }
+    },
     "3": {
-      "colorName": "Yellow",
+      "colorName": "default4",
       "value": { "x": 0.969, "y": 0.961, "z": 0.549 }
     },
     "4": {
-      "colorName": "Orange",
+      "colorName": "default5",
       "value": { "x": 1, "y": 0.624, "z": 0 }
     },
     "5": {
-      "colorName": "Purple",
+      "colorName": "default6",
       "value": { "x": 0.69, "y": 0.082, "z": 0.761 }
     },
     "6": {
-      "colorName": "Pink",
+      "colorName": "default7",
       "value": { "x": 1, "y": 0.753, "z": 0.796 }
     },
-    "7": { "colorName": "Cyan", "value": { "x": 0.0, "y": 1, "z": 1 } }
+    "7": { "colorName": "default8", "value": { "x": 0.0, "y": 1, "z": 1 } }
   },
   "shaders": {
     "base": {
@@ -75,7 +70,7 @@
         },
         "radius": { "type": "1f", "value": 0.2 },
         "lightenFactor": { "type": "1f", "value": 0.2 },
-        "exposure": { "type": "1f", "value": 1.0 },
+        "exposure": { "type": "1f", "value": 1.2 },
         "transition": { "type": "1f", "value": 0.0 },
         "active": { "type": "1f", "value": 0.0 },
         "activeOffset": { "type": "2f", "value": { "x": 0.4, "y": 0.7 } },
@@ -144,6 +139,14 @@
           "align": "center"
         }
       }
+    },
+    "options": {
+      "primaryBtn": {
+        "x": 1020,
+        "y": 1030,
+        "width": 350,
+        "height": 50
+      }
     }
   },
   "common": {
@@ -203,7 +206,7 @@
       },
       "targetUI": {
         "x": 450,
-        "y": 960
+        "y": 970
       },
       "colorButtons": {
         "gap": 20,
@@ -228,8 +231,30 @@
       },
       "tools": {
         "x": 150,
-        "y": 370,
-        "offset": 80
+        "y": 600,
+        "offset": 140,
+        "options": [
+          {
+            "textureKey": "swapAll",
+            "textKey": "allwaySwap",
+            "hotkey": "Q",
+            "props": {}
+          },
+          {
+            "textureKey": "swapLine",
+            "hotkey": "W",
+            "textKey": "verticalSwap",
+            "props": {
+              "rotation": 1.5708
+            }
+          },
+          {
+            "textureKey": "swapLine",
+            "textKey": "horizontalSwap",
+            "hotkey": "E",
+            "props": {}
+          }
+        ]
       }
     }
   }

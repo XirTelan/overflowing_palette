@@ -1,10 +1,12 @@
 import { Scene } from "phaser";
-import { OptionFolder } from "../../ui/html/OptionFolder";
+
 import { OptionTab } from "./OptionTab";
-import { getLocal, mapRange } from "../../../utils";
-import { GameConfig } from "../../../types";
-import { OptionSelector } from "../../ui/html/OptionSelector";
-import { RangeSlider } from "../../ui/html/RangeSlider";
+import { getConfig, getLocal, mapRange } from "@/utils";
+import { OptionFolder } from "@/classes/ui/html/OptionFolder";
+import { OptionSelector } from "@/classes/ui/html/OptionSelector";
+import { RangeSlider } from "@/classes/ui/html/RangeSlider";
+
+
 
 export class GameplayTab extends OptionTab {
   currentConfig;
@@ -14,7 +16,6 @@ export class GameplayTab extends OptionTab {
     key: string,
     isActive: boolean,
     btnText: string,
-    width: number,
     btnContainer: HTMLDivElement,
     tabsContainer: HTMLDivElement,
     callback: (key: string) => void,
@@ -30,7 +31,7 @@ export class GameplayTab extends OptionTab {
       context
     );
 
-    const config = scene.cache.json.get("config") as GameConfig;
+    const config = getConfig(scene)
 
     this.currentConfig = config.gameplay;
 
@@ -45,6 +46,15 @@ export class GameplayTab extends OptionTab {
       false,
       (val) => {
         this.currentConfig.fluidColors = val;
+      }
+    );
+    const performanceMode = new OptionSelector(
+      gameplayTab.performanceMode.text,
+      Number(this.currentConfig.performanceMode),
+      gameplayTab.performanceMode.options,
+      false,
+      (val) => {
+        this.currentConfig.performanceMode = !!val;
       }
     );
     const highlightIntensity = new OptionSelector(
@@ -78,19 +88,11 @@ export class GameplayTab extends OptionTab {
         );
       }
     );
-    const soundLevel = new RangeSlider(
-      gameplayTab.soundVolume,
-      this.currentConfig.sound,
-      0,
-      100,
-      (val) => {
-        this.currentConfig.sound = val;
-      }
-    );
+
     folder.add(fluidColors.container);
     folder.add(highlightIntensity.container);
     folder.add(transitionSpeed.container);
-    folder.add(soundLevel.container);
+    folder.add(performanceMode.container);
 
     this.tab.appendChild(folder.container);
   }

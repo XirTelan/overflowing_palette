@@ -1,5 +1,5 @@
+import { BaseBlock } from "@/classes/common/BaseBlock";
 import { Scene } from "phaser";
-import { BaseBlock } from "../common/BaseBlock";
 
 export class PrimaryBtn extends BaseBlock {
   btn: Phaser.GameObjects.NineSlice;

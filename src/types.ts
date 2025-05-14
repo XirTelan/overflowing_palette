@@ -1,6 +1,7 @@
 import { RATES } from "./utils";
 
 export enum ColorType {
+  "block" = -1,
   "red",
   "green",
   "blue",
@@ -19,18 +20,24 @@ export type Vector2 = {
   y: number;
 };
 
-export type Vector3 = {
-  x: number;
-  y: number;
+export type Vector3 = Vector2 & {
   z: number;
 };
 
 export enum Tools {
-  "none",
+  "none" = -1,
   "All",
   "Horizontal",
   "Vertical",
 }
+export type Position = [number, number];
+
+export type Portal = {
+  pair: [Position, Position];
+  // color?: string;
+};
+
+export type TimedCell = { pos: Position; color: number; turns: number };
 
 export type LevelData = {
   board: number[][];
@@ -38,18 +45,20 @@ export type LevelData = {
   turns: number;
   author?: string;
   tools?: [number, number, number];
+  portals?: Portal[];
+  timed?: TimedCell[];
 };
+
+export type LevelEntry = {
+  id: string;
+  folderName: string;
+  categoryName: string;
+  levelData: LevelData;
+};
+
+export type LevelsJson = LevelEntry[];
 
 export type LevelDifficulty = keyof typeof RATES;
-
-export type LevelsJson = LevelFolder[];
-
-export type LevelFolder = {
-  folderName: string;
-  categories: LevelCategory[];
-};
-
-export type LevelCategory = { categoryName: string; levels: LevelData[] };
 
 export enum GameStatus {
   "Waiting",
@@ -60,10 +69,14 @@ export type EndlessOptions = {
   rows: number;
   columns: number;
   colorsCount: number;
-  difficulty: LevelDifficulty
+  difficulty: LevelDifficulty;
 };
 
 export type LanguageConfig = {
+  loading: string;
+  colors: string[];
+  levels: Record<string, string>;
+  backgounds: Record<string, string>;
   previewBlock: {
     preview: string;
     author: string;
@@ -73,6 +86,7 @@ export type LanguageConfig = {
     cleared: string;
     time: string;
     timeDefault: string;
+    empty: string;
   };
   mainMenu: {
     startBtn: string;
@@ -82,6 +96,8 @@ export type LanguageConfig = {
     createLevel: string;
     options: string;
     gitHub: string;
+    importBtn: string;
+    tutorials: string
   };
   endlessZen: {
     folderName: string;
@@ -93,6 +109,7 @@ export type LanguageConfig = {
   };
   game: {
     ui: {
+      skipBtn: string;
       mode: string;
       movesRemain: string;
       movesUsed: string;
@@ -102,6 +119,8 @@ export type LanguageConfig = {
       resetBtn: string;
       export: string;
       tools: string;
+      toolUses: string;
+      toolSelected: string;
     };
     tools: Record<string, string>;
   };
@@ -126,6 +145,7 @@ export type LanguageConfig = {
       general: string;
       colors: string;
       gameplay: string;
+      sound: string;
     };
     colorsTab: {
       folderName: string;
@@ -138,8 +158,18 @@ export type LanguageConfig = {
       distortion: string;
       overlay: string;
     };
+    soundTab: {
+      folderName: string;
+      master: string;
+      sfx: string;
+      bgm: string;
+    };
     gameplayTab: {
       animationSpeed: string;
+      performanceMode: {
+        text: string;
+        options: [string, string];
+      };
       folderName: string;
       highlightIntensity: {
         text: string;
@@ -153,7 +183,12 @@ export type LanguageConfig = {
     };
     defaultToggle: [string, string];
   };
-  import: string;
+  importBlock: {
+    startBtn: string;
+    folderName: string;
+    loadBtn: string;
+    cancelBtn: string;
+  };
   exportBlock: {
     title: string;
     copyJson: string;
@@ -169,17 +204,14 @@ export type LanguageConfig = {
     cancelBtn: string;
     copy: string;
   };
+  tutorials: TutorialTopics;
 };
 
 export type LocalizationConfig = {
-  meta: {
-    langsAvailable: {
-      key: string;
-      name: string;
-    }[];
-  };
-  langs: {
-    [key: string]: LanguageConfig;
+  [key: string]: {
+    key: string;
+    name: string;
+    path: string;
   };
 };
 
@@ -196,37 +228,102 @@ export type BackgroundConfig = {
     distortion: number;
     overlay: number;
   };
-  options: {
-    key: string;
-    name: string;
-  }[];
+  options: string[];
 };
 
 export type GameConfig = {
   gameplay: {
+    performanceMode: boolean;
     highlightIntensity: number;
     fluidColors: number;
-    sound: number;
     transitionDefault: number;
     transitionMinimum: number;
     transitionMax: number;
+  };
+  sound: {
+    master: number;
+    bgm: number;
+    sfx: number;
   };
   background: BackgroundConfig;
   colors: ColorConfig;
   shaders: {
     base: { init: Record<string, unknown> };
   };
-  mainMenu: {
-    buttonsBlock: {
-      x: number;
-      y: number;
-      keys: string[];
-      gap: number;
-    };
-  };
+  mainMenu: MainMenuConfig;
   game: {
     gridOptions: GridOptions;
     ui: UiOptions;
+  };
+};
+
+type MainMenuConfig = {
+  levelSelection: {
+    selectedLevelInfo: {
+      previewBlock: {
+        width: number;
+        height: number;
+        cellSize: number;
+      };
+      infoBlock: {
+        x: number;
+        y: number;
+        width: number;
+        height: number;
+      };
+      turnsTextOffset: {
+        x: number;
+        y: number;
+      };
+      targetColorTextOffset: {
+        x: number;
+        y: number;
+      };
+      defaultStyle: {
+        color: string;
+        font: string;
+      };
+      emptyText: {
+        y: number;
+        style: {
+          color: string;
+          font: string;
+        };
+      };
+    };
+  };
+  levelEditor: {
+    defaultStyle: {
+      color: string;
+      font: string;
+    };
+  };
+  buttonsBlock: {
+    x: number;
+    y: number;
+    gap: number;
+  };
+  menuBtn: {
+    btn: {
+      offset: number;
+    };
+    text: {
+      x: number;
+      y: number;
+      style: {
+        color: string;
+        font: string;
+        align: string;
+      };
+    };
+  };
+  options: {
+    primaryBtn: {
+      x: number;
+      y: number;
+      width: number;
+      height: number;
+    };
   };
 };
 
@@ -245,6 +342,12 @@ export type GridOptions = {
     top: number;
     bottom: number;
   };
+};
+export type ToolOption = {
+  textureKey: string;
+  textKey: string;
+  hotkey: string;
+  props: Record<string, any>;
 };
 
 export type UiOptions = {
@@ -307,6 +410,7 @@ export type UiOptions = {
     x: number;
     y: number;
     offset: number;
+    options: ToolOption[];
   };
 };
 
@@ -341,6 +445,8 @@ export type GameStates = {
   mode: GameMode;
 };
 
+export type CellAction = (x: number, y: number) => void;
+
 export type LoadingConfig = {
   width: number;
   boxPadding: number;
@@ -355,3 +461,10 @@ export interface MenuTabProps {
   width: number;
   height: number;
 }
+
+export type TutorialTopic = {
+  title: string;
+  content: string;
+};
+
+export type TutorialTopics = Record<string, TutorialTopic>;

@@ -1,7 +1,7 @@
+import { Record } from "@/classes/ui/html/Record";
+import { LevelData, ColorType, LanguageConfig } from "@/types";
+import { getLocal, getConfig } from "@/utils";
 import { Scene } from "phaser";
-import { LevelData, GameConfig, ColorType, LanguageConfig } from "../../../types";
-import { getLocal } from "../../../utils";
-import { Record } from "../../ui/html/Record";
 
 export class InfoBlock {
   scene: Scene;
@@ -18,7 +18,7 @@ export class InfoBlock {
     const { previewBlock } = getLocal(scene);
 
     const vieBox = scene.add
-      .dom(x, 380, "div", {
+      .dom(x, y, "div", {
         width: `420px`,
         height: `500px`,
         fontSize: "24px",
@@ -59,7 +59,7 @@ export class InfoBlock {
   }
 
   update(turns: string, levelData: LevelData, cleared?: ClearedData) {
-    const { colors } = this.scene.cache.json.get("config") as GameConfig;
+    const { colors } = getConfig(this.scene);
     this.tartgetColorText.childNodes[1].textContent = `${
       colors[levelData.targetColor as ColorType].colorName
     }`;
@@ -72,7 +72,7 @@ export class InfoBlock {
     );
 
     this.turnsText.childNodes[1].textContent = turns;
-    this.gridSize.childNodes[1].textContent = `${levelData.board.length}x${levelData.board[0].length} `;
+    this.gridSize.childNodes[1].textContent = `${levelData.board[0].length}x${levelData.board.length} `;
 
     if (levelData.author) {
       this.author.style.display = "flex";

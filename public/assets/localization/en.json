@@ -1,0 +1,201 @@
+{
+  "loading": "Loading",
+  "backgounds": {
+    "bg1": "Thessaleo Fells",
+    "bg2": "Overflowing Palette",
+    "bg3": "Riccioli Islands",
+    "bg4": "Mt. Firmament"
+  },
+  "colors": [
+    "Red",
+    "Green",
+    "Blue",
+    "Yellow",
+    "Orange",
+    "Purple",
+    "Pink",
+    "Cyan"
+  ],
+  "levels": {
+    "default": "Default",
+    "default1": "Riccioli Islands",
+    "default2": "Whisperwind Haven",
+    "default3": "Numbus Sanctum",
+    "default4": "Thessaleo Fells",
+    "default5": "Averardo Vault",
+    "default6": "Fagaceae Peninsula",
+    "default7": "Penitent's End",
+    "default8": "Hallowed Reach",
+    "default9": "Avinoleum",
+    "default10": "Beohr Waters",
+    "advanced": "Advanced",
+    "advanced1": "Easy",
+    "advanced2": "Normal",
+    "advanced3": "Hard",
+    "tools": "Tools",
+    "tools1": "Easy",
+    "tools2": "Normal",
+    "tools3": "Hard",
+    "portals": "Portals",
+    "portals1": "Easy",
+    "timed": "Timers",
+    "timed1": "Easy",
+    "timed2": "Normal",
+    "custom": "Custom",
+    "custom1": "Pack 1",
+    "custom2": "Pack 2",
+    "custom3": "From users",
+    "custom4": "Chaos"
+  },
+  "previewBlock": {
+    "preview": "Preview",
+    "author": "Author",
+    "moves": "Moves",
+    "gridSize": "Grid size",
+    "targetColor": "Target Color",
+    "cleared": "CLEARED",
+    "time": "Time",
+    "timeDefault": "A long time ago",
+    "empty": "[No level selected]"
+  },
+  "endlessZen": {
+    "folderName": "Grid Options",
+    "columnsCount": "Columns",
+    "rowsCount": "Rows",
+    "colorsCount": "Colors count",
+    "difficulty": "Difficulty",
+    "difficulties": ["Easy", "Medium", "Hard", "Mess"]
+  },
+  "mainMenu": {
+    "startBtn": "Start",
+    "backBtn": "Back",
+    "selectLevel": "Select Level",
+    "endlessZen": "Endless Zen",
+    "createLevel": "Create Level",
+    "options": "Options",
+    "gitHub": "Open Docs\n (GitHub)",
+    "importBtn": "Import",
+    "tutorials": "Tutorials"
+  },
+  "game": {
+    "ui": {
+      "mode": "Mode:Editor",
+      "movesRemain": "Remaining Moves:",
+      "movesUsed": "Moves Used:",
+      "targetColor": "Turn all the blocks into",
+      "targetColorEditor": "Target color:",
+      "movesCount": "Moves count:",
+      "resetBtn": "Reset",
+      "export": "Export",
+      "tools": "Tools",
+      "toolSelected": "Swap tool is selected",
+      "toolUses": "Uses",
+      "skipBtn": "Skip Level"
+    },
+    "tools": {
+      "verticalSwap": "Vertical Swap",
+      "horizontalSwap": "Horizontal Swap",
+      "allwaySwap": "All Way Swap"
+    }
+  },
+  "levelEditor": {
+    "folderName": "Grid Options",
+    "gridColumns": "Columns:",
+    "gridRows": "Rows:",
+    "gridColor": "Fill Color"
+  },
+  "resultScreen": {
+    "win": "Level Complete",
+    "time": "Time:",
+    "btnMain": "Main Menu",
+    "btnNext": "Next Level",
+    "btnShare": "Share",
+    "movesUsed": "Moves used"
+  },
+  "options": {
+    "btnSave": "Save",
+    "btnReset": "Reset",
+    "tabs": {
+      "general": "General",
+      "colors": "Colors",
+      "sound": "Sound",
+      "gameplay": "Gameplay"
+    },
+    "colorsTab": {
+      "folderName": "Colors customization"
+    },
+    "generalTab": {
+      "languageBlock": "Language",
+      "languageSelection": "Selected language",
+      "background": "Background",
+      "image": "Image",
+      "distortion": "Distortion",
+      "overlay": "Overlay"
+    },
+    "soundTab": {
+      "folderName": "Volume",
+      "master": "Master",
+      "sfx": "Sound Effects",
+      "bgm": "Music"
+    },
+    "gameplayTab": {
+      "animationSpeed": "Animation Speed",
+      "folderName": "Grid Options",
+      "highlightIntensity": {
+        "text": "Highlight Intensity",
+        "options": ["Normal", "Strong"]
+      },
+      "performanceMode": {
+        "text": "Performance Mode",
+        "options": ["Off", "On"]
+      },
+      "fluidColors": {
+        "text": "Fluid Colors",
+        "options": ["Off", "On"]
+      },
+      "soundVolume": "Sound volume"
+    },
+    "defaultToggle": ["Off", "On"]
+  },
+  "importBlock": {
+    "startBtn": "Start",
+    "folderName": "Import Level",
+    "loadBtn": "Load",
+    "cancelBtn": "Cancel"
+  },
+  "exportBlock": {
+    "title": "EXPORT LEVEL",
+    "switch": {
+      "string": "By string",
+      "json": "By JSON"
+    },
+    "folders": {
+      "string": "Export as string",
+      "json": "Export as JSON"
+    },
+    "cancelBtn": "Cancel",
+    "copy": "Copy to clipboard"
+  },
+  "tutorials": {
+    "basics": {
+      "title": "Basics",
+      "content": "<img src=\"assets/textures/tutorials/basics.webp\"   loading=\"lazy\" alt=\"Basics Example\" class=\"tutorial-img\" /><p>Select a color on the right and apply it to the blocks on the palette to the left. The new color will spread to all connected blocks of the same color.</p><p>Different levels have different move limits. Plan your moves carefully to solve puzzles.</p>"
+    },
+    "mechanicBlocked": {
+      "title": "Mechanics: Locked Colors",
+      "content": "<img src=\"assets/textures/tutorials/blocked.webp\" loading=\"lazy\" alt=\"Locked Blocks\" class=\"tutorial-img\" /><p>Locked blocks cannot be changed directly. They act as walls that block color spreading.</p>"
+    },
+    "mechanicTools": {
+      "title": "Mechanics: Swap Tools",
+      "content": "<img src=\"assets/textures/tutorials/tools.webp\" loading=\"lazy\" alt=\"Tools Overview\" class=\"tutorial-img\" /><p>Some levels introduce swap tools that exchange the positions of two blocks with different colors. There are three types:</p><ul><li><strong>Horizontal Tool</strong>: Swaps blocks horizontally.</li><li><strong>Vertical Tool</strong>: Swaps blocks vertically.</li><li><strong>Omni Tool</strong>: Swaps blocks in any direction.</li></ul>"
+    },
+    "mechanicPortals": {
+      "title": "Mechanics: Portals",
+      "content": "<img src=\"assets/textures/tutorials/portals.webp\" loading=\"lazy\" alt=\"Portal Demo\" class=\"tutorial-img\" /><p>Portals link two blocks together and behave as if they are adjacent. Coloring one will also affect the other, even across the board.</p>"
+    },
+    "mechanicTimed": {
+      "title": "Mechanics: Timer Block",
+      "content": "<img src=\"assets/textures/tutorials/timer.webp\" loading=\"lazy\" alt=\"Timer Block\" class=\"tutorial-img\" /><p>Numbers on cells show how many turns remain before the block triggers. The number color indicates what color it will become. When triggered, the block changes its own color and affects adjacent blocks with the same color.</p>"
+    }
+  }
+}

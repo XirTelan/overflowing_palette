@@ -5,6 +5,8 @@ import { OptionFolder } from "../../ui/html/OptionFolder";
 import { getLocal, normalizedRgbToHexString } from "../../../utils";
 
 export class ColorsTab extends OptionTab {
+  isDirty: boolean = false;
+
   colorInputs: ColorInputs = {
     names: [],
     values: [],
@@ -15,10 +17,10 @@ export class ColorsTab extends OptionTab {
     key: string,
     isActive: boolean,
     btnText: string,
-    width: number,
     btnContainer: HTMLDivElement,
     tabsContainer: HTMLDivElement,
     callback: (key: string) => void,
+
     context: object
   ) {
     super(
@@ -59,13 +61,19 @@ export class ColorsTab extends OptionTab {
     indexText.textContent = `${index}`;
     indexBlock.append(indexText);
 
+    const checkDirty = () => {
+      this.isDirty = true;
+    };
+
     const colorName = document.createElement("input");
     colorName.classList.add("selector__name");
     colorName.defaultValue = name;
+    colorName.addEventListener("input", checkDirty);
 
     const colorPicker = document.createElement("input");
     colorPicker.setAttribute("type", "color");
     colorPicker.defaultValue = `${normalizedRgbToHexString(value)}`;
+    colorPicker.addEventListener("input", checkDirty);
 
     container.appendChild(indexBlock);
     container.appendChild(colorName);
@@ -85,9 +93,9 @@ export class ColorsTab extends OptionTab {
       result[indx] = {
         colorName: name.value,
         value: {
-          x: color.red / 255,
-          y: color.green / 255,
-          z: color.blue / 255,
+          x: Math.round((color.red / 255) * 1000) / 1000,
+          y: Math.round((color.green / 255) * 1000) / 1000,
+          z: Math.round((color.blue / 255) * 1000) / 1000,
         },
       };
     });

@@ -1,8 +1,15 @@
 import { Game } from "../../scenes/Game";
-import { GameMode, GameStatus, LevelData } from "../../types";
+import {
+  GameMode,
+  GameStatus,
+  LevelEntry,
+  Portal,
+  TimedCell,
+} from "../../types";
 import { getLocal } from "../../utils";
 import { OptionFolder } from "../ui/html/OptionFolder";
 import { Switch } from "../ui/html/Switch";
+import { v4 as uuid } from "uuid";
 
 export class Export {
   viewBox: Phaser.GameObjects.DOMElement;
@@ -117,7 +124,6 @@ export class Export {
     this.container.add([bg, this.viewBox]);
     this.viewBox.depth = 10;
 
-    this.update();
     this.toggleFolders(this.selectedType);
     this.hide();
   }
@@ -147,16 +153,24 @@ export class Export {
             return cell.map((cell) => cell.color);
           });
 
-    const jsonData: LevelData = {
+    const levelJson = {
+      id: uuid(),
+      folderName: "generated",
+      categoryName: "generated1",
+    } as LevelEntry;
+
+    levelJson.levelData = {
       targetColor: this.scene.gameStates.targetColor,
       turns: this.scene.gameStates.turns,
       tools: this.scene.gameStates.availableTools,
+      portals: this.scene.editor?.getValues("portal") as Portal[],
+      timed: this.scene.editor.getValues("timed") as TimedCell[],
       board: data,
     };
 
     this.share = {
-      json: JSON.stringify(jsonData, null, "\t"),
-      base64: btoa(JSON.stringify(jsonData, null)),
+      json: JSON.stringify(levelJson, null, "\t"),
+      base64: btoa(JSON.stringify(levelJson.levelData, null)),
     };
   }
 

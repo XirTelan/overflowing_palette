@@ -1,18 +1,34 @@
+import { BaseBlock } from "@/classes/common/BaseBlock";
+import { PrimaryBtn } from "@/classes/ui/buttons/PrimaryBtn";
+import { OptionFolder } from "@/classes/ui/html/OptionFolder";
+import { getLocal } from "@/utils";
 import { Scene } from "phaser";
-import { PrimaryBtn } from "../../ui/PrimaryBtn";
-import { BaseBlock } from "../../common/BaseBlock";
 import { SelectedLevelInfo } from "./SelectedLevelInfo";
-import { OptionFolder } from "../../ui/html/OptionFolder";
 
 export class ImportLevel extends BaseBlock {
   viewBox: Phaser.GameObjects.DOMElement;
   applyBtn: PrimaryBtn;
 
-  previewBlock: SelectedLevelInfo;
+  selectedLevelInfo: SelectedLevelInfo;
 
-  constructor(scene: Scene) {
+  constructor(scene: Scene, selectedLevelInfo?: SelectedLevelInfo) {
     super(0, 0, scene);
     const height = scene.cameras.main.height;
+
+    const { importBlock } = getLocal(scene);
+    if (!selectedLevelInfo) {
+      this.selectedLevelInfo = new SelectedLevelInfo(
+        1500,
+        0,
+        420,
+        height,
+        this.applyBtn,
+        scene
+      );
+      this.container.add(this.selectedLevelInfo.container);
+    } else {
+      this.selectedLevelInfo = selectedLevelInfo;
+    }
 
     this.viewBox = scene.add
       .dom(500, 0, "div", {
@@ -27,6 +43,7 @@ export class ImportLevel extends BaseBlock {
       .setOrigin(0);
     const textArea = document.createElement("textarea");
     textArea.classList.add("import-block__text");
+    textArea.setAttribute("placeholder", "Paste string here");
 
     const container = document.createElement("div");
     container.classList.add("wrapper");
@@ -37,50 +54,25 @@ export class ImportLevel extends BaseBlock {
     this.applyBtn = new PrimaryBtn(
       scene.cameras.main.width / 2,
       scene.cameras.main.height / 2 + 50,
-      "Start",
+      importBlock.startBtn,
       350,
       50,
       scene
     );
     this.container.add([this.applyBtn.container, this.viewBox]);
 
-    const folder = new OptionFolder("Import level");
+    const folder = new OptionFolder(importBlock.folderName);
     folder.add(textArea);
 
-    const buttonBlock = document.createElement("div");
-    buttonBlock.classList.add("import-block__btns");
-    const btn = document.createElement("button");
-    btn.classList.add("primary-btn");
-    btn.textContent = "Load";
-    btn.addEventListener("click", () => {
+    textArea.addEventListener("input", () => {
       const levelData = this.parseString(textArea.value);
       if (!levelData) return;
-      this.previewBlock.show();
-      this.previewBlock.updateInfo(levelData);
+      this.selectedLevelInfo.show();
+      this.selectedLevelInfo.updateInfo(levelData);
     });
 
-    const btnClose = document.createElement("button");
-    btnClose.classList.add("primary-btn");
-    btnClose.textContent = "Cancel";
-    btnClose.addEventListener("click", () => {
-      textArea.value = "";
-      this.hide();
-    });
-
-    buttonBlock.appendChild(btnClose);
-    buttonBlock.appendChild(btn);
-
-    this.previewBlock = new SelectedLevelInfo(
-      1500,
-      0,
-      420,
-      height,
-      this.applyBtn,
-      scene
-    );
     container.appendChild(folder.container);
-    container.appendChild(buttonBlock);
-    this.container.add(this.previewBlock.container);
+
     this.hide();
   }
 
@@ -98,6 +90,6 @@ export class ImportLevel extends BaseBlock {
     super.hide();
     const node = this.viewBox.node as HTMLTextAreaElement;
     node.value = "";
-    this.previewBlock.hide();
+    this.selectedLevelInfo.hide();
   }
 }

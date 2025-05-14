@@ -1,0 +1,12 @@
+{
+  "en": {
+    "key": "en",
+    "name": "English",
+    "path": "assets/localization/en.json"
+  },
+  "ru": {
+    "key": "ru",
+    "name": "Русский",
+    "path": "assets/localization/ru.json"
+  }
+}

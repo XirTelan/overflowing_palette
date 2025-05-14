@@ -1,45 +1,45 @@
-import { BaseBlock } from "../common/BaseBlock";
-import { Game } from "../../scenes/Game";
+import { Game } from "@/scenes/Game";
 import {
-  GameMode,
   GameSceneData,
-  GameStatus,
   LanguageConfig,
-  LevelsJson,
-} from "../../types";
-import { PrimaryBtn } from "../ui/PrimaryBtn";
+  GameStatus,
+  GameMode,
+  LevelEntry,
+} from "@/types";
+import {
+  getLocal,
+  generateLevel,
+  getUserLevelsCleared,
+  findNextLevel,
+  localStoragePrefix,
+} from "@/utils";
+import { BaseBlock } from "../common/BaseBlock";
+import { PrimaryBtn } from "../ui/buttons/PrimaryBtn";
 import { Record } from "../ui/html/Record";
-import { generateLevel, getLocal, getUserLevelsCleared } from "../../utils";
 
 export class ResultScreen extends BaseBlock {
   scene: Game;
-  nextLevelData: GameSceneData;
+  nextLevelData?: GameSceneData;
   local: LanguageConfig["resultScreen"];
 
   constructor(scene: Game) {
-    scene.cameras.main.postFX.addBlur(1);
-
     const { width, height } = scene.cameras.main;
-
     const centerX = width / 2;
     const centerY = height / 2;
 
     super(centerX - width / 2, centerY - height / 2, scene);
 
     this.scene = scene;
+    this.local = getLocal(scene).resultScreen;
 
-    scene.gameStates.state = GameStatus.Waiting;
-
-    const { resultScreen } = getLocal(scene);
-    this.local = resultScreen;
-
-    const levelKey = this.scene.gameStates.levelKey;
+    this.scene.cameras.main.postFX.addBlur(1);
+    this.scene.setGameState(GameStatus.Waiting);
 
     const timeElapsed = new Date(scene.time.now - scene.startTime)
       .toISOString()
       .slice(11, 19);
 
-    this.saveRecordAboutLevel(levelKey, timeElapsed);
+    this.saveRecordAboutLevel(this.scene.gameStates.levelKey, timeElapsed);
 
     const viewBox = scene.add
       .dom(0, 0, "div", {
@@ -51,45 +51,44 @@ export class ResultScreen extends BaseBlock {
 
     const resultContent = this.createResultContent(viewBox.node, timeElapsed);
     const buttonBlock = this.createButtonsBlock(resultContent);
-
+    const levels: LevelEntry[] = scene.cache.json.get("levels") || [];
     const isEndless = this.scene.gameStates.mode === GameMode.Endless;
-    let isNextLevel;
+    const hasNextLevel = isEndless
+      ? this.generateNextLevel()
+      : !!(this.nextLevelData = findNextLevel(
+          this.scene.gameStates.levelKey,
+          levels
+        ));
 
-    if (isEndless) {
-      isNextLevel = this.generateNextLevel();
-    } else {
-      isNextLevel = this.findNextLevel();
-    }
-
-    if (isNextLevel) {
-      const btn = document.createElement("button");
-      btn.classList.add("primary-btn");
-      btn.addEventListener("click", () => {
+    if (hasNextLevel) {
+      const nextBtn = this.createPrimaryBtn(this.local.btnNext, () => {
         this.scene.scene.start("LoadingGame", this.nextLevelData);
       });
-      btn.textContent = resultScreen.btnNext;
-      buttonBlock.append(btn);
+      buttonBlock.append(nextBtn);
     }
 
-    scene.input.enabled = false;
-    scene.setGameState(GameStatus.Waiting);
+    this.scene.input.enabled = false;
   }
 
-  generateNextLevel() {
-    if (!this.scene.gameStates.endlessOptions) return false;
-
-    const { rows, columns, colorsCount, difficulty } =
-      this.scene.gameStates.endlessOptions!;
+  generateNextLevel(): boolean {
+    const options = this.scene.gameStates.endlessOptions;
+    if (!options) return false;
 
     this.nextLevelData = {
       mode: GameMode.Endless,
-      levelData: generateLevel(rows, columns, colorsCount, difficulty),
-      endlessOptions: this.scene.gameStates.endlessOptions,
+      levelData: generateLevel(
+        options.rows,
+        options.columns,
+        options.colorsCount,
+        options.difficulty
+      ),
+      endlessOptions: options,
     };
+
     return true;
   }
 
-  createResultContent(viewBox: Element, time: string) {
+  createResultContent(viewBox: Element, time: string): HTMLElement {
     const container = document.createElement("div");
     container.classList.add("wrapper", "results-screen__wrapper");
 
@@ -97,46 +96,48 @@ export class ResultScreen extends BaseBlock {
     content.classList.add("result-screen");
     container.appendChild(content);
 
-    const textBlock = document.createElement("div");
-    textBlock.classList.add("result-screen__cleared");
-    textBlock.textContent = this.local.win;
-    const textBlockBg = document.createElement("div");
-    textBlockBg.classList.add("cleared-bg");
+    const clearedText = document.createElement("div");
+    clearedText.classList.add("result-screen__cleared");
+    clearedText.textContent = this.local.win;
 
-    textBlock.append(textBlockBg);
+    const clearedBg = document.createElement("div");
+    clearedBg.classList.add("cleared-bg");
+    clearedText.append(clearedBg);
 
-    content.appendChild(textBlock);
+    content.appendChild(clearedText);
 
     const resultsBlock = document.createElement("div");
     resultsBlock.classList.add("results");
     content.appendChild(resultsBlock);
 
-    const timeRecord = this.addRecord(this.local.time, time);
-    resultsBlock.appendChild(timeRecord);
+    resultsBlock.appendChild(this.addRecord(this.local.time, time));
 
     if (this.scene.gameStates.mode === GameMode.Endless) {
-      const turnUsed = this.addRecord(
-        this.local.movesUsed,
-        String(this.scene.gameStates.turns)
+      resultsBlock.appendChild(
+        this.addRecord(
+          this.local.movesUsed,
+          String(this.scene.gameStates.turns)
+        )
       );
-      resultsBlock.appendChild(turnUsed);
     }
 
     viewBox.appendChild(container);
     return container;
   }
 
-  createButtonsBlock(container: HTMLElement) {
+  createButtonsBlock(container: HTMLElement): HTMLElement {
     const buttonsBlock = document.createElement("div");
     buttonsBlock.classList.add("results_buttons");
 
-    const btn = this.createPrimiryBtn(this.local.btnMain, () => {
+    const mainMenuBtn = this.createPrimaryBtn(this.local.btnMain, () => {
       this.scene.scene.start("MainMenu");
     });
-    buttonsBlock.append(btn);
+    buttonsBlock.append(mainMenuBtn);
 
     if (this.scene.gameStates.mode === GameMode.Endless) {
-      const shareBtn = this.createShareButton();
+      const shareBtn = this.createPrimaryBtn(this.local.btnShare, () => {
+        this.scene.exportBlock.show();
+      });
       buttonsBlock.append(shareBtn);
     }
 
@@ -144,20 +145,11 @@ export class ResultScreen extends BaseBlock {
     return buttonsBlock;
   }
 
-  createPrimiryBtn(text: string, onClick: () => void) {
+  createPrimaryBtn(text: string, onClick: () => void): HTMLButtonElement {
     const btn = document.createElement("button");
     btn.classList.add("primary-btn");
     btn.textContent = text;
-    btn.addEventListener("click", () => {
-      onClick();
-    });
-    return btn;
-  }
-
-  createShareButton() {
-    const btn = this.createPrimiryBtn(this.local.btnShare, () => {
-      this.scene.exportBlock.show();
-    });
+    btn.addEventListener("click", onClick);
     return btn;
   }
 
@@ -165,22 +157,24 @@ export class ResultScreen extends BaseBlock {
     if (!levelKey) return;
 
     const cache = getUserLevelsCleared();
+    cache.set(levelKey, { time });
 
-    cache.set(levelKey, {
-      time,
-    });
-
-    localStorage.setItem("levels.cleared", JSON.stringify(Array.from(cache)));
+    localStorage.setItem(
+      `${localStoragePrefix}levels.cleared`,
+      JSON.stringify(Array.from(cache))
+    );
   }
-  addRecord(text: string, value: string) {
+
+  addRecord(label: string, value: string): HTMLElement {
     return new Record(
-      text,
+      label,
       value,
       "results__item",
       "results__label",
       "results__value"
     ).container;
   }
+
   createNextLevelBtn(x: number, y: number) {
     this.container.add(
       new PrimaryBtn(x, y, this.local.btnNext, 300, 50, this.scene, () => {
@@ -188,59 +182,5 @@ export class ResultScreen extends BaseBlock {
         this.scene.cameras.main.postFX.clear();
       }).container
     );
-  }
-  findNextLevel() {
-    const levelKey = this.scene.gameStates.levelKey;
-    if (!levelKey) return false;
-
-    const [folderName, categoryName, indx] = levelKey.split(".");
-    if (!folderName || !categoryName || !indx) return false;
-    const levels: LevelsJson = this.scene.cache.json.get("levels");
-
-    const currentFolderIndex = levels.findIndex(
-      (folder) => folder.folderName === folderName
-    );
-    const currentFolder = levels[currentFolderIndex];
-    const currentCategoryIndex = currentFolder.categories.findIndex(
-      (category) => category.categoryName === categoryName
-    );
-    const currentCategory = currentFolder.categories[currentCategoryIndex];
-
-    const levelsCount = currentCategory.levels.length;
-
-    let nextFolderIndx = currentFolderIndex;
-    let nextCategoryIndx = currentCategoryIndex;
-    let nextLevelIndx = Number(indx) - 1;
-
-    if (nextLevelIndx < levelsCount - 1) {
-      nextLevelIndx++;
-    } else {
-      nextLevelIndx = 0;
-      nextCategoryIndx++;
-    }
-
-    if (!currentFolder.categories[nextCategoryIndx]) {
-      nextCategoryIndx = 0;
-      nextFolderIndx++;
-    }
-
-    if (!levels[nextFolderIndx]) {
-      return false;
-    }
-
-    const nextFolder = levels[nextFolderIndx];
-    const nextCategory = nextFolder.categories[nextCategoryIndx];
-
-    const newKey = `${nextFolder.folderName}.${
-      nextFolder.categories[nextCategoryIndx].categoryName
-    }.${nextLevelIndx + 1}`;
-
-    this.nextLevelData = {
-      mode: GameMode.Play,
-      levelKey: newKey,
-      levelData: nextCategory.levels[nextLevelIndx],
-    };
-
-    return true;
   }
 }

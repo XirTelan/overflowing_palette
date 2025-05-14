@@ -3,17 +3,17 @@ import Phaser from "phaser";
 
 export const normalizedRgbToHexString = (color: Vector3): string => {
   return Phaser.Display.Color.RGBToString(
-    color.x * 255,
-    color.y * 255,
-    color.z * 255
+    Math.floor(color.x * 255),
+    Math.floor(color.y * 255),
+    Math.floor(color.z * 255)
   );
 };
 
 export const normalizedRgbToColor = (color: Vector3): number => {
   return Phaser.Display.Color.GetColor(
-    color.x * 255,
-    color.y * 255,
-    color.z * 255
+    Math.floor(color.x * 255),
+    Math.floor(color.y * 255),
+    Math.floor(color.z * 255)
   );
 };
 

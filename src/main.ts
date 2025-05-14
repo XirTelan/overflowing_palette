@@ -24,4 +24,8 @@ const game = new Phaser.Game(config);
 
 document.addEventListener("DOMContentLoaded", () => {
   game.scene.start("Boot");
+  document.body.addEventListener("contextmenu", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  });
 });

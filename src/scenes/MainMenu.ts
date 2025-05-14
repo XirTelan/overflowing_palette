@@ -1,13 +1,16 @@
+import { AudioManager } from "@/classes/common/AudioManager";
+import { DebugMenu } from "@/classes/common/DebugMenu";
+import { EndlessZen } from "@/classes/MainMenu/EndlessZen";
+import { LevelEditor } from "@/classes/MainMenu/LevelEditor";
+import { LevelSelection } from "@/classes/MainMenu/LevelSelection/LevelSelection";
+import { MenuTab } from "@/classes/MainMenu/MenuTab";
+import { Options } from "@/classes/MainMenu/Options/Options";
+import { TutorialsTab } from "@/classes/MainMenu/Tutorials/TutorialsTab";
+import { Background } from "@/classes/ui/Background";
+import { MenuBtn } from "@/classes/ui/buttons/MenuBtn";
+import { LanguageConfig } from "@/types";
+import { getConfig, getLocal } from "@/utils";
 import { Scene } from "phaser";
-import { GameConfig, LanguageConfig } from "../types";
-import { MenuBtn } from "../classes/ui/MenuBtn";
-import { LevelSelection } from "../classes/MainMenu/LevelSelection/LevelSelection";
-import { MenuTab } from "../classes/MainMenu/MenuTab";
-import { LevelEditor } from "../classes/MainMenu/LevelEditor";
-import { Options } from "../classes/MainMenu/Options/Options";
-import { Background } from "../classes/ui/Background";
-import { EndlessZen } from "../classes/MainMenu/EndlessZen";
-import { getLocal } from "../utils";
 
 type TabConfig = {
   key: string;
@@ -16,25 +19,11 @@ type TabConfig = {
 };
 
 const TABS: TabConfig[] = [
-  {
-    key: "LevelSelector",
-    props: {
-      width: 1000,
-    },
-    type: LevelSelection,
-  },
-  {
-    key: "LevelEditor",
-    type: LevelEditor,
-  },
-  {
-    key: "EndlessZen",
-    type: EndlessZen,
-  },
-  {
-    key: "Options",
-    type: Options,
-  },
+  { key: "LevelSelector", type: LevelSelection },
+  { key: "LevelEditor", type: LevelEditor },
+  { key: "EndlessZen", type: EndlessZen },
+  { key: "Tutorials", type: TutorialsTab },
+  { key: "Options", type: Options },
 ];
 
 const OFFSET_X = 500;
@@ -43,37 +32,35 @@ export class MainMenu extends Scene {
   activeTab: string;
   tabs = new Map<string, MenuTab>();
   tabBtns = new Map<string, MenuBtn>();
+  btnsContainer!: Phaser.GameObjects.Container;
+
+  tutorialMenu?: TutorialsTab;
 
   constructor() {
     super("MainMenu");
   }
+
   create() {
-    const width = this.cameras.main.width - OFFSET_X;
-    const height = this.cameras.main.height;
-
+    this.initAudioManager();
     this.createBackground();
-    this.makeMenuBtns();
+    this.createTabs();
+    this.createButtons();
 
-    TABS.forEach((tab) => {
-      const newTab = new tab.type({
-        x: OFFSET_X,
-        y: 0,
-        scene: this,
-        width: width,
-        height: height,
-        key: tab.key,
-        ...tab.props,
-      });
-
-      this.tabs.set(tab.key, newTab);
-    });
+    if (!import.meta.env.PROD) {
+      new DebugMenu(600, 200, this).init();
+    }
 
     this.cameras.main.fadeIn(1000, 0, 0, 0);
   }
 
+  private initAudioManager() {
+    const existing = this.registry.get("audioManager") as AudioManager;
+    const audioManager = existing?.setScene?.(this) ?? new AudioManager(this);
+    this.registry.set("audioManager", audioManager);
+  }
+
   private createBackground() {
-    const width = this.cameras.main.width;
-    const height = this.cameras.main.height;
+    const { width, height } = this.cameras.main;
     new Background(this);
 
     const isExist = this.textures.exists("gradient");
@@ -99,67 +86,58 @@ export class MainMenu extends Scene {
       .graphics()
       .fillStyle(0x161616, 1)
       .lineStyle(4, 0x444444, 0.6)
-      .lineBetween(50, 0, 50, this.cameras.main.height);
+      .lineBetween(50, 0, 50, height);
   }
 
-  private makeMenuBtns() {
-    const { x, y, gap } = this.cache.json.get("config").mainMenu
-      .buttonsBlock as GameConfig["mainMenu"]["buttonsBlock"];
+  private createTabs() {
+    const { width, height } = this.cameras.main;
+    const tabArea = { x: OFFSET_X, y: 0, width: width - OFFSET_X, height };
 
+    for (const { key, type, props } of TABS) {
+      const tab = new type({ scene: this, key, ...tabArea, ...props });
+      this.tabs.set(key, tab);
+    }
+  }
+
+  private createButtons() {
+    getConfig(this).mainMenu.buttonsBlock;
+    const { x, y, gap } = getConfig(this).mainMenu.buttonsBlock;
     const local: LanguageConfig = getLocal(this);
-
-    const container = this.add.container(x, y);
-
-    const defaultOffset = 100 + gap;
 
     const buttonData = [
       { key: "LevelSelector", text: local.mainMenu.selectLevel },
-      {
-        key: "EndlessZen",
-        text: local.mainMenu.endlessZen,
-      },
-      {
-        key: "LevelEditor",
-        text: local.mainMenu.createLevel,
-      },
-      {
-        key: "Options",
-        text: local.mainMenu.options,
-      },
+      { key: "EndlessZen", text: local.mainMenu.endlessZen },
+      { key: "LevelEditor", text: local.mainMenu.createLevel },
+      { key: "Tutorials", text: local.mainMenu.tutorials },
+      { key: "Options", text: local.mainMenu.options },
     ];
 
-    buttonData.forEach(({ key, text }, indx) => {
-      const btn = this.createButton(0, indx * defaultOffset, text, key);
+    const container = this.add.container(x, y);
+    const spacing = 100 + gap;
+
+    buttonData.forEach(({ key, text }, i) => {
+      const btn = this.createTabButton(0, i * spacing, text, key);
       this.tabBtns.set(key, btn);
       container.add(btn.container);
     });
 
-    const git = this.createButton(
-      0,
-      this.cameras.main.height - 300,
-      local.mainMenu.gitHub,
-      "Git"
-    );
-
-    git.btn.on("pointerup", () => {
-      window.open(
-        "https://github.com/XirTelan/overflowing_palette",
-        "GitHubProject"
-      );
-    });
-    git.text.setFontSize(24);
-    container.add(git.container);
+    this.btnsContainer = container;
+    this.events.on("shutdown", this.onDestroy, this);
   }
-  private createButton(x: number, y: number, text: string, tabKey: string) {
-    return new MenuBtn(this, x, y, text, tabKey, () => {
+
+  onDestroy() {
+    Object.values(this.tabs).forEach((tab: MenuTab) => tab.destroy());
+    this.btnsContainer.destroy(true);
+  }
+  private createTabButton(x: number, y: number, label: string, tabKey: string) {
+    return new MenuBtn(this, x, y, label, tabKey, () => {
       TABS.forEach(({ key }) => {
         const tab = this.tabs.get(key);
-
         if (!tab) return;
-        const isActive = tabKey == key && !tab.container.visible;
+
+        const isActive = tabKey === key && !tab.container.visible;
         this.tabBtns.get(key)?.update(isActive);
-        if (isActive) tab.show();
-        else tab.hide();
+        tab.setActive(isActive);
       });
     });
   }

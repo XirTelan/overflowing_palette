@@ -116,6 +116,35 @@ Gameplay – Options to disable dynamic tile backgrounds and adjust highlight in
   Stronger higlight - cell on mouse over will be more visible. 
 
 
+## Customization
+[WIP]
+For desktop app.
+All files 
+resources\app\dist\assets
+
+### Descriptions:
+- **fonts**: All font files for the app.
+- **shaders**: Files related to shaders used in the app.
+- **sound**: Sound files
+- **data**: Configuration files, localization configurations, and level data.
+  - **assets**: file loading config for phaser 
+  - **config**: Configuration files for app setup.
+  - **lang**: Paths and configurations for available localizations.
+  - **levels**: Data for levels.
+- **localizations**: Localization files separated by language.
+- **textures**: All textures used in the app.
+  - **background**: Available background images.
+  - **shaders**: Textures used in shaders.
+  - **tutorials**: Images for the tutorial tab.
+  - **levelBg**: Backgrounds for the levels category in the level selection tab.
+
+
+
+  
+
+
+
+
 ## Installation
 
 ### From Source Code

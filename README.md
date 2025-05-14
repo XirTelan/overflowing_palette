@@ -15,13 +15,6 @@ showcase: https://youtu.be/9FPFLpCEiQI
     - [Export Level](#export-level)
   - [Options](#options)
 - [Customization](#customization)
-  - [Base](#base)
-  - [Config (Offline)](#config-offline)
-    - [Colors](#colors)
-    - [Add Levels](#add-levels)
-    - [UI](#ui)
-  - [Code](#code)
-    - [Shader](#shader)
 - [Installation/Building for Offline](#installation)
 
 

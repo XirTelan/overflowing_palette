@@ -24,8 +24,8 @@ export class TutorialsTab extends MenuTab {
             .join("")}
         </div>
         <div class="content" style="width: 65%; padding-left: 12px; overflow-y: auto;">
-          <h2 id="tutorial-title">Tutorial</h2>
-          <div id="tutorial-content">Select a topic to see details.</div>
+          <h2 id="tutorial-title"></h2>
+          <div id="tutorial-content"></div>
         </div>
       </div>
     `;

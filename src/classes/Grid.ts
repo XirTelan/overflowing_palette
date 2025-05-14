@@ -442,8 +442,6 @@ export default class Grid {
 
           this.scene.changeGameState(GameStatus.Active);
         }
-
-        console.log(this.timedCellsQueue);
       },
     });
   }

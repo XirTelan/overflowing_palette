@@ -130,7 +130,7 @@ export class MainMenu extends Scene {
     this.btnsContainer.destroy(true);
   }
   private createTabButton(x: number, y: number, label: string, tabKey: string) {
-    return new MenuBtn(this, x, y, label, tabKey, () => {
+    return new MenuBtn(this, x, y, label, () => {
       TABS.forEach(({ key }) => {
         const tab = this.tabs.get(key);
         if (!tab) return;

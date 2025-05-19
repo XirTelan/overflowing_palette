@@ -40,11 +40,6 @@
       },
       {
         "type": "audio",
-        "key": "btnClick",
-        "url": "btnClick.mp3"
-      },
-      {
-        "type": "audio",
         "key": "bg1",
         "url": "bg1.m4a"
       }

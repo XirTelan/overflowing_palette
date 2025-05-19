@@ -8,7 +8,6 @@ export class MenuBtn extends BaseBlock {
   overlay: Phaser.GameObjects.Image;
   active: Phaser.GameObjects.Container;
   text: Phaser.GameObjects.Text;
-  key: string;
 
   tweenAnimation: Phaser.Tweens.Tween;
 
@@ -17,12 +16,10 @@ export class MenuBtn extends BaseBlock {
     x: number,
     y: number,
     text: string,
-    tabKey: string,
     onClick: () => void
   ) {
     super(x, y, scene);
     const container = this.container;
-    this.key = tabKey;
 
     const { menuBtn } = scene.cache.json.get("config")["mainMenu"];
 
@@ -76,6 +73,7 @@ export class MenuBtn extends BaseBlock {
 
     this.audioManager = this.scene.registry.get("audioManager") as AudioManager;
 
+
     //delay to make sure fonts is ready since any other mehod doesnt worked
     this.scene.time.delayedCall(50, () => {
       this.text.updateText();
@@ -97,14 +95,14 @@ export class MenuBtn extends BaseBlock {
   }
 
   private onClick() {
-    this.audioManager?.playSFX("btnClick");
+    this.audioManager?.playSFX("colorSelect");
   }
 
   private onEnter() {
     this.overlay.setVisible(true);
     this.scene.input.setDefaultCursor("pointer");
     this.text.setColor("#ffffff");
-    this.audioManager?.playSFX("btnClick", { detune: 100, volume: 0.5, });
+    this.audioManager?.playSFX("colorSelect", { detune: 100, volume: 0.5 });
   }
   private onLeave() {
     this.overlay.setVisible(false);

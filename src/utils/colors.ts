@@ -18,7 +18,7 @@ export const normalizedRgbToColor = (color: Vector3): number => {
 };
 
 export function cycleThroughColors(value: number, curTarget: ColorType) {
-  const maxValue = Object.keys(ColorType).length / 2;
+  const maxValue = Math.floor((Object.keys(ColorType).length - 1) / 2);
   return (((curTarget + value) % maxValue) + maxValue) % maxValue;
 }
 export function getColorName(indx: number, colors: ColorConfig) {

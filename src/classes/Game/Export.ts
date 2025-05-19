@@ -164,7 +164,7 @@ export class Export {
       turns: this.scene.gameStates.turns,
       tools: this.scene.gameStates.availableTools,
       portals: this.scene.editor?.getValues("portal") as Portal[],
-      timed: this.scene.editor.getValues("timed") as TimedCell[],
+      timed: this.scene.editor?.getValues("timed") as TimedCell[],
       board: data,
     };
 

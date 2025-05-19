@@ -15,13 +15,6 @@ showcase: https://youtu.be/9FPFLpCEiQI
     - [Export Level](#export-level)
   - [Options](#options)
 - [Customization](#customization)
-  - [Base](#base)
-  - [Config (Offline)](#config-offline)
-    - [Colors](#colors)
-    - [Add Levels](#add-levels)
-    - [UI](#ui)
-  - [Code](#code)
-    - [Shader](#shader)
 - [Installation/Building for Offline](#installation)
 
 
@@ -41,23 +34,34 @@ Project: Recreating the puzzle *Overflowing Palette* from *Wuthering Waves* as a
 ### Stack:
 Vite, Phaser 3
 
-## Usage 
 
-### Level Selection
-![image](https://github.com/user-attachments/assets/e9c641ff-0b9d-459f-b254-b8caa26f98b8)
+## Level Selection / Structure
 
+![image](https://github.com/user-attachments/assets/721fe3ed-a3d1-44a8-9615-f0b6ce291dd8)
 
-#### Default - Levels from the Game 
-![image](https://github.com/user-attachments/assets/ab81da30-b86f-4be4-aefd-e407506edd61)
-
+- **Default**: Levels that were in the "Wuthering Waves."
 
 Levels are separated by regions.  
-**Green background** - Cleared stages  
+**Yellow background**: Cleared stages.  
 **Note:** Cleared levels are saved in the browser's localStorage.
+
+![image](https://github.com/user-attachments/assets/3bae4438-179c-46e1-9414-5a4468245d6a)
+
+
+- **Custom**: Levels that don't use any mechanics besides what the original puzzle has (e.g., portals).
+- **Tools**: Levels that use the "Tools" mechanic.
+- **Portals**: Levels that use the "Portal" mechanic.
+- **Timers**: Levels that use the "Timers" mechanic.
+- **Advanced**: Levels that use several different mechanics at once.
+
+
+
+
 
 ### Import Levels  
 
-![image](https://github.com/user-attachments/assets/164a4706-2872-4383-ab69-69c82631e306)
+![image](https://github.com/user-attachments/assets/f85947ab-b8d0-4326-860f-0eb7de65eac5)
+
 
 Shoud paste level in base64 format (or simply "string"):
 After "Load" you will see preview for that level if its correct "string". 
@@ -114,6 +118,35 @@ Gameplay – Options to disable dynamic tile backgrounds and adjust highlight in
 
   Simple colors - remove any animation/shades etc on cells. 
   Stronger higlight - cell on mouse over will be more visible. 
+
+
+## Customization
+[WIP]
+For desktop app.
+All files 
+resources\app\dist\assets
+
+### Descriptions:
+- **fonts**: All font files for the app.
+- **shaders**: Files related to shaders used in the app.
+- **sound**: Sound files
+- **data**: Configuration files, localization configurations, and level data.
+  - **assets**: file loading config for phaser 
+  - **config**: Configuration files for app setup.
+  - **lang**: Paths and configurations for available localizations.
+  - **levels**: Data for levels.
+- **localizations**: Localization files separated by language.
+- **textures**: All textures used in the app.
+  - **background**: Available background images.
+  - **shaders**: Textures used in shaders.
+  - **tutorials**: Images for the tutorial tab.
+  - **levelBg**: Backgrounds for the levels category in the level selection tab.
+
+
+
+  
+
+
 
 
 ## Installation

@@ -1,0 +1,202 @@
+{
+  "loading": "Загрузка",
+  "backgounds": {
+    "bg1": "Холмы Фессалео",
+    "bg2": "Переполненная палитра",
+    "bg3": "Острова Риччиоли",
+    "bg4": "Гора Фирмамент"
+  },
+  "colors": [
+    "Красный",
+    "Зелёный",
+    "Синий",
+    "Жёлтый",
+    "Оранжевый",
+    "Фиолетовый",
+    "Розовый",
+    "Бирюзовый"
+  ],
+  "levels": {
+    "default": "Основные",
+    "default1": "Острова Риччоли",
+    "default2": "Гавань Шёпота",
+    "default3": "Нумбус Санктум",
+    "default4": "Тессалео Фелс",
+    "default5": "Хранилище Аверардо",
+    "default6": "Полуостров Фагацея",
+    "default7": "Конец Покаяния",
+    "default8": "Священная Бездна",
+    "default9": "Авинолеум",
+    "default10": "Воды Беора",
+    "advanced": "Продвинутый",
+    "advanced1": "Легкий",
+    "advanced2": "Нормальный",
+    "advanced3": "Сложный",
+    "tools": "Инструменты",
+    "tools1": "Легкий",
+    "tools2": "Нормальный",
+    "tools3": "Сложный",
+    "portals": "Порталы",
+    "portals1": "Легкий",
+    "timed": "Таймеры",
+    "timed1": "Легкий",
+    "timed2": "Средний",
+    "custom": "Дополнительные",
+    "custom1": "Пак 1",
+    "custom2": "Пак 2",
+    "custom3": "От пользователей",
+    "custom4": "Хаос"
+  },
+
+  "previewBlock": {
+    "preview": "Предпросмотр",
+    "author": "Автор",
+    "moves": "Ходы",
+    "gridSize": "Размер поля",
+    "targetColor": "Цель",
+    "cleared": "ПРОЙДЕНО",
+    "time": "Время:",
+    "timeDefault": "Это было давно",
+    "empty": "[Не выбрано ни одного уровня]"
+  },
+  "endlessZen": {
+    "folderName": "Параметры поля",
+    "columnsCount": "Столбцы",
+    "rowsCount": "Ряды",
+    "colorsCount": "Количество цветов",
+    "difficulty": "Сложность",
+    "difficulties": ["Легко", "Средне", "Сложно", "Хаос"]
+  },
+  "mainMenu": {
+    "startBtn": "Начать",
+    "backBtn": "Назад",
+    "selectLevel": "Выбрать уровень",
+    "endlessZen": "Бесконечный дзен",
+    "createLevel": "Создать уровень",
+    "options": "Настройки",
+    "importBtn": "Импорт",
+    "gitHub": "Страница проекта\n (GitHub)",
+    "tutorials": "Справка"
+  },
+  "game": {
+    "ui": {
+      "mode": "Режим:Редактор",
+      "movesRemain": "Оставшиеся ходы:",
+      "movesUsed": "Затрачено ходов",
+      "targetColor": "Преобразуйте все блоки в",
+      "targetColorEditor": "Целевой цвет:",
+      "movesCount": "Количество ходов:",
+      "resetBtn": "Сброс",
+      "export": "Экспорт",
+      "tools": "Устройства",
+      "toolSelected": "Устройство обмена активно",
+      "toolUses": "Осталось",
+      "skipBtn": "Пропустить"
+    },
+    "tools": {
+      "verticalSwap": "Обмен:Вертикальный",
+      "horizontalSwap": "Обмен:Горизонтальный",
+      "allwaySwap": "Обме:Во все стороны"
+    }
+  },
+  "levelEditor": {
+    "folderName": "Параметры поля",
+    "gridColumns": "Столбцы",
+    "gridRows": "Ряды",
+    "gridColor": "Цвет поля"
+  },
+  "resultScreen": {
+    "win": "Уровень пройден",
+    "time": "Время:",
+    "btnMain": "Главное меню",
+    "btnNext": "Следующий уровень",
+    "btnShare": "Поделиться",
+    "movesUsed": "Использовано ходов"
+  },
+  "options": {
+    "btnSave": "Сохранить",
+    "btnReset": "Сброс",
+    "tabs": {
+      "general": "Общие",
+      "colors": "Цвета",
+      "sound": "Звук",
+      "gameplay": "Геймплей"
+    },
+    "colorsTab": {
+      "folderName": "Настройка цветов"
+    },
+    "generalTab": {
+      "languageBlock": "Язык",
+      "languageSelection": "Текущий язык",
+      "background": "Фон",
+      "image": "Изображение",
+      "distortion": "Искажение",
+      "overlay": "Наложение"
+    },
+    "soundTab": {
+      "folderName": "Громкость",
+      "master": "Основной",
+      "sfx": "Звуковые эффекты",
+      "bgm": "Музыка"
+    },
+    "gameplayTab": {
+      "animationSpeed": "Скорость анимации",
+      "folderName": "Параметры поля",
+      "highlightIntensity": {
+        "text": "Интенсивность подсветки",
+        "options": ["Обычная", "Сильная"]
+      },
+      "performanceMode": {
+        "text": "Режим производительности",
+        "options": ["Выкл", "Вкл"]
+      },
+      "fluidColors": {
+        "text": "Анимация поля",
+        "options": ["Выкл", "Вкл"]
+      },
+      "soundVolume": "Громкость звука"
+    },
+    "defaultToggle": ["Выкл", "Вкл"]
+  },
+  "importBlock": {
+    "startBtn": "Начать",
+    "folderName": "Импорт уровня",
+    "loadBtn": "Загрузить",
+    "cancelBtn": "Отмена"
+  },
+  "exportBlock": {
+    "title": "ЭКСПОРТ УРОВНЯ",
+    "switch": {
+      "string": "Как строку",
+      "json": "Как JSON"
+    },
+    "folders": {
+      "string": "Экспорт в виде строки",
+      "json": "Экспорт в формате JSON"
+    },
+    "cancelBtn": "Отмена",
+    "copy": "Копировать в буфер"
+  },
+  "tutorials": {
+    "basics": {
+      "title": "Основы",
+      "content": "<img src=\"assets/textures/tutorials/basics.webp\"   loading=\"lazy\" alt=\"Основы примера\" class=\"tutorial-img\" /><p>Выберите цвет справа и примените его к блокам на палитре слева. Новый цвет распространится на все соединенные блоки того же цвета.</p><p>У разных уровней есть разные ограничения на количество ходов. Планируйте ходы внимательно, чтобы решить головоломку.</p>"
+    },
+    "mechanicBlocked": {
+      "title": "Механика: Заблокированные цвета",
+      "content": "<img src=\"assets/textures/tutorials/blocked.webp\" loading=\"lazy\" alt=\"Заблокированные блоки\" class=\"tutorial-img\" /><p>Заблокированные блоки нельзя изменять напрямую. Они действуют как стены, блокируя распространение цвета.</p>"
+    },
+    "mechanicTools": {
+      "title": "Механика: Инструменты обмена",
+      "content": "<img src=\"assets/textures/tutorials/tools.webp\" loading=\"lazy\" alt=\"Обзор инструментов\" class=\"tutorial-img\" /><p>Некоторые уровни вводят инструменты замены, которые меняют местами два блока с разными цветами. Есть три типа:</p><ul><li><strong>Горизонтальный инструмент</strong>: Меняет блоки местами по горизонтали.</li><li><strong>Вертикальный инструмент</strong>: Меняет блоки местами по вертикали.</li><li><strong>Омни инструмент</strong>: Меняет блоки местами в любом направлении.</li></ul>"
+    },
+    "mechanicPortals": {
+      "title": "Механика: Порталы",
+      "content": "<img src=\"assets/textures/tutorials/portals.webp\" loading=\"lazy\" alt=\"Пример портала\" class=\"tutorial-img\" /><p>Порталы соединяют два блока и ведут себя так, как будто они соседние. Закрашивание одного также затронет другой, даже через всю доску.</p>"
+    },
+    "mechanicTimed": {
+      "title": "Механика: Блоки с таймером",
+      "content": "<img src=\"assets/textures/tutorials/timer.webp\" loading=\"lazy\" alt=\"Таймер блок\" class=\"tutorial-img\" /><p>Числа на ячейках показывают, сколько ходов осталось до активации блока. Цвет числа указывает, в какой цвет он станет. Когда блок активируется, он меняет свой цвет и влияет на соседние блоки того же цвета.</p>"
+    }
+  }
+}

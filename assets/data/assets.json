@@ -7,11 +7,7 @@
         "key": "config",
         "url": "config.json"
       },
-      {
-        "type": "json",
-        "key": "localization",
-        "url": "localization.json"
-      },
+
       {
         "type": "json",
         "key": "levels",
@@ -41,6 +37,11 @@
         "type": "audio",
         "key": "tileFlip",
         "url": "tileFlip.mp3"
+      },
+      {
+        "type": "audio",
+        "key": "bg1",
+        "url": "bg1.m4a"
       }
     ]
   },
@@ -75,18 +76,18 @@
     ]
   },
   {
-    "path": "assets/icons/",
+    "path": "assets/textures/icons",
 
     "files": [
       {
         "type": "image",
         "key": "swapAll",
-        "url": "swapAll.png"
+        "url": "swapAll.webp"
       },
       {
         "type": "image",
         "key": "swapLine",
-        "url": "swapLine.png"
+        "url": "swapLine.webp"
       }
     ]
   },
@@ -109,22 +110,48 @@
       {
         "type": "image",
         "key": "MainBtnActive",
-        "url": "MainBtnActive.png"
+        "url": "MainBtnActive.webp"
       },
       {
         "type": "image",
         "key": "btnRound",
-        "url": "btnRound.png"
+        "url": "btnRound.webp"
       },
       {
         "type": "image",
         "key": "btnRoundOver",
-        "url": "btnRoundOver.png"
+        "url": "btnRoundOver.webp"
       },
+
       {
         "type": "image",
         "key": "MainBtnActiveCircle",
-        "url": "MainBtnActiveCircle.png"
+        "url": "MainBtnActiveCircle.webp"
+      },
+      {
+        "type": "image",
+        "key": "tile",
+        "url": "tile.webp"
+      },
+      {
+        "type": "image",
+        "key": "transitionTile",
+        "url": "transitionTile.webp"
+      },
+      {
+        "type": "image",
+        "key": "portalMask",
+        "url": "portalMask.webp"
+      },
+      {
+        "type": "image",
+        "key": "blockedTileOver",
+        "url": "blockedTileOver.webp"
+      },
+      {
+        "type": "image",
+        "key": "blockedTile",
+        "url": "blockedTile.webp"
       }
     ]
   },

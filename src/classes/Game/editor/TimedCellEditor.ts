@@ -1,6 +1,6 @@
 import { Game } from "@/scenes/Game";
 import { EditorManager } from "./EditorManager";
-import { ColorType, Position, TimedCell } from "@/types";
+import {  Position, TimedCell } from "@/types";
 import { BaseCellEditor } from "./BaseCellEditor";
 
 export class TimedCellEditor extends BaseCellEditor {

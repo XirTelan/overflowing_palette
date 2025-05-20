@@ -1,8 +1,9 @@
 import { Game } from "@/scenes/Game";
-import { GameConfig, Tools } from "@/types";
+import { Tools } from "@/types";
 import { getConfig, getLocal } from "@/utils";
 import { BaseBtn } from "./BaseBtn";
 import { TextBox } from "../textBox";
+import { AudioManager } from "@/classes/common/AudioManager";
 
 export class ToolBtn extends BaseBtn {
   scene: Game;
@@ -90,7 +91,9 @@ export class ToolBtn extends BaseBtn {
   }
 
   select() {
-    this.scene.audioManager.playSFX("colorSelect");
+    if (this.isSelected) return;
+
+    AudioManager.getInstance().playSFX(this.scene, "colorSelect");
     this.scene.changeSelectedTool(this.toolKey);
     this.isSelected = true;
     this.icon.setTintFill(0xffcd3f);
@@ -98,7 +101,10 @@ export class ToolBtn extends BaseBtn {
   }
 
   deselect() {
-    this.scene.audioManager.playSFX("colorSelect", { detune: 100 });
+    if (!this.isSelected) return;
+    AudioManager.getInstance().playSFX(this.scene, "colorSelect", {
+      detune: 100,
+    });
     this.scene.changeSelectedTool(Tools.none);
     this.isSelected = false;
     this.icon.setTintFill(0xffffff);

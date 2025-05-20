@@ -73,7 +73,6 @@ export class MenuBtn extends BaseBlock {
 
     this.audioManager = this.scene.registry.get("audioManager") as AudioManager;
 
-
     //delay to make sure fonts is ready since any other mehod doesnt worked
     this.scene.time.delayedCall(50, () => {
       this.text.updateText();
@@ -95,14 +94,17 @@ export class MenuBtn extends BaseBlock {
   }
 
   private onClick() {
-    this.audioManager?.playSFX("colorSelect");
+    AudioManager.getInstance().playSFX(this.scene, "colorSelect");
   }
 
   private onEnter() {
     this.overlay.setVisible(true);
     this.scene.input.setDefaultCursor("pointer");
     this.text.setColor("#ffffff");
-    this.audioManager?.playSFX("colorSelect", { detune: 100, volume: 0.5 });
+    AudioManager.getInstance().playSFX(this.scene, "colorSelect", {
+      detune: 100,
+      volume: 0.5,
+    });
   }
   private onLeave() {
     this.overlay.setVisible(false);

@@ -30,7 +30,7 @@ export class SoundTab extends OptionTab {
     const { soundTab } = getLocal(scene)["options"];
 
     const folder = new OptionFolder(soundTab.folderName);
-    const audioManager: AudioManager = scene.registry.get("audioManager");
+    const audioManager = AudioManager.getInstance();
 
     const master = Math.round(audioManager.getMasterVolume() * 100);
     const bgm = Math.round(audioManager.getBGMVolume() * 100);

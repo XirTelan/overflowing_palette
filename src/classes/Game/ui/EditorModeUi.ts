@@ -5,6 +5,7 @@ import { ValueSelector } from "../../ui/ValueSelector";
 import { Game } from "@/scenes/Game";
 import { BaseBtn } from "../../ui/buttons/BaseBtn";
 import { PortalEditor } from "../editor/PortalEditor";
+import { AudioManager } from "@/classes/common/AudioManager";
 
 export class EditorModeUi {
   private scene: Game;
@@ -140,7 +141,7 @@ export class EditorModeUi {
     blockedTileBtn.setHotkey("0", ["NUMPAD_ZERO", "ZERO"]);
     blockedTileBtn.setInteractive(() => {
       this.scene.changeSelectedColor(-1);
-      this.scene.audioManager.playSFX("colorSelect");
+      AudioManager.getInstance().playSFX(this.scene, "colorSelect");
     });
     this.scene.btnContainer.add(blockedTileBtn.container);
   }

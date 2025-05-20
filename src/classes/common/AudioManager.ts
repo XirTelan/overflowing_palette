@@ -8,7 +8,8 @@ type SoundConfig = {
 };
 
 export class AudioManager {
-  private scene: Scene;
+  private static instance: AudioManager;
+
   private bgm?:
     | Sound.NoAudioSound
     | Sound.HTML5AudioSound
@@ -19,14 +20,15 @@ export class AudioManager {
 
   private isLocked = true;
 
-  constructor(scene: Scene) {
-    this.scene = scene;
+  private constructor() {
     this.loadFromLocalStorage();
+  }
 
-    scene.input.once("pointerup", () => {
-      this.isLocked = false;
-      this.playBGM("bg1");
-    });
+  static getInstance(): AudioManager {
+    if (!AudioManager.instance) {
+      AudioManager.instance = new AudioManager();
+    }
+    return AudioManager.instance;
   }
 
   private loadFromLocalStorage(): void {
@@ -51,24 +53,44 @@ export class AudioManager {
     localStorage.setItem(`${localStoragePrefix}sound`, JSON.stringify(config));
   }
 
-  playSFX(key: string, config: Phaser.Types.Sound.SoundConfig = {}): boolean {
+  playSFX(
+    scene: Scene,
+    key: string,
+    config: Phaser.Types.Sound.SoundConfig = {}
+  ): boolean {
     if (this.isLocked) return false;
-    return this.scene.sound.play(key, {
+    return scene.sound.play(key, {
       ...config,
       volume: (config.volume ?? 1) * this.sfxVolume * this.masterVolume,
     });
   }
 
-  playBGM(key: string, config: Phaser.Types.Sound.SoundConfig = {}): void {
-    if (this.bgm) this.bgm.stop();
-    this.bgm = this.scene.sound.add(key, {
+  playBGM(
+    scene: Scene,
+    key: string,
+    config: Phaser.Types.Sound.SoundConfig = {}
+  ): void {
+    if (this.isLocked) {
+      scene.input.once("pointerup", () => {
+        this.isLocked = false;
+        this.playBGM(scene, key, config);
+      });
+      return;
+    }
+    this.bgm?.stop();
+    this.bgm = scene.sound.add(key, {
       loop: true,
       ...config,
       volume: (config.volume ?? 1) * this.bgmVolume * this.masterVolume,
     });
     this.bgm.play();
   }
-
+  stopBGM() {
+    this.bgm?.stop();
+  }
+  resumeBGM() {
+    this.bgm?.play();
+  }
   setMasterVolume(vol: number): void {
     this.masterVolume = vol;
     this.saveToLocalStorage();
@@ -98,14 +120,13 @@ export class AudioManager {
     return this.sfxVolume;
   }
 
-  setScene(scene: Scene) {
-    this.scene = scene;
-    return this;
-  }
-
   private updateBGMVolume(): void {
     if (this.bgm?.isPlaying) {
       this.bgm.setVolume(this.bgmVolume * this.masterVolume);
     }
+  }
+
+  unlock(): void {
+    this.isLocked = false;
   }
 }

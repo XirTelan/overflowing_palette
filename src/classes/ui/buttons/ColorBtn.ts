@@ -1,6 +1,7 @@
 import { Game } from "@/scenes/Game";
 import { BaseBtn } from "./BaseBtn";
 import { ColorType, Vector3 } from "@/types";
+import { AudioManager } from "@/classes/common/AudioManager";
 
 const keysMap = {
   0: "NUMPAD_ZERO,ZERO",
@@ -79,14 +80,14 @@ export class ColorBtn extends BaseBtn {
       repeat: -1,
     });
 
-    if (parentContainer) parentContainer.add(this.container);
+   parentContainer?.add(this.container);
 
     this.btnOverlay = activeCircle;
     this.update();
   }
 
   onEnter() {
-    this.scene.audioManager.playSFX("mouseOver");
+    AudioManager.getInstance().playSFX(this.scene, "mouseOver");
     this.btnOverlay.setVisible(true);
   }
 
@@ -98,7 +99,7 @@ export class ColorBtn extends BaseBtn {
 
   onClick() {
     this.scene.changeSelectedColor(this.color[0]);
-    this.scene.audioManager.playSFX("colorSelect");
+    AudioManager.getInstance().playSFX(this.scene, "colorSelect");
   }
 
   update() {

@@ -1,6 +1,6 @@
 import { Scene } from "phaser";
 import { BaseBlock } from "../../common/BaseBlock";
-import { LevelData, GameConfig, ColorType } from "@/types";
+import { LevelData,  ColorType } from "@/types";
 import { getConfig, normalizedRgbToColor } from "@/utils";
 
 const CELL_SIZE = 50;

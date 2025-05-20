@@ -64,7 +64,6 @@ export class Game extends Scene {
     new Background(this);
 
     this.initGame(mode, levelData, levelKey ?? "");
-    this.initAudioManager();
 
     if (mode === GameMode.Editor) {
       this.editor = new EditorManager(this);
@@ -93,12 +92,6 @@ export class Game extends Scene {
 
     this.startTime = this.time.now;
     this.cameras.main.fadeIn(FADE_DELAY, 0, 0, 0);
-  }
-
-  private initAudioManager() {
-    const existing = this.registry.get("audioManager") as AudioManager;
-    this.audioManager = existing?.setScene?.(this) ?? new AudioManager(this);
-    this.registry.set("audioManager", this.audioManager);
   }
 
   changeGameState(state: GameStatus) {
@@ -200,7 +193,7 @@ export class Game extends Scene {
   }
 
   resetGame() {
-    this.audioManager.playSFX("reset");
+    AudioManager.getInstance().playSFX(this, "reset");
 
     this.grid.resetBoard();
     const { initialState } = this.gameStates;

@@ -41,7 +41,6 @@ export class MainMenu extends Scene {
   }
 
   create() {
-    this.initAudioManager();
     this.createBackground();
     this.createTabs();
     this.createButtons();
@@ -49,14 +48,8 @@ export class MainMenu extends Scene {
     if (!import.meta.env.PROD) {
       new DebugMenu(600, 200, this).init();
     }
-
+    AudioManager.getInstance().playBGM(this, "bg1");
     this.cameras.main.fadeIn(1000, 0, 0, 0);
-  }
-
-  private initAudioManager() {
-    const existing = this.registry.get("audioManager") as AudioManager;
-    const audioManager = existing?.setScene?.(this) ?? new AudioManager(this);
-    this.registry.set("audioManager", audioManager);
   }
 
   private createBackground() {

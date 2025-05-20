@@ -15,6 +15,7 @@ import { SwapSelection } from "./Game/SwapSelection";
 import SimpleCell from "./SimpleCell";
 import ShaderCell from "./ShaderCell";
 import { BlockedCell } from "./BlockedCell";
+import { AudioManager } from "./common/AudioManager";
 
 export default class Grid {
   scene: Game;
@@ -402,7 +403,7 @@ export default class Grid {
       duration: animationDelay,
       ease: "Cubic.InOut",
       onStart: () => {
-        this.scene.audioManager.playSFX("tileFlip", {
+        AudioManager.getInstance().playSFX(this.scene, "tileFlip", {
           detune: Math.min(50 * level, 600),
           volume: level ? Math.min(0.4, 1 - 0.9 + level * 0.1) : 1,
         });

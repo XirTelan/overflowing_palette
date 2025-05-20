@@ -14,7 +14,6 @@ import {
   localStoragePrefix,
 } from "@/utils";
 import { BaseBlock } from "../common/BaseBlock";
-import { PrimaryBtn } from "../ui/buttons/PrimaryBtn";
 import { Record } from "../ui/html/Record";
 
 export class ResultScreen extends BaseBlock {
@@ -61,9 +60,7 @@ export class ResultScreen extends BaseBlock {
         ));
 
     if (hasNextLevel) {
-      const nextBtn = this.createPrimaryBtn(this.local.btnNext, () => {
-        this.scene.scene.start("LoadingGame", this.nextLevelData);
-      });
+      const nextBtn = this.createNextLevelBtn();
       buttonBlock.append(nextBtn);
     }
 
@@ -175,12 +172,11 @@ export class ResultScreen extends BaseBlock {
     ).container;
   }
 
-  createNextLevelBtn(x: number, y: number) {
-    this.container.add(
-      new PrimaryBtn(x, y, this.local.btnNext, 300, 50, this.scene, () => {
-        this.scene.scene.start("LoadingGame", this.nextLevelData);
-        this.scene.cameras.main.postFX.clear();
-      }).container
-    );
+  createNextLevelBtn() {
+    return this.createPrimaryBtn(this.local.btnNext, this.nextLevel.bind(this));
+  }
+  nextLevel() {
+    this.scene.scene.start("LoadingGame", this.nextLevelData);
+    this.scene.cameras.main.postFX.clear();
   }
 }

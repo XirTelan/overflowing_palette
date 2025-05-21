@@ -20,10 +20,10 @@ const config: Types.Core.GameConfig = {
   scene: [Boot, MainMenu, LoadingGame, Game],
 };
 
-const game = new Phaser.Game(config);
+let game;
 
 document.addEventListener("DOMContentLoaded", () => {
-  game.scene.start("Boot");
+  game = new Phaser.Game(config);
   document.body.addEventListener("contextmenu", (e) => {
     e.preventDefault();
     e.stopPropagation();

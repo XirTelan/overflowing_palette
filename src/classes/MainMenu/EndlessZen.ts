@@ -10,6 +10,7 @@ import { OptionFolder } from "../ui/html/OptionFolder";
 import { ValueSelector } from "../ui/html/ValueSelector";
 import { generateLevel, getLocal } from "../../utils";
 import { OptionSelector } from "../ui/html/OptionSelector";
+import { CheckBox } from "../ui/html/Checkbox";
 
 export class EndlessZen extends MenuTab {
   selectedFillColor: ColorType = 0;
@@ -18,11 +19,16 @@ export class EndlessZen extends MenuTab {
   difficulty: LevelDifficulty = 1;
   colorsCount: number = 4;
 
+  blockedCheckBox: CheckBox;
+  portalCheckBox: CheckBox;
+  timerCheckBox: CheckBox;
+
+  scene: Phaser.Scene;
+
   constructor(props: MenuTabProps) {
     super(props);
     const { scene, width, height } = props;
-
-    const { endlessZen } = getLocal(scene);
+    this.scene = scene;
 
     const viewBox = scene.add
       .dom(0, 0, "div", {
@@ -31,8 +37,20 @@ export class EndlessZen extends MenuTab {
       })
       .setOrigin(0);
 
+    this.actionBtn.btn.setInteractive();
+    this.actionBtn.btn.on("pointerup", this.loadGame, this);
+
+    const options = this.createOptions();
+    const mehanics = this.createMehanics();
+    viewBox.node.appendChild(options.container);
+    viewBox.node.appendChild(mehanics.container);
+    this.container.add(viewBox);
+  }
+
+  createOptions() {
+    const { endlessZen } = getLocal(this.scene);
+
     const folder = new OptionFolder(endlessZen.folderName);
-    viewBox.node.appendChild(folder.container);
 
     const columns = new ValueSelector(
       endlessZen.columnsCount,
@@ -72,31 +90,50 @@ export class EndlessZen extends MenuTab {
         return this.colorsCount;
       }
     );
-
-    const diffOptions = endlessZen.difficulties;
-
     const difficulty = new OptionSelector(
       endlessZen.difficulty,
       this.difficulty,
-      diffOptions,
+      endlessZen.difficulties,
       false,
       (selectedIndex) => {
         this.difficulty = selectedIndex as LevelDifficulty;
       }
     );
 
-    folder.add(columns.container);
-    folder.add(rows.container);
-    folder.add(colorsCount.container);
-    folder.add(difficulty.container);
+    folder.add([
+      columns.container,
+      rows.container,
+      colorsCount.container,
+      difficulty.container,
+    ]);
 
-    this.actionBtn.btn.setInteractive();
-    this.actionBtn.btn.on("pointerup", this.loadGame, this);
+    return folder;
+  }
 
-    this.container.add([viewBox]);
+  createMehanics() {
+    const { endlessZen } = getLocal(this.scene);
+
+    const folder = new OptionFolder(endlessZen.folderMehanics);
+
+    this.blockedCheckBox = new CheckBox(endlessZen.blocked);
+    this.portalCheckBox = new CheckBox(endlessZen.portals);
+    this.timerCheckBox = new CheckBox(endlessZen.timer);
+
+    folder.add([
+      this.blockedCheckBox.container,
+      this.portalCheckBox.container,
+      this.timerCheckBox.container,
+    ]);
+
+    return folder;
   }
 
   loadGame() {
+    const mehanics = {
+      blocked: this.blockedCheckBox.checked,
+      portals: this.portalCheckBox.checked,
+      timers: this.timerCheckBox.checked,
+    };
     this.scene.time.delayedCall(100, () => {
       this.scene.scene.start("LoadingGame", {
         mode: GameMode.Endless,
@@ -105,12 +142,14 @@ export class EndlessZen extends MenuTab {
           columns: this.columns,
           colorsCount: this.colorsCount,
           difficulty: this.difficulty,
+          mehanics,
         },
         levelData: generateLevel(
           this.rows,
           this.columns,
           this.colorsCount,
-          this.difficulty
+          this.difficulty,
+          mehanics
         ),
       });
     });

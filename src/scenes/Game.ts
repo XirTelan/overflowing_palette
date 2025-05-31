@@ -79,7 +79,8 @@ export class Game extends Scene {
             endlessOptions!.rows,
             endlessOptions!.columns,
             endlessOptions!.colorsCount,
-            endlessOptions!.difficulty
+            endlessOptions!.difficulty,
+            endlessOptions?.mehanics
           ),
           endlessOptions,
         });

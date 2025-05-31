@@ -65,11 +65,18 @@ export enum GameStatus {
   "Active",
 }
 
+export type EndlessMehanics = {
+  portals: boolean;
+  timers: boolean;
+  blocked: boolean;
+};
+
 export type EndlessOptions = {
   rows: number;
   columns: number;
   colorsCount: number;
   difficulty: LevelDifficulty;
+  mehanics: EndlessMehanics;
 };
 
 export type LanguageConfig = {
@@ -97,18 +104,25 @@ export type LanguageConfig = {
     options: string;
     gitHub: string;
     importBtn: string;
-    tutorials: string
+    tutorials: string;
+    share: string;
+    invite: string;
   };
   endlessZen: {
     folderName: string;
+    folderMehanics: string;
     columnsCount: string;
     rowsCount: string;
     colorsCount: string;
     difficulty: string;
     difficulties: string[];
+    blocked: string;
+    portals: string;
+    timer: string;
   };
   game: {
     ui: {
+      gameName: string;
       skipBtn: string;
       mode: string;
       movesRemain: string;
@@ -136,6 +150,8 @@ export type LanguageConfig = {
     btnMain: string;
     btnNext: string;
     btnShare: string;
+    shareTextLevels: string;
+    shareText: string;
     movesUsed: string;
   };
   options: {
@@ -188,6 +204,7 @@ export type LanguageConfig = {
     folderName: string;
     loadBtn: string;
     cancelBtn: string;
+    placeholder: string;
   };
   exportBlock: {
     title: string;

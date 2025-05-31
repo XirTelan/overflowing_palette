@@ -150,13 +150,18 @@ export default class Grid {
     this.timedCellsQueue = [];
     timed?.sort((a, b) => b.turns - a.turns);
 
+    const { initialState, mode } = this.scene.gameStates;
+
     for (const { pos, turns, color } of timed ?? []) {
       const cell = this.board[pos[0]][pos[1]];
       cell.setTimedCell(turns, color);
       this.timedCellsQueue.push({
         pos,
         color,
-        turns: this.scene.gameStates.initialState.turns - turns,
+        turns:
+          mode === GameMode.Endless
+            ? initialState.turns + turns
+            : initialState.turns - turns,
       });
     }
   }

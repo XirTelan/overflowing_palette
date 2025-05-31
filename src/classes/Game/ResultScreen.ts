@@ -77,7 +77,8 @@ export class ResultScreen extends BaseBlock {
         options.rows,
         options.columns,
         options.colorsCount,
-        options.difficulty
+        options.difficulty,
+        options.mehanics
       ),
       endlessOptions: options,
     };

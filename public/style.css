@@ -457,7 +457,7 @@ input[type="color"]::-webkit-color-swatch {
   max-height: 100px;
   max-width: 650px;
   border-radius: 20px 0;
-  background: url("./assets//textures/uiatlas.webp") -70px 0;
+  background: url("./assets/textures/uiatlas.webp") -70px 0;
   color: #000;
   font: 32px OpenSans_Bold;
   padding: 1rem;
@@ -525,6 +525,8 @@ input[type="color"]::-webkit-color-swatch {
 
   .folder-content__item {
     border-radius: var(--border-radius);
+    font-size: var(--font-options-base);
+
     background: #000000a1;
     padding: 1rem;
     outline: 2px solid #16191a;
@@ -711,7 +713,6 @@ input[type="color"]::-webkit-color-swatch {
 }
 .menu-btn__bg {
   background: #121212;
-  /* margin-right: 1rem; */
   mask: linear-gradient(
     90deg,
     rgba(0, 0, 0, 0) 10%,
@@ -855,6 +856,7 @@ input[type="color"]::-webkit-color-swatch {
   width: 100%;
   height: 800px;
   font: 32px OpenSans_Regular;
+  box-sizing: border-box;
 }
 
 .export-wrapper .primary-btn {
@@ -1053,4 +1055,15 @@ input[type="radio"] {
   border-radius: 6px;
   border: 1px solid #555;
   margin-top: 10px;
+}
+
+.checkbox-container {
+  display: flex;
+  justify-content: space-between;
+  font-family: "OpenSans_Bold";
+
+  input[type="checkbox"] {
+    width: 40px;
+    height: 40px;
+  }
 }

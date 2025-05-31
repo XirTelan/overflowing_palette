@@ -1,25 +1,47 @@
+type CheckBoxOptions = {
+  id?: string;
+  className?: string;
+  defaultChecked?: boolean;
+  onChange?: (checked: boolean) => void;
+};
+
 export class CheckBox {
   container: HTMLElement;
+  private checkBox: HTMLInputElement;
 
-  constructor(text: string, key: string) {
+  constructor(text: string, options: CheckBoxOptions = {}) {
+    const { id, className, defaultChecked = false, onChange } = options;
+
     const divContainer = document.createElement("div");
-    divContainer.style =
-      "display:flex;justify-content:space-between;align-items:center;padding:1rem;";
+    divContainer.className = className ?? "checkbox-container";
 
-    const block = document.createElement("p");
-    block.textContent = text;
-    block.classList.add("checkbox_text");
+    const checkBoxId = id ?? `checkbox-${Math.random().toString(36).slice(2)}`;
 
-    divContainer.append(block);
+    const label = document.createElement("label");
+    label.textContent = text;
+    label.setAttribute("for", checkBoxId);
+    label.classList.add("checkbox-label");
 
     const checkBox = document.createElement("input");
-    const data = localStorage.getItem(key);
-    if (data) {
-      checkBox.checked = true;
-    }
-    divContainer.append(checkBox);
-    checkBox.setAttribute("type", "checkbox");
+    checkBox.type = "checkbox";
+    checkBox.id = checkBoxId;
+    checkBox.checked = defaultChecked;
+
+    checkBox.addEventListener("change", () => {
+      onChange?.(checkBox.checked);
+    });
+
+    divContainer.append(label, checkBox);
 
     this.container = divContainer;
+    this.checkBox = checkBox;
+  }
+
+  get checked(): boolean {
+    return this.checkBox.checked;
+  }
+
+  set checked(value: boolean) {
+    this.checkBox.checked = value;
   }
 }

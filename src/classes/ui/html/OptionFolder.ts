@@ -31,10 +31,12 @@ export class OptionFolder {
     this.container = container;
   }
 
-  add(elemnt: Node) {
-    const wrapper = document.createElement("div");
-    wrapper.classList.add("folder-content__item");
-    wrapper.appendChild(elemnt);
-    this.content.appendChild(wrapper);
+  add(element: Element | Element[]) {
+    const elements = Array.isArray(element) ? element : [element];
+
+    elements.forEach((element) => {
+      element.classList.add("folder-content__item");
+      this.content.appendChild(element);
+    });
   }
 }

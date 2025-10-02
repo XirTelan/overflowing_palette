@@ -40,6 +40,7 @@
     "portals1": "Easy",
     "timed": "Timers",
     "timed1": "Easy",
+    "timed3": "Hard",
     "timed2": "Normal",
     "custom": "Custom",
     "custom1": "Pack 1",
@@ -60,11 +61,15 @@
   },
   "endlessZen": {
     "folderName": "Grid Options",
+    "folderMehanics": "Use mehanics",
     "columnsCount": "Columns",
     "rowsCount": "Rows",
     "colorsCount": "Colors count",
     "difficulty": "Difficulty",
-    "difficulties": ["Easy", "Medium", "Hard", "Mess"]
+    "difficulties": ["Easy", "Medium", "Hard", "Mess"],
+    "blocked": "Locked cells",
+    "portals": "Portals",
+    "timer": "Timers"
   },
   "mainMenu": {
     "startBtn": "Start",

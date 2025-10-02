@@ -41,6 +41,7 @@
     "timed": "Таймеры",
     "timed1": "Легкий",
     "timed2": "Средний",
+    "timed3": "Сложный",
     "custom": "Дополнительные",
     "custom1": "Пак 1",
     "custom2": "Пак 2",
@@ -61,11 +62,15 @@
   },
   "endlessZen": {
     "folderName": "Параметры поля",
+    "folderMehanics": "Особенности",
     "columnsCount": "Столбцы",
     "rowsCount": "Ряды",
     "colorsCount": "Количество цветов",
     "difficulty": "Сложность",
-    "difficulties": ["Легко", "Средне", "Сложно", "Хаос"]
+    "difficulties": ["Легко", "Средне", "Сложно", "Хаос"],
+    "blocked": "Заблокированные блоки",
+    "portals": "Порталы",
+    "timer": "Таймеры"
   },
   "mainMenu": {
     "startBtn": "Начать",
